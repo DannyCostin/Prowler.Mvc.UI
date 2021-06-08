@@ -1,0 +1,397 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+@{
+    ViewBag.Title = "DropDownList";
+}
+
+<center><h2>DropDownList</h2></center>
+<h3>Description</h3>
+
+<h4>The ASP.NET MVC DropDownList lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility</h4>
+<h4>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of the most common scenarios in which the component is used.</h4>
+
+<h3>Basic usage</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .Render()
+    )
+
+    @{
+        string basicCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+</div>
+
+<h3>Grouping</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+          .Render()
+    )
+
+    @{
+        string groupingCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@groupingCode</code>
+    </div>
+</div>
+
+<h3>Client filtering</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .ClientFiltering(nameof(Product.Name))
+          .Render()
+    )
+
+    @{
+        string clientFilteringCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.ClientFiltering(nameof(Product.Name))
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@clientFilteringCode</code>
+    </div>
+</div>
+
+<h3>Multiselect</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource.Skip(1),"Please select")
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .Multiselect(nameof(Product.Checked))
+          .Render()
+    )
+
+    @{
+        string multiselectCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource.Skip(1),""Please select"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.Multiselect(nameof(Product.Checked))
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@multiselectCode</code>
+    </div>
+</div>
+
+<h3>Multiselect checkbox</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource.Skip(1), "Please select")
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .Multiselect(nameof(Product.Checked), true)
+          .Render()
+    )
+
+    @{
+        string multiselectChkCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource.Skip(1),""Please select"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.Multiselect(nameof(Product.Checked), true)
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@multiselectChkCode</code>
+    </div>
+</div>
+
+
+<h3>Customizing templates</h3>
+
+<div style="padding-top:10px">
+
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:500px")
+          .SelectedIndex(0)
+          .Height(400)
+          .Template(Html.Partial("DropDownItem"), nameof(Product.Name),nameof(Product.Description), nameof(Product.Image))
+          .Render()
+    )
+
+    @{
+        string templateCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Template(
+@""<div style=""""position:relative; margin:10px"""">
+<table>
+<tbody>
+<tr>
+<td valign=""""top""""><img style=""""border-radius:50%;height:45px; width:45px; margin:2px"""" src = """"{#Image#}"""" /></td>
+<td>
+<p style=""""margin:5px;"""">{#Name#}</p>
+<p style=""""margin-left:5px;margin-top:-5px;font-size:10px;"""">{#Description#}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>"", nameof(Product.Name),nameof(Product.Description), nameof(Product.Image)
+)
+.Render())";
+
+        string templatePartialCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Template(Html.Partial(""DropDownItem""), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
+.Render())";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@templateCode</code>
+        <p>Rendering from partial view</p>
+        <code style="white-space:pre; display:block; margin:10px">@templatePartialCode</code>
+    </div>
+
+</div>
+
+<h3>API</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .HtmlAttributes("id", "myProductDropDown")
+          .SelectedIndex(0)
+          .Render()
+    )
+    <br />
+    <input type="button" value="Disable" onclick="prowlerDropDown('myProductDropDown').disable()" />
+    <input type="button" value="Enable" onclick="prowlerDropDown('myProductDropDown').enable()" />
+    <input type="button" value="Get selected value" onclick="alert(prowlerDropDown('myProductDropDown').getSelectedValue())" />
+
+    @{
+        string apiCode = @"@(Html.Prowler()
+.DropDownList()
+.HtmlAttributes(""id"", ""myProductDropDown"")
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Render())
+
+<input type=""""button"""" value=""""Disable"""" onclick=""""prowlerDropDown('myProductDropDown').disable()"""" />
+<input type=""""button"""" value=""""Enable"""" onclick=""""prowlerDropDown('myProductDropDown').enable()"""" />
+<input type=""""button"""" value=""""Get selected value"""" onclick=""""alert(prowlerDropDown('myProductDropDown').getSelectedValue())"""" ";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@apiCode</code>
+    </div>
+</div>
+
+<h3>Events</h3>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .Event(EventDropDown.Open, "fnOpen")
+          .Event(EventDropDown.SelectedChanged, "fnSelectedChanged")
+          .Render()
+    )
+
+    <script>
+        function fnOpen() {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value += "event:Open \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function fnSelectedChanged(value, label) {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value += "event:Selected " + value + " " + label + " \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+    </script>
+
+    <br />
+
+    <textarea id="eventConsole" style="width:100%; height:100px;max-width:none"></textarea>
+
+    @{
+        string eventCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Event(EventDropDown.Open, ""fnOpen"")
+.Event(EventDropDown.SelectedChanged, ""fnSelectedChanged"")
+.Render())
+
+<textarea id=""eventConsole"" style=""width:100%; height:100px;max-width:none""></textarea>
+
+<script>
+function fnOpen() {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value += ""event:Open \n"";
+    logElement.scrollTop = logElement.scrollHeight;
+}
+
+function fnSelectedChanged(value, label) {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value += ""event:Selected "" + value + "" "" + label + "" \n"";
+    logElement.scrollTop = logElement.scrollHeight;
+}
+</script> ";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@eventCode</code>
+    </div>
+</div>
+
+<h3>Serialization</h3>
+<div style="padding-top:10px">
+    @using (Html.BeginForm("Send", "DropDownList", FormMethod.Post))
+    {
+        @(Html.Prowler().DropDownList()
+          .Name("SingleProduct")
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))                    
+          .HtmlAttributes("style", "width:500px")
+          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+          .ClientFiltering(nameof(Product.Name))
+          .Template(Html.Partial("DropDownItem"), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
+          .SelectedIndex(0)
+          .Height(450)
+          .Render()
+    )
+        <br />
+
+        @(Html.Prowler().DropDownList()
+          .Name("MultiProducts")
+          .BindTo(Model.ProductDataSource.Skip(1), "Please select")
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:500px")
+          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+          .ClientFiltering(nameof(Product.Name))
+          .Multiselect(nameof(Product.Checked), true)
+          .Template(Html.Partial("DropDownItem"), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
+          .Height(450)
+          .Render())
+
+        <br />
+
+        <input type="submit" value="Post" />
+    }
+
+    @{
+        string serializeCode = @"@(Html.Prowler().DropDownList()
+.Name(""SingleProduct"")
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.HtmlAttributes(""style"", ""width:500px"")
+.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+.ClientFiltering(nameof(Product.Name))
+.Template(Html.Partial(""DropDownItem""), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
+.SelectedIndex(0)
+.Height(450)
+.Render()
+
+@(Html.Prowler().DropDownList()
+.Name(""MultiProducts"")
+.BindTo(Model.ProductDataSource.Skip(1), ""Please select"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.HtmlAttributes(""style"", ""width:500px"")
+.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+.ClientFiltering(nameof(Product.Name))
+.Multiselect(nameof(Product.Checked), true)
+.Template(Html.Partial(""DropDownItem""), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
+.Height(450)
+.Render()
+)
+
+Controller
+public ActionResult Send(MockProduct product)
+{
+    return RedirectToAction(""Index"");
+}";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@serializeCode</code>
+    </div>
+</div>

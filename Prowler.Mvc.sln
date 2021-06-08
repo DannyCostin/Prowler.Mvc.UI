@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prowler.Mvc.UI", "Prowler.Mvc.UI\Prowler.Mvc.UI.csproj", "{E7E614C1-7708-4C14-B8D0-66600B5E48FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prowler.Presentation", "Prowler.Presentation\Prowler.Presentation.csproj", "{2E1AE62E-3965-464B-9B6E-E266E5CFEA55}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7E614C1-7708-4C14-B8D0-66600B5E48FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7E614C1-7708-4C14-B8D0-66600B5E48FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7E614C1-7708-4C14-B8D0-66600B5E48FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7E614C1-7708-4C14-B8D0-66600B5E48FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E1AE62E-3965-464B-9B6E-E266E5CFEA55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E1AE62E-3965-464B-9B6E-E266E5CFEA55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E1AE62E-3965-464B-9B6E-E266E5CFEA55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E1AE62E-3965-464B-9B6E-E266E5CFEA55}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DF50654-48BD-4EE1-BE28-8233FC9EF252}
+	EndGlobalSection
+EndGlobal
