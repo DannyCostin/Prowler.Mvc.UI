@@ -1,4 +1,34 @@
-﻿.p-dropdown-listbox-container {
+﻿.loader-prowler {
+    border: 6px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 6px solid #3498db;
+    width: 38px;
+    height: 38px;
+    -webkit-animation: spin-prowler 2s linear infinite; /* Safari */
+    animation: spin-prowler 2s linear infinite;
+}
+
+@-webkit-keyframes spin-prowler {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin-prowler {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.p-dropdown-listbox-container {
     position: absolute;
     width: 100%;
 }

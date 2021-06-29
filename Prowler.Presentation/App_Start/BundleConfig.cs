@@ -25,7 +25,8 @@ namespace Prowler.Presentation
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/prowler-mvc.css"));
+                      "~/Content/prowler-mvc.css",
+                      "~/Content/p-presentation.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/prowler").Include(
                         "~/Scripts/prowler-mvc.js"));

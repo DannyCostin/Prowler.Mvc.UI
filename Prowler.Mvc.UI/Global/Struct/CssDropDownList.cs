@@ -29,6 +29,7 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string ListElement = "p-dropdown-list-element";
         public const string ContainerElement = "p-dropdown-container-element";
         public const string SvgSearchIcon = "p-dropdown-filter-input-svg";
-        public const string DownArowIcon = "p-dropdown-area-downarow-svg";        
+        public const string DownArowIcon = "p-dropdown-area-downarow-svg";
+        public const string ItemTemplateBindingContainer = "p-dropdown-item-template-binding";
     }
 }

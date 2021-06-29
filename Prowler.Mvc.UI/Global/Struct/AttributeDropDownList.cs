@@ -23,5 +23,14 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string EventOpen = "p-dropdown-ev-open";        
         public const string EventSelected = "p-dropdown-ev-selected";
         public const string EventSelectedChanged = "p-dropdown-ev-selected-changed";
+        public const string ServerFilterUrl = "p-dropdown-srv-filter-url";
+        public const string ServerFilterDelay = "p-dropdown-srv-filter-delay";
+        public const string ServerFilterSerializationName = "p-dropdown-srv-filter-serialization-name";
+        public const string ServerFilteringEnable = "p-dropdown-srv-filter-enable";
+        public const string Bindings = "p-dropdown-binding";
+        public const string BindingGroupKey = "p-dropdown-binding-groupkey-identifier";
+        public const string BindingLabelKey = "p-dropdown-binding-grouplabel-identifier";
+        public const string BindingMultiselectKey = "p-dropdown-binding-multiselect-identifier";
+        
     }
 }

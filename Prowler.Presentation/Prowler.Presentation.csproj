@@ -158,6 +158,7 @@
     <Content Include="Content\Images\s_greceasca.png" />
     <Content Include="Content\Images\s_ton.png" />
     <Content Include="Content\Images\toste.png" />
+    <Content Include="Content\p-presentation.css" />
     <Content Include="Content\prowler-mvc.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

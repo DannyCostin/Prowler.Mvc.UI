@@ -11,6 +11,112 @@
 <h4>The ASP.NET MVC DropDownList lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility</h4>
 <h4>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of the most common scenarios in which the component is used.</h4>
 
+<h3>Dependencies</h3>
+
+@{
+    string basicUsage = @"@using Prowler.Mvc.UI
+
+<script type=""text/javascript"" src=""~/Scripts/jquery-3.4.1.min.js""></script>
+<script type=""text/javascript"" src=""~/Scripts/prowler-mvc.js""></script>
+<link rel=""stylesheet"" href=""~/Content/prowler-mvc.css""/> ";
+
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@basicUsage</code>
+</div>
+
+
+<h4>Using the System.Web.Mvc.HtmlHelper object that is used to render HTML elements, under this object the Prowler HTML helper is available</h4>
+@{
+    string methods = @" @Html.Prowler().DropDownList()";
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@methods</code>
+</div>
+<h4>To begin configuring, a series of methods are available that allows customizing the control.</h4>
+<h4>The binding mecanism requires the property name that belongs to the model the value will be retreived at runtime.</h4>
+
+<h3>Methods</h3>
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Method name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>BindTo</td>
+            <td>Model to bind</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Serialization name for form submit</td>
+        </tr>
+        <tr>
+            <td>DataTextField</td>
+            <td>Dropdown item label</td>
+        </tr>
+        <tr>
+            <td>DataValueField</td>
+            <td>Dropdown item value</td>
+        </tr>
+        <tr>
+            <td>HtmlAttributes</td>
+            <td>Dropdown html attributes, the method can be used multiple times to add new attributes</td>
+        </tr>
+        <tr>
+            <td>SelectedIndex</td>
+            <td>Set dropdown selected item, mark as selected the item at the specified index</td>
+        </tr>
+        <tr>
+            <td>SelectedValue</td>
+            <td>Set dropdown selected item, mark as selected the item that has the Dropdown item value</td>
+        </tr>
+        <tr>
+            <td>Render</td>
+            <td>Render the dropdown control</td>
+        </tr>
+        <tr>
+            <td>ClientFiltering</td>
+            <td>Enable dropdown search from client side</td>
+        </tr>
+        <tr>
+            <td>ServerFiltering</td>
+            <td>Enable dropdown search from server side</td>
+        </tr>
+        <tr>
+            <td>Disabled</td>
+            <td>Disable dropdown</td>
+        </tr>
+        <tr>
+            <td>Event</td>
+            <td>Subscribe to dropdown events</td>
+        </tr>
+        <tr>
+            <td>GroupBy</td>
+            <td>Rearrange model elements in groups</td>
+        </tr>
+        <tr>
+            <td>Height</td>
+            <td>Set dropdown list height</td>
+        </tr>
+        <tr>
+            <td>Multiselect</td>
+            <td>Allow multiselect</td>
+        </tr>
+        <tr>
+            <td>OptionLabelTemplate</td>
+            <td>Apply default option label template</td>
+        </tr>
+        <tr>
+            <td>Template</td>
+            <td>Apply dropdown item template</td>
+        </tr>
+    </table>
+</div>
+
 <h3>Basic usage</h3>
 
 <div style="padding-top:10px">
@@ -38,6 +144,12 @@
         <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
     </div>
 </div>
+<h4><strong>BindTo</strong> method has a datasource parameter and the option label parameter, the datasource parameter accepts an IEnumerable &lt;object&gt;, the object represents the drop down item elements, the option label parameter can be used to add a default item in the drop down for example the "Please select" label.</h4>
+<h4><strong>SelectedIndex</strong> method has a parameter that is used to select a value from the drop down list at the specified index, the <strong>SelectedValue</strong> method can also be used to select an item that has the specified value</h4>
+<h4><strong>DataTextField</strong> method has a binding parameter, set the binding parameter value to a property name that belongs to the model, this is the value that will be displayed on the drop down item label</h4>
+<h4><strong>DataValueField</strong> method has a binding parameter, set the binding parameter value to a property name that belongs to the model, this is the value that will be added on the drop down item value</h4>
+<h4>Regarding of using templates the <strong>DataValueField</strong> method must always be added even if the template contains the property value the serialization will be performed only on the value supplied in the DataValueField binding property</h4>
+<h4><strong>Render</strong> method has no parameter and it is a mandatory to be the last method called, this method will generate the drop down html code to be rendered on the view</h4>
 
 <h3>Grouping</h3>
 
@@ -69,6 +181,8 @@
     </div>
 </div>
 
+<h4><strong>GroupBy</strong> method has a binding key and binding label parameter, set the binding parameter value to a property name that belongs to the model, the group key parameter contains the value that will be used when rearranging the elements in the model, the group label parameter is used to display the label of the dropdown item group</h4>
+
 <h3>Client filtering</h3>
 
 <div style="padding-top:10px">
@@ -99,6 +213,73 @@
     </div>
 </div>
 
+<h4><strong>ClientFiltering</strong> method has a binding paramater, set the binding parameter value to a property name that belongs to the model, the search will be performed on the binding property value</h4>
+
+<h3>Server Filtering</h3>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .HtmlAttributes("id", "serverFilter")
+          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+          .ServerFiltering(@"/DropDownList/Search", "value")
+          .SelectedIndex(0)
+          .Event(EventDropDown.Open, "openEvent")
+          .Render()
+
+    )
+    <br />
+
+    <script>
+        function openEvent() {
+            var data = { customFilter: 'customValue' };
+            prowlerDropDown('serverFilter').serverFilterParameterAdd(data);
+        }
+    </script>
+
+    @{
+        string serverFiltering = @"@(Html.Prowler()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.HtmlAttributes(""style"", ""width: 400px"")
+.HtmlAttributes(""id"", ""serverFilter"")
+.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+.ServerFiltering(@""/DropDownList/Search"", ""value"")
+.SelectedIndex(0)
+.Event(EventDropDown.Open, ""openEvent"")
+.Render()
+
+<script>
+        function openEvent() {
+            var data = { customFilter: 'customValue' };
+            prowlerDropDown('serverFilter').serverFilterParameterAdd(data);
+        }
+</script>
+
+public JsonResult Search(string value, string customFilter)
+{
+    Thread.Sleep(3000); // simulate server response delay :)
+
+    value = value?.ToLower() ?? string.Empty;
+    var model = MockHelper.GetMockProducts();
+    model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
+
+    return Json(model.ProductDataSource);
+}
+";
+
+    }
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@serverFiltering</code>
+    </div>
+
+    <h4><strong>ServerFiltering</strong> method has an url and a name paramater, set the name parameter value to match the controller method parameter. It is also posible to send aditional information to the server by using the API method <strong>serverFilterParameterAdd</strong> as showed in the example</h4>
+</div>
+
 <h3>Multiselect</h3>
 
 <div style="padding-top:10px">
@@ -126,6 +307,8 @@
         <code style="white-space:pre; display:block; margin:10px">@multiselectCode</code>
     </div>
 </div>
+
+<h4><strong>Multiselect</strong> method has a binding parameter and render checkbox parameter, set the binding parameter value to a property name that belongs to the model, it is important that the property used is of type Boolean, the render checkbox parameter can be set to true to add a checkbox element on the drop down item</h4>
 
 <h3>Multiselect checkbox</h3>
 
@@ -214,7 +397,49 @@
 
 </div>
 
+<h4>Binding value in the template requires the property name found in the model to be raped in <strong>{##}</strong> example {#Description#} the model contains a property named Description the value will be binded at runtime by the binding mechanism</h4>
+<h4>The <strong>Template</strong> method has a template parameter and a binding parameter, the template parameter can be a string or an html string rendered from a partial view, the bindings parameter contains the property names from the model that are used in the template</h4>
+
 <h3>API</h3>
+
+<h4>A series of API methods are available allowing control manipulation from java script, use the window function name <strong>prowlerDropDown</strong> as a paramater specify the dropdown id attribute and call the appropriated method</h4>
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Method name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>disable</td>
+            <td>Disable dropdown</td>
+        </tr>
+        <tr>
+            <td>enable</td>
+            <td>Enable dropdown</td>
+        </tr>
+        <tr>
+            <td>getSelectedValue</td>
+            <td>Get selected dropdown value</td>
+        </tr>
+        <tr>
+            <td>databind</td>
+            <td>DataBind model from Url</td>
+        </tr>
+        <tr>
+            <td>open</td>
+            <td>Open/Close dropdown</td>
+        </tr>
+        <tr>
+            <td>serverFilterParameterAdd</td>
+            <td>Add aditional parameters when using server side filtering option</td>
+        </tr>
+        <tr>
+            <td>setSelectedValue</td>
+            <td>Set dropdown selected item, mark as selected the item that has the Dropdown item value</td>
+        </tr>
+    </table>
+</div>
 
 <div style="padding-top:10px">
     @(Html.Prowler().DropDownList()
@@ -230,9 +455,20 @@
     <input type="button" value="Disable" onclick="prowlerDropDown('myProductDropDown').disable()" />
     <input type="button" value="Enable" onclick="prowlerDropDown('myProductDropDown').enable()" />
     <input type="button" value="Get selected value" onclick="alert(prowlerDropDown('myProductDropDown').getSelectedValue())" />
+    <input type="button" value="Set selected value" onclick="prowlerDropDown('myProductDropDown').setSelectedValue('3')" />
+    <input type="button" value="Data bind" onclick="dataBind()" />
+    <input type="button" value="Open/Close DropDown" onclick="prowlerDropDown('myProductDropDown').open()" />
+
+    <script>
+        function dataBind() {
+            prowlerDropDown('myProductDropDown').open();
+            var data = { value: 'k' };
+            prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
+        }
+    </script>
 
     @{
-        string apiCode = @"@(Html.Prowler()
+            string apiCode = @"@(Html.Prowler()
 .DropDownList()
 .HtmlAttributes(""id"", ""myProductDropDown"")
 .BindTo(Model.ProductDataSource)
@@ -241,10 +477,32 @@
 .SelectedIndex(0)
 .Render())
 
-<input type=""""button"""" value=""""Disable"""" onclick=""""prowlerDropDown('myProductDropDown').disable()"""" />
-<input type=""""button"""" value=""""Enable"""" onclick=""""prowlerDropDown('myProductDropDown').enable()"""" />
-<input type=""""button"""" value=""""Get selected value"""" onclick=""""alert(prowlerDropDown('myProductDropDown').getSelectedValue())"""" ";
+<input type=""button"" value=""Disable"" onclick=""prowlerDropDown('myProductDropDown').disable()"" />
+<input type=""button"" value=""Enable"" onclick=""prowlerDropDown('myProductDropDown').enable()"" />
+<input type=""button"" value=""Get selected value"" onclick=""alert(prowlerDropDown('myProductDropDown').getSelectedValue())"" 
+<input type=""button"" value=""Set selected value"" onclick=""prowlerDropDown('myProductDropDown').setSelectedValue('3')"" />
+<input type=""button"" value=""Data bind"" onclick=""dataBind()"" />
+<input type=""button"" value=""Open/Close DropDown"" onclick=""prowlerDropDown('myProductDropDown').open()"" />
 
+<script>
+function dataBind() {
+    prowlerDropDown('myProductDropDown').open();
+    var data = { value: 'k' };
+    prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
+}
+</script>
+
+public JsonResult Search(string value, string customFilter)
+{
+    Thread.Sleep(3000); // simulate server response delay :)
+
+    value = value?.ToLower() ?? string.Empty;
+    var model = MockHelper.GetMockProducts();
+    model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
+
+    return Json(model.ProductDataSource);
+}
+";
     }
 
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
@@ -298,7 +556,7 @@
 <textarea id=""eventConsole"" style=""width:100%; height:100px;max-width:none""></textarea>
 
 <script>
-function fnOpen() {
+    function fnOpen() {
     var logElement = document.getElementById(""eventConsole"");
     logElement.value += ""event:Open \n"";
     logElement.scrollTop = logElement.scrollHeight;
@@ -324,12 +582,12 @@ function fnSelectedChanged(value, label) {
     {
         @(Html.Prowler().DropDownList()
           .Name("SingleProduct")
+          .ServerFiltering(@"/DropDownList/Search", "value")
           .BindTo(Model.ProductDataSource)
           .DataTextField(nameof(Product.Name))
-          .DataValueField(nameof(Product.Id))                    
+          .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:500px")
           .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
-          .ClientFiltering(nameof(Product.Name))
           .Template(Html.Partial("DropDownItem"), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
           .SelectedIndex(0)
           .Height(450)
@@ -339,12 +597,12 @@ function fnSelectedChanged(value, label) {
 
         @(Html.Prowler().DropDownList()
           .Name("MultiProducts")
+          .ServerFiltering(@"/DropDownList/Search", "value")
           .BindTo(Model.ProductDataSource.Skip(1), "Please select")
           .DataTextField(nameof(Product.Name))
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:500px")
           .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
-          .ClientFiltering(nameof(Product.Name))
           .Multiselect(nameof(Product.Checked), true)
           .Template(Html.Partial("DropDownItem"), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
           .Height(450)
@@ -395,3 +653,5 @@ public ActionResult Send(MockProduct product)
         <code style="white-space:pre; display:block; margin:10px">@serializeCode</code>
     </div>
 </div>
+
+<h4>The <strong>Name</strong> method contains a name parameter that is used for serialization set the value to match the controller, model property name used in the controller method</h4>

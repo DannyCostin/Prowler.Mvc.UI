@@ -65,6 +65,13 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static DropDownList<TModel> SelectedValue<TModel>(this DropDownList<TModel> entity, string value)
+        {
+            entity.SelectedValue = value;
+
+            return entity;
+        }
+
         public static DropDownList<TModel> Height<TModel>(this DropDownList<TModel> entity, int height)
         {
             entity.Height = height;
@@ -118,6 +125,23 @@ namespace Prowler.Mvc.UI
 
             entity.FilterField = binding;
             entity.ClientFilteringEnable = true;
+            entity.ServerFilteringEnable = false;
+
+            return entity;
+        }
+
+        public static DropDownList<TModel> ServerFiltering<TModel>(this DropDownList<TModel> entity, string url, string parameterName, int delay = 500)
+        {
+            if(url == null)
+            {
+                return entity;
+            }
+
+            entity.ClientFilteringEnable = false;
+            entity.ServerFilteringEnable = true;
+            entity.ServerFilteringUrl = url;
+            entity.ServerFilteringDelay = delay;
+            entity.ServerFilteringSerializationName = parameterName;
 
             return entity;
         }
@@ -176,7 +200,7 @@ namespace Prowler.Mvc.UI
             
             parentList.AddCssClass(entity.Disabled ? CssDropDownList.ParentDisable : CssDropDownList.ParentContainer);
             MergeHtmlAttributes(parentList, entity.HtmlAttributes);
-            ApplyEvents(entity, parentList);
+            ApplyEvents(entity, parentList);          
 
             dropDownArea.MergeAttribute("style", "height:inherit;position:relative");
             dropDownArea.AddCssClass(entity.Disabled ? CssDropDownList.AreaDisable : CssDropDownList.Area);
@@ -198,6 +222,7 @@ namespace Prowler.Mvc.UI
             dropDownListContainer.InnerHtml = string.Concat(CreateFilterArea(entity), scrollArea.ToString());
 
             parentList.InnerHtml = string.Concat(dropDownArea.ToString(), dropDownListContainer.ToString());
+            ApplyServerFilter(entity, parentList);
             var html = parentList.ToString(TagRenderMode.Normal);
 
             return MvcHtmlString.Create(html);
@@ -257,7 +282,7 @@ namespace Prowler.Mvc.UI
 
         private static string CreateFilterArea<TModel>(DropDownList<TModel> entity)
         {
-            if (entity.ClientFilteringEnable)
+            if (entity.ClientFilteringEnable || entity.ServerFilteringEnable)
             {
                 TagBuilder container = new TagBuilder(TagElement.Div);
                 TagBuilder inputSearch = new TagBuilder(TagElement.Input);
@@ -363,6 +388,49 @@ namespace Prowler.Mvc.UI
                 multiSelectionContainer.InnerHtml = entity.MultiselectSelectorHtml.ToString();
                 selectedItemTemplate = multiSelectionContainer.ToString();
             }
+        }
+
+        private static void BuildMultiselectTemplate<TModel>(DropDownList<TModel> entity, TagBuilder container)
+        {
+            if (!entity.Multiselect)
+            {
+                return;
+            }
+
+            var checkState = $"{{#{entity.MultiselectBindingProperty}#}}";
+            var label = $"{{#{entity.DataTextField}#}}";
+            var value = $"{{#{entity.DataValueField}#}}";
+
+            var groupByValue = $"{{#{entity.GroupByValueProperty}#}}";
+            
+            var checkBoxContainer = new TagBuilder(TagElement.Label);
+            var checkBoxIcon = new TagBuilder(TagElement.Span);
+            var checkbox = new TagBuilder(TagElement.Input);
+
+            checkBoxContainer.AddCssClass(CssDropDownList.MultiselectContainer);
+            checkBoxIcon.AddCssClass(CssDropDownList.MultiselectCheckMark);
+
+            checkbox.MergeAttribute("type", "checkbox");
+            checkbox.MergeAttribute(AttributeDropDownList.SerializationName, entity.Name);
+            checkbox.MergeAttribute(AttributeDropDownList.SerializationValue, entity.DataValueField);
+            checkbox.MergeAttribute(AttributeDropDownList.SerializationCheckValue, entity.MultiselectBindingProperty);
+            checkbox.MergeAttribute(AttributeDropDownList.SerializationGroupValue, entity.GroupByValueProperty);
+            checkbox.MergeAttribute(AttributeDropDownList.PropertyValueName, label);
+            checkbox.MergeAttribute(AttributeDropDownList.PropertyValueValue, value);
+            checkbox.MergeAttribute(AttributeDropDownList.PropertyCheckValue, checkState.ToString());
+            checkbox.MergeAttribute(AttributeDropDownList.PropertyGroupValue, groupByValue);
+            checkbox.MergeAttribute(AttributeDropDownList.PropertyIndex, $"{{#{AttributeDropDownList.PropertyIndex}#}}");
+
+            checkbox.AddCssClass(CssDropDownList.ListElementMultiselect);
+
+            checkBoxContainer.InnerHtml = string.Concat(checkbox.ToString(), checkBoxIcon.ToString());
+
+            if (!entity.MultiselectRenderCheckBox)
+            {
+                checkBoxContainer.MergeAttribute("style", "display:none");
+            }
+
+            container.InnerHtml = string.Concat(container.InnerHtml, checkBoxContainer.ToString());
         }
 
         private static void ApplyMultiSelect<TModel>(DropDownList<TModel> entity, TagBuilder parent, TagBuilder container,
@@ -502,13 +570,32 @@ namespace Prowler.Mvc.UI
             htmlBuilder.Append(valueHiddenInput.ToString());
         }
 
-        private static void ApplyClientFilter<TModel>(DropDownList<TModel> entity, dynamic item, TagBuilder container)
+        private static void ApplyClientFilter<TModel>(DropDownList<TModel> entity, dynamic item, TagBuilder container, bool returnTemplate = false)
         {
             if (entity.ClientFilteringEnable)
-            {
-                var filter = ProwlerHelper.GetPropValue<string>(item, entity.FilterField);
+            {                
+                string filter = ProwlerHelper.GetPropValue<string>(item, entity.FilterField);
+
+                if (returnTemplate)
+                {
+                    filter = $"{{#{ entity.FilterField}#}}";
+                }
+
                 container.MergeAttribute(AttributeDropDownList.FilterValue, filter);
             }
+        }
+
+        private static void ApplyServerFilter<TModel>(DropDownList<TModel> entity, TagBuilder container)
+        {
+            if (entity.ServerFilteringEnable)
+            {                
+                container.MergeAttribute(AttributeDropDownList.ServerFilterUrl, entity.ServerFilteringUrl);
+                container.MergeAttribute(AttributeDropDownList.ServerFilterDelay, entity.ServerFilteringDelay.ToString());
+                container.MergeAttribute(AttributeDropDownList.ServerFilterSerializationName, entity.ServerFilteringSerializationName);
+                container.MergeAttribute(AttributeDropDownList.ServerFilteringEnable, entity.ServerFilteringEnable.ToString());                
+            }
+
+            container.InnerHtml = String.Concat(container.InnerHtml, GetTemplate(entity));
         }
 
         private static TagBuilder TemplateDefautDropDownItem<TModel>(DropDownList<TModel> entity, string label)
@@ -536,7 +623,7 @@ namespace Prowler.Mvc.UI
             return templateElement;
         }
 
-        private static TagBuilder TemplateDropDownItem<TModel>(DropDownList<TModel> entity, dynamic item)
+        private static TagBuilder TemplateDropDownItem<TModel>(DropDownList<TModel> entity, dynamic item, bool returnTemplate = false)
         {
             var templateElement = new TagBuilder(TagElement.Div);
 
@@ -550,7 +637,11 @@ namespace Prowler.Mvc.UI
             foreach (var bindingField in entity.TemplateField)
             {
                 var bindingValue = ProwlerHelper.GetPropValue<string>(item, bindingField);
-                template = template.Replace(String.Concat("{#", bindingField, "#}"), bindingValue);
+
+                if (!returnTemplate)
+                {
+                    template = template.Replace(String.Concat("{#", bindingField, "#}"), bindingValue);
+                }                
             }
 
             templateElement.InnerHtml = template;
@@ -586,11 +677,62 @@ namespace Prowler.Mvc.UI
             }
         }
 
-        private static TagBuilder BuildDropdownElementTemplate<TModel>(DropDownList<TModel> entity, dynamic item, TagBuilder container, bool markAsSelected)
+        private static TagBuilder GetTemplate<TModel>(DropDownList<TModel> entity)
+        {
+
+            var containerTemplate = new TagBuilder(TagElement.Div);
+
+            containerTemplate.AddCssClass(CssDropDownList.ItemTemplateBindingContainer);
+            containerTemplate.MergeAttribute("style", "display:none");
+
+            var container = new TagBuilder(TagElement.Div);
+            string bindingProperties = string.Concat(entity.DataValueField, ",", entity.DataTextField);
+
+            if (entity.TemplateField!= null && entity.TemplateField.Any())
+            {
+                var templateProperties = entity.TemplateField.Aggregate((i, j) => i + "," + j);
+                bindingProperties = string.Concat(bindingProperties, ",", templateProperties);
+            }
+           
+            if(entity.GroupByValueProperty != null)
+            {
+                bindingProperties = string.Concat(bindingProperties, ",", entity.GroupByValueProperty, ",", entity.GroupByLabelProperty);
+                containerTemplate.MergeAttribute(AttributeDropDownList.BindingGroupKey, entity.GroupByValueProperty);
+                containerTemplate.MergeAttribute(AttributeDropDownList.BindingLabelKey, entity.GroupByLabelProperty);
+            }
+
+            if (entity.Multiselect)
+            {
+                bindingProperties = string.Concat(bindingProperties, ",", entity.MultiselectBindingProperty);
+                containerTemplate.MergeAttribute(AttributeDropDownList.BindingMultiselectKey, entity.MultiselectBindingProperty);
+            }
+
+            containerTemplate.MergeAttribute(AttributeDropDownList.Bindings, bindingProperties);            
+
+            SetRenderCheckBox(entity, container);
+            SetMultiselect(entity, container);
+
+            ApplyClientFilter(entity, null, container, true);
+            BuildMultiselectTemplate(entity, container);
+            ApplyDefaultLabel(BuildDropdownElementTemplate(entity, null, container, false, true), container);
+
+            containerTemplate.InnerHtml = container.ToString();
+
+            return containerTemplate;
+        }
+
+        private static TagBuilder BuildDropdownElementTemplate<TModel>(DropDownList<TModel> entity, dynamic item, TagBuilder container, bool markAsSelected, bool returnTemplate = false)
         {
             var label = ProwlerHelper.GetPropValue<string>(item, entity.DataTextField);
             var value = ProwlerHelper.GetPropValue<string>(item, entity.DataValueField);
             var valueGroup = ProwlerHelper.GetPropValue<string>(item, entity.GroupByValueProperty);
+
+            if (returnTemplate)
+            {
+                label = $"{{#{entity.DataTextField}#}}";
+                value = $"{{#{entity.DataValueField}#}}";
+                valueGroup = $"{{#{entity.GroupByValueProperty}#}}";
+            }
 
             if (container != null)
             {
@@ -604,11 +746,11 @@ namespace Prowler.Mvc.UI
                 MarkDropDownItemAsSelected(entity, markAsSelected, container);
                 SetRenderCheckBox(entity, container);
                 SetMultiselect(entity, container);
-                ApplyClientFilter(entity, item, container);
+                ApplyClientFilter(entity, item, container);                
             }
 
             TagBuilder templateElement = string.IsNullOrEmpty(entity.Template) ? TemplateDefautDropDownItem(entity, label)
-                                                                               : TemplateDropDownItem(entity, item);
+                                                                               : TemplateDropDownItem(entity, item, returnTemplate);
 
             return templateElement;
         }
@@ -636,7 +778,15 @@ namespace Prowler.Mvc.UI
             {
                 var container = new TagBuilder(TagElement.Div);
 
-                if (index == entity.SelectedIndex)
+                if (index == entity.SelectedIndex && string.IsNullOrEmpty(entity.SelectedValue))
+                {
+                    selectedItem = item;
+                    selectedItemTemplate = BuildDropdownElementTemplate(entity, item, null, false).ToString();
+                    markAsSelected = true;
+                }
+
+                if (!string.IsNullOrEmpty(entity.SelectedValue) 
+                    && ProwlerHelper.GetPropValue<string>(item, entity.DataValueField) == entity.SelectedValue)
                 {
                     selectedItem = item;
                     selectedItemTemplate = BuildDropdownElementTemplate(entity, item, null, false).ToString();

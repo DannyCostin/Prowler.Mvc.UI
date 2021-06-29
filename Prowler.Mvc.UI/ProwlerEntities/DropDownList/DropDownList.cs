@@ -18,8 +18,9 @@ namespace Prowler.Mvc.UI
         internal string Template { get; set; }
         internal List<string> TemplateField { get; set; }
         internal string FilterField { get; set; }
-        internal bool ClientFilteringEnable { get; set; }
+        internal bool ClientFilteringEnable { get; set; }        
         internal int SelectedIndex { get; set; } = -1;
+        internal string SelectedValue { get; set; }
         internal Dictionary<string, string> HtmlAttributes { get; set; }
         internal int Height { get; set; } = 310;
         internal bool Multiselect { get; set; }
@@ -31,5 +32,9 @@ namespace Prowler.Mvc.UI
         internal Dictionary<string, StringBuilder> GroupByList { get; set; }
         internal bool Disabled { get; set; }
         internal Dictionary<string, string> Events { get; set; }
+        internal bool ServerFilteringEnable { get; set; }
+        internal string ServerFilteringUrl { get; set; }
+        internal int ServerFilteringDelay { get; set; }
+        internal string ServerFilteringSerializationName { get; set; }
     }
 }
