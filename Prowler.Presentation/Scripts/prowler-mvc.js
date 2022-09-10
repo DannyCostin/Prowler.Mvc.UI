@@ -885,9 +885,7 @@
 
     $(document).on('click', '.pw-grid-pagination-cnt', function () {
         event.stopImmediatePropagation();
-
-        debugger;
-
+  
         var containerHost = $(this).closest(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
 
         var inputContainer = $(this).parent().find('.pw-grid-pag-index-nam');
@@ -959,9 +957,7 @@
 
         function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
             var dataSource = $(container).closest('.pw-grid-table-container');
-
-            debugger;
-
+            
             if ($(dataSource).length == 0) {
                 return;
             }
@@ -1042,26 +1038,28 @@
                 $(templateElement).html(html);
                 $(container).append(templateElement);
             });
-
-            debugger;
-            
+                    
             prowlerGridHelper.RemoveGridLoader($(container).closest('.pw-grid-table-container'));
             $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').hide(); 
         }
 
         function prowler_gridCreatePaginationContainer(container, pageIndex) {
+         
+            pageIndex = Number(pageIndex);
 
-            debugger;
-
-            let index = Number(pageIndex), totalPages, maxRange;
+            let totalPages, maxRange;
             let pageCounter = 1;
 
-            let rangeList[]
+            let rangeList = [];
 
-            let rangeGrow = 2; //Number($(container).attr('pw-grid-pag-range-grow'));
+            let rangeGrow = Number($(container).attr('pw-grid-pag-range-grow'));
 
-            totalPages = $(container).attr('pw-grid-pag-total');
+            totalPages = Number($(container).attr('pw-grid-pag-total'));
             maxRange = Number($(container).attr('pw-grid-pag-numbermax'));
+
+            if (totalPages < maxRange) {
+                maxRange = totalPages;
+            }
 
             $(container).find('.pw-grid-pagination-cnt').remove();
             $(container).find('.pw-grid-pagination-item-dis').remove();
@@ -1106,18 +1104,18 @@
             }).html('❮❮').appendTo(container);
 
 
-            for (index = 0; index <= rangeList.length; index++) {
+            for (index = 0; index < rangeList.length; index++) {
 
                 let paginationSelector = 'pw-grid-pagination-cnt'
 
-                if (index == pageIndex) {
+                if (rangeList[index] == pageIndex) {
                     paginationSelector = paginationSelector.concat(" ", 'pw-grid-pagination-sel');
                 }
 
                 $('<a>').attr({
-                    'pw-grid-pag-itm-index': index,
+                    'pw-grid-pag-itm-index': rangeList[index],
                     class: paginationSelector
-                }).html(index).appendTo(container);
+                }).html(rangeList[index]).appendTo(container);
 
             }
 

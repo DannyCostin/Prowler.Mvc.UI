@@ -81,7 +81,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProwlerEntities\DropDownList\DropDownList.cs" />
     <Compile Include="ProwlerEntities\Grid\Column.cs" />
+    <Compile Include="ProwlerEntities\Grid\Filters.cs" />
     <Compile Include="ProwlerEntities\Grid\Grid.cs" />
+    <Compile Include="ProwlerEntities\Grid\GridDataSourceRequest.cs" />
     <Compile Include="ProwlerEntities\Grid\Pagination.cs" />
     <Compile Include="ProwlerEntities\Prowler.cs" />
     <Compile Include="Global\Struct\TagElement.cs" />

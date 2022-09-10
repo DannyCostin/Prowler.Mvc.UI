@@ -11,8 +11,8 @@ namespace Prowler.Mvc.UI
         public int PageIndex { get; set; }
         public int Total { get; set; }
         public int PageItems { get; set; }
-        public string Url { get; set; }
-        public bool ServerSide { get; set; } = true;
-        public int PaginationNumbersMax { get; set; } = 5;
+        public string Url { get; set; }        
+        public int PaginationButtons { get; set; } = 5;
+        public int PaginationRangeGow { get; set; } = 2;
     }
 }

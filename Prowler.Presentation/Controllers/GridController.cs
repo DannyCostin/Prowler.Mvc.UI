@@ -18,16 +18,16 @@ namespace Prowler.Presentation.Controllers
             return View(MockHelper.GetMockProducts(false));
         }
         
-        public ActionResult Sort(string DescriptionFilter, string Name, FormCollection collection)
+        public ActionResult Sort(GridDataSourceRequest<Product> gridDataSourceRequest, FormCollection collection)
         {
-            return RedirectToAction("Index");
+            return Json(MockHelper.GetMockProducts(false).ProductDataSource.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems).Take(gridDataSourceRequest.PageInfo.PageItems));
         }
 
-        public JsonResult Page(Pagination pageInfo, GridFilters filters, GridMock gridMock, GridMockList gridMockList, FormCollection collection)
+        public JsonResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, FormCollection collection)
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
 
-            return Json(MockHelper.GetMockProducts(false).ProductDataSource.Skip(pageInfo.PageIndex * pageInfo.PageItems).Take(pageInfo.PageItems));
+            return Json(MockHelper.GetMockProducts(false).ProductDataSource.Skip(( gridDataSourceRequest.PageInfo.PageIndex -1) * gridDataSourceRequest.PageInfo.PageItems).Take(gridDataSourceRequest.PageInfo.PageItems));
         }
     }
 }

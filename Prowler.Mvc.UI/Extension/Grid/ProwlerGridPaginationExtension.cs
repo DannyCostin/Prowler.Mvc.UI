@@ -35,9 +35,9 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Pagination PaginationNumbersMax(this Pagination entity, int max)
+        public static Pagination PaginationButtons(this Pagination entity, int max)
         {
-            entity.PaginationNumbersMax = max;
+            entity.PaginationButtons = max;
 
             return entity;
         }

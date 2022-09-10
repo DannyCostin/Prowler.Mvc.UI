@@ -41,14 +41,14 @@ namespace Prowler.Mvc.UI
 
             return MvcHtmlString.Create(entity.TableTemplate.Tag.ToString());
         }
- 
-        public static Grid<TModel> Pagination<TModel>(this Grid<TModel> entity,  Func<Pagination> pagination)
+
+        public static Grid<TModel> Pagination<TModel>(this Grid<TModel> entity, Func<Pagination> pagination)
         {
             entity.Pagination = pagination?.Invoke();
-            
+
             return entity;
         }
-       
+
         public static Grid<TModel> Height<TModel>(this Grid<TModel> entity, int value)
         {
             entity.Height = value;
@@ -72,7 +72,7 @@ namespace Prowler.Mvc.UI
                 tableSize = $"width:{entity.Width}px";
             }
 
-            if(entity.Height > 0)
+            if (entity.Height > 0)
             {
                 if (string.IsNullOrEmpty(tableSize))
                 {
@@ -81,7 +81,7 @@ namespace Prowler.Mvc.UI
                 else
                 {
                     tableSize = string.Concat(tableSize, $";height:{entity.Height}px;overflow:auto");
-                }                
+                }
             }
 
             tag.MergeAttribute("style", tableSize);
@@ -106,7 +106,7 @@ namespace Prowler.Mvc.UI
             entity.ActionSort = url;
 
             return entity;
-        }       
+        }
 
         private static void CreateTable<TModel>(this Grid<TModel> entity)
         {
@@ -116,24 +116,24 @@ namespace Prowler.Mvc.UI
             var gridContainer = new TagBuilder(TagElement.Div);
             gridContainer.AddCssClass(CssGrid.GridContainer);
 
-           
-            var table = new TagBuilder(TagElement.Table);            
+
+            var table = new TagBuilder(TagElement.Table);
             ApplyTableSize(table, entity);
 
             table.AddCssClass(CssGrid.Grid);
 
             if (entity.Columns != null)
-            {                             
-                table.TagSetInnerHtml(CreateTableHeader(entity));                
+            {
+                table.TagSetInnerHtml(CreateTableHeader(entity));
                 table.InnerHtml = string.Concat(table.InnerHtml, CreateTableRows(entity));
 
                 gridContainer.InnerHtml = table.ToString();
 
                 CreateDefaultTable(entity, gridContainer);
             }
-                  
+
             CreatePaginationArea(entity, gridContainer);
-            
+
             entity.TableTemplate.Tag.TagSetInnerHtml(gridContainer);
             CreateOverLayerContainer(entity.TableTemplate.Tag);
         }
@@ -144,30 +144,69 @@ namespace Prowler.Mvc.UI
             {
                 return;
             }
-
-            int renderPageCounterMax = entity.Pagination.PaginationNumbersMax;
             
+            if(entity.Pagination.PaginationRangeGow < 1)
+            {
+                entity.Pagination.PaginationRangeGow = 1;
+            }
+
             var container = new TagBuilder(TagElement.Div);
             container.AddCssClass(CssGrid.PaginationContainer);
             container.MergeAttribute(AttributeGrid.PaginationUrl, entity.Pagination.Url);
             container.MergeAttribute(AttributeGrid.PaginationIndex, entity.Pagination.PageIndex.ToString());
             container.MergeAttribute(AttributeGrid.PaginationSize, entity.Pagination.PageItems.ToString());
-            container.MergeAttribute(AttributeGrid.PaginationNumberMax, entity.Pagination.PaginationNumbersMax.ToString());
-            bool disableNext = false;
-            int pageCounter = 1;
+            container.MergeAttribute(AttributeGrid.PaginationNumberMax, entity.Pagination.PaginationButtons.ToString());
+            container.MergeAttribute(AttributeGrid.PaginationRangeGrow, entity.Pagination.PaginationRangeGow.ToString());
 
+            bool disableNext = false;
+          
             try
-            {                              
-                int totalPages = entity.Pagination.Total / entity.Pagination.PageItems;
+            {
+                var rangeList = new List<int>();
+              
+                
+                int totalPages = (int)Math.Ceiling((double)entity.Pagination.Total / entity.Pagination.PageItems);
+
+                if (totalPages < entity.Pagination.PaginationButtons)
+                {
+                    entity.Pagination.PaginationButtons = totalPages;
+                }
+
+                var lowRangeUnalocated = 0;
+                var lowValue = entity.Pagination.PageIndex - (entity.Pagination.PaginationButtons - entity.Pagination.PaginationRangeGow) + entity.Pagination.PaginationRangeGow;
+                var highRageGrow = entity.Pagination.PageIndex + entity.Pagination.PaginationRangeGow;
+
+                if (highRageGrow > totalPages)
+                {
+                    lowValue = lowValue - (highRageGrow - totalPages);
+                    lowRangeUnalocated = totalPages - highRageGrow;
+                }
+
+                for(int index = lowValue -1; index <= entity.Pagination.PageIndex; index++)
+                {
+                    if(index > 0)
+                    {
+                        rangeList.Add(index);
+                    }
+                    else
+                    {
+                        lowRangeUnalocated++;
+                    }
+                }
+
+                var highRange = entity.Pagination.PageIndex + lowRangeUnalocated + entity.Pagination.PaginationRangeGow + 1;
+
+                for(int index = entity.Pagination.PageIndex + 1; index < highRange; index++)
+                {
+                    rangeList.Add(index);
+                }
+
                 container.MergeAttribute(AttributeGrid.PaginationTotal, totalPages.ToString());
 
                 var previous = new TagBuilder(TagElement.Ahref);
                 previous.InnerHtml = "❮❮";
                 previous.MergeAttribute(AttributeGrid.PaginationItemIndex, "1");
-
-                var next = new TagBuilder(TagElement.Ahref);
-                next.InnerHtml = "❯❯";
-
+             
                 if (entity.Pagination.PageIndex <= 1)
                 {
                     previous.AddCssClass(CssGrid.PaginationItemDisable);
@@ -189,24 +228,20 @@ namespace Prowler.Mvc.UI
                 container.TagSetInnerHtml(itemPerPageInput);
 
                 container.MergeAttribute(AttributeGrid.PaginationSize, entity.Pagination.PageItems.ToString());
-
-                List<TagBuilder> toAdd = new List<TagBuilder>();                
-
-                for(int index = entity.Pagination.PageIndex; index <= totalPages; index++)
+              
+                foreach(var item in rangeList)
                 {
-                    pageCounter++;
-
                     var pageItem = new TagBuilder(TagElement.Ahref);
                     pageItem.AddCssClass(CssGrid.PaginationItem);
-                    pageItem.InnerHtml = (index).ToString();
-                    pageItem.MergeAttribute(AttributeGrid.PaginationItemIndex, (index).ToString());
+                    pageItem.InnerHtml = (item).ToString();
+                    pageItem.MergeAttribute(AttributeGrid.PaginationItemIndex, (item).ToString());
 
-                    if(entity.Pagination.PageIndex == index)
+                    if (entity.Pagination.PageIndex == item)
                     {
                         pageItem.AddCssClass(CssGrid.PaginationSelected);
                         var pageInput = new TagBuilder(TagElement.Input)
                             .TagAsTextHidden()
-                            .TagSetValue(index.ToString())
+                            .TagSetValue(item.ToString())
                             .TagSetName(AttributeGrid.PaginationIndexName);
 
                         pageInput.AddCssClass(CssGrid.PaginationIndexInput);
@@ -214,47 +249,16 @@ namespace Prowler.Mvc.UI
                         container.TagSetInnerHtml(pageInput);
                     }
 
-                    if(index == totalPages)
-                    {
-                        disableNext = true; 
-                    }
+                    container.InnerHtml = string.Concat(container.InnerHtml, pageItem.ToString());
                    
-                    toAdd.Add(pageItem);
-                       
-                    if(pageCounter == renderPageCounterMax)
-                    {                        
-                        break;
-                    }
-                }
-
-                if (toAdd.Count < renderPageCounterMax)
-                {
-                    int substractIndex = entity.Pagination.PageIndex;
-                    int substractCounter = toAdd.Count - 1;
-
-                    while (substractIndex != 0)
+                    if (item == totalPages)
                     {
-                        substractIndex = substractIndex - 1;
-                        substractCounter++;
-
-                        if (substractCounter == renderPageCounterMax || substractIndex <= 0)
-                        {
-                            break;
-                        }
-
-                        var pageSubstractItem = new TagBuilder(TagElement.Ahref);
-                        pageSubstractItem.AddCssClass(CssGrid.PaginationItem);
-                        pageSubstractItem.MergeAttribute(AttributeGrid.PaginationItemIndex, (substractIndex).ToString());
-                        pageSubstractItem.InnerHtml = (substractIndex).ToString();
-
-                        toAdd.Insert(0, pageSubstractItem);
+                        disableNext = true;
                     }
                 }
-
-                foreach (var item in toAdd)
-                {
-                    container.InnerHtml = string.Concat(container.InnerHtml, item.ToString());
-                }
+               
+                var next = new TagBuilder(TagElement.Ahref);
+                next.InnerHtml = "❯❯";
 
                 if (disableNext)
                 {
@@ -265,17 +269,17 @@ namespace Prowler.Mvc.UI
                     next.AddCssClass(CssGrid.PaginationItem);
                     next.MergeAttribute(AttributeGrid.PaginationItemIndex, totalPages.ToString());
                 }
-                
+
                 container.TagSetInnerHtml(next);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 parentcontainer.InnerHtml = ex.Message;
             }
 
             parentcontainer.InnerHtml = String.Concat(parentcontainer.InnerHtml, container.ToString());
         }
-     
+
         private static TagBuilder CreateTableHeader<TModel>(Grid<TModel> entity)
         {
             var tr = new TagBuilder(TagElement.Tr);
@@ -303,7 +307,7 @@ namespace Prowler.Mvc.UI
                     labelContainer.MergeAttribute(AttributeGrid.ColumnSortParameterName, item.SortName);
                 }
 
-                CreateHeaderResizeBlock(entity, container, item);             
+                CreateHeaderResizeBlock(entity, container, item);
 
                 if (item.SortName != null)
                 {
@@ -321,7 +325,7 @@ namespace Prowler.Mvc.UI
 
                 CreateColumnTemplate(item, labelContainer);
                 container.TagSetInnerHtml(labelContainer);
-                                                               
+
                 ApplyRowHtmlAttributes(entity, item, th);
 
                 th.TagSetInnerHtml(container);
@@ -333,13 +337,13 @@ namespace Prowler.Mvc.UI
 
         private static void CreateColumnTemplate(Column column, TagBuilder header)
         {
-            if(column.ColumnTemplate == null)
+            if (column.ColumnTemplate == null)
             {
                 return;
             }
 
             header.InnerHtml = string.Concat(header.InnerHtml, column.ColumnTemplate);
-        }       
+        }
 
 
         private static string CreateTableRows<TModel>(Grid<TModel> entity)
@@ -361,26 +365,26 @@ namespace Prowler.Mvc.UI
         }
 
         private static void CreateTableRowTemplate<TModel>(Grid<TModel> entity, Column column, dynamic item, TagBuilder rowContainer, bool defaultItem = false)
-        {            
+        {
             if (column.RowTemplate != null)
             {
-                rowContainer.InnerHtml = defaultItem ? column.RowTemplate : ProwlerHelper.ApplyTemplateValues(column.RowTemplateBindings, column.RowTemplate, item);                
-            }            
+                rowContainer.InnerHtml = defaultItem ? column.RowTemplate : ProwlerHelper.ApplyTemplateValues(column.RowTemplateBindings, column.RowTemplate, item);
+            }
         }
         private static TagBuilder CreateTableRow<TModel>(Grid<TModel> entity, dynamic dataItem)
         {
-            var tr = new TagBuilder(TagElement.Tr);            
+            var tr = new TagBuilder(TagElement.Tr);
 
             foreach (var item in entity.Columns)
             {
-                var td = new TagBuilder(TagElement.Td);                
+                var td = new TagBuilder(TagElement.Td);
 
                 td.AddCssClass(CssGrid.GridRowIdentityClass);
                 string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, item.RowBinding);
 
                 CreateRowLabel(entity, bindingValue, td, item);
                 CreateTableRowTemplate(entity, item, dataItem, td);
-                
+
                 tr.InnerHtml = String.Concat(tr.InnerHtml, td.ToString());
             }
 
@@ -392,25 +396,25 @@ namespace Prowler.Mvc.UI
             var defaultRowContainer = new TagBuilder(TagElement.Div);
             defaultRowContainer.AddCssClass(CssGrid.GridDefaultRowItem);
 
-            var table = new TagBuilder(TagElement.Table);                        
+            var table = new TagBuilder(TagElement.Table);
             table.TagSetInnerHtml(CreateTableDefaultRow(entity));
 
             defaultRowContainer.TagSetInnerHtml(table);
-            parentcontainer.TagSetInnerHtml(defaultRowContainer);            
+            parentcontainer.TagSetInnerHtml(defaultRowContainer);
         }
         private static TagBuilder CreateTableDefaultRow<TModel>(Grid<TModel> entity)
         {
             dynamic dataItem = entity.DataSource.FirstOrDefault();
             var tr = new TagBuilder(TagElement.Tr);
 
-            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();                       
-               
+            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();
+
             foreach (var item in entity.Columns)
             {
-                if(item.RowTemplateBindings != null)
+                if (item.RowTemplateBindings != null)
                 {
                     templateBindingProperties.AddRange(item.RowTemplateBindings);
-                }                
+                }
 
                 var td = new TagBuilder(TagElement.Td);
 
@@ -436,11 +440,11 @@ namespace Prowler.Mvc.UI
                 resizeBlock.AddCssClass(CssGrid.GridColumnResizeBlock);
 
                 container.InnerHtml = string.Concat(container.InnerHtml, resizeBlock.ToString());
-            }           
+            }
         }
 
         private static void CreateRowLabel<TModel>(Grid<TModel> entity, string bindingValue, TagBuilder container, Column column, bool defaultItem = false)
-        {            
+        {
             var span = new TagBuilder(TagElement.Span);
             span.InnerHtml = defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) : bindingValue;
             span.AddCssClass(CssGrid.GridRowLabel);
@@ -455,9 +459,9 @@ namespace Prowler.Mvc.UI
                 tdContainer.MergeAttribute("style", $"width:{item.Width}px");
             }
         }
-        
+
         private static void CreateOverLayerContainer(TagBuilder parent)
-        {            
+        {
             var container = new TagBuilder(TagElement.Div);
             container.AddCssClass(CssGrid.GridOverLayerContainer);
             parent.TagSetInnerHtml(container);
