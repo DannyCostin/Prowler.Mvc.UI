@@ -17,5 +17,10 @@ namespace Prowler.Mvc.UI.Struct
         public const string Input = "input";
         public const string Span = "span";
         public const string Label = "label";
+        public const string Table = "table";
+        public const string Tr = "tr";
+        public const string Th = "th";
+        public const string Td = "td";
+        public const string Ahref = "a";
     }
 }

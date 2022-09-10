@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -64,14 +64,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extension\ProwlerDropDownListExtension.cs" />
+    <Compile Include="Extension\DropDownList\ProwlerDropDownListExtension.cs" />
+    <Compile Include="Extension\Grid\ProwlerGridPaginationExtension.cs" />
+    <Compile Include="Extension\IProwlerControl.cs" />
     <Compile Include="Extension\ProwlerExtension.cs" />
+    <Compile Include="Extension\Grid\ProwlerGridColumnExtension.cs" />
+    <Compile Include="Extension\Grid\ProwlerGridExtension.cs" />
     <Compile Include="Global\ProwlerHelper.cs" />
     <Compile Include="Global\Struct\AttributeDropDownList.cs" />
+    <Compile Include="Global\Struct\AttributeGrid.cs" />
     <Compile Include="Global\Struct\CssDropDownList.cs" />
+    <Compile Include="Global\Struct\CssGlobal.cs" />
+    <Compile Include="Global\Struct\CssGrid.cs" />
     <Compile Include="Global\Struct\EventDropDown.cs" />
+    <Compile Include="Global\Template.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProwlerEntities\DropDownList\DropDownList.cs" />
+    <Compile Include="ProwlerEntities\Grid\Column.cs" />
+    <Compile Include="ProwlerEntities\Grid\Grid.cs" />
+    <Compile Include="ProwlerEntities\Grid\Pagination.cs" />
     <Compile Include="ProwlerEntities\Prowler.cs" />
     <Compile Include="Global\Struct\TagElement.cs" />
   </ItemGroup>

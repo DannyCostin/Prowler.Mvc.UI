@@ -8,21 +8,24 @@ namespace Prowler.Presentation.Helpers
 {
     public static class MockHelper
     {
-        public static MockProduct GetMockProducts()
+        public static MockProduct GetMockProducts(bool attachPleaseSelectItem = true)
         {
             var mockProduct = new MockProduct()
             {
                 ProductDataSource = new List<Product>()
             };
-                      
-            mockProduct.ProductDataSource.Add( new Product
+
+            if (attachPleaseSelectItem)
             {
-                Id = -1,
-                Name = "Please select",
-                GroupId = -1,
-                Image = "/Content/Images/shop.jpg",
-                Description = "a product"
-            });
+                mockProduct.ProductDataSource.Add(new Product
+                {
+                    Id = -1,
+                    Name = "Please select",
+                    GroupId = -1,
+                    Image = "/Content/Images/shop.jpg",
+                    Description = "a product"
+                });
+            }
 
             mockProduct.ProductDataSource.Add(new Product
             {
@@ -31,7 +34,7 @@ namespace Prowler.Presentation.Helpers
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/shaorma.jpg",
-                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",                
+                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce"
             });
             mockProduct.ProductDataSource.Add( new Product
             {

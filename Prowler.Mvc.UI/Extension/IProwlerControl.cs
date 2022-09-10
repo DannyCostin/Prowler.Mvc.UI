@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Prowler.Mvc.UI
 {
-    public enum EventDropDown
+    public interface IProwlerControl
     {
-        Selected,
-        SelectedChanged,
-        Open        
+        IHtmlString Render(string name);
+        IHtmlString Render();
+        string GetName();
     }
 }

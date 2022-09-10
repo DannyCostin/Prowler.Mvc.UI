@@ -19,7 +19,7 @@ namespace Prowler.Presentation.Controllers
             return View(MockHelper.GetMockProducts());
         }
 
-        public ActionResult Send(MockProduct product)
+        public ActionResult Send(MockProduct product, FormCollection collection)
         {
            return RedirectToAction("Index");
         }

@@ -21,12 +21,6 @@ namespace Prowler.Presentation.Models
         public string GroupName { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-
-        public SubProductClass SubClass { get; set; }
-    }
-
-    public class SubProductClass
-    {
-        public string TestProperty { get; set; }
-    }
+        public bool Deleted { get; set; }        
+    }   
 }
