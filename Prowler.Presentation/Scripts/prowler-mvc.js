@@ -938,7 +938,9 @@
                 .attr("value", sortValue)
                 .addClass("pw-grd-sort-inp-ser").appendTo(this);        
 
-            prowlerGridHelper.prowlerPostGridHeader(sortUrl, this);
+            var containerHost = $(this).closest(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
+
+            prowlerGridHelper.prowlerPostGridHeader(sortUrl, this, prowlerGridHelper.dataBind, containerHost);
         }
     });
 
@@ -971,6 +973,7 @@
         }
 
         function prowler_postGridHeaderAndPagination(url, sender, bindingFunc, container, errorHandlerFunc) {
+            debugger;
             var dataSource = $(sender).closest('.pw-grid-table-container');
 
             var paginationContainer = $(dataSource).find('.pw-grid-pagination-container');
@@ -983,7 +986,7 @@
             var tip = $('<form>').html($(filterContainer).clone()).append($(paginationContainer).html());
 
             dataSource.append(prowlerGridHelper.GetGridLoader());
-            $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();      
+            $(dataSource).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();      
 
             prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errorHandlerFunc);
         }
