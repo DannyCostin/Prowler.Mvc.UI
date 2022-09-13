@@ -361,5 +361,37 @@ namespace Prowler.Presentation.Helpers
 
             return mockProduct;
         }
+
+        public static IEnumerable<Product> SortByName(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if(sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Name);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Name);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> SortByDescription(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Description);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Description);
+            }
+
+            return list;
+        }
     }
 }

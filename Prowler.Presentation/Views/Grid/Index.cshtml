@@ -5,7 +5,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<center><h2>Grid List</h2></center>
 
 <style>
 
@@ -448,19 +448,18 @@
 
 @(Html.Prowler().Grid()
         .BindTo(Model.ProductDataSource)
-        .Height(700)
+        .Height(500)
         .Width(1000)
         .Columns(
                 i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                 i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
                 i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
-                i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)),
+                i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Width(46),
                 i => i.BindTo(nameof(MockProduct.MultiProducts))
-                       .RowTemplate(Html.Prowler().DropDownList()
+                      .RowTemplate(Html.Prowler().DropDownList()
                                        .Name("MultiProducts")
-                                       //.HtmlAttributes("style", "width:200px;")
                                        .ServerFiltering(@"/DropDownList/Search", "value")
-                                       .BindTo(Model.ProductDataSource.Skip(1), "Select a product...")
+                                       .BindTo(Model.ProductDataSource, "Select a product...")
                                        .DataTextField(nameof(Product.Name))
                                        .DataValueField(nameof(Product.Id))
                                        .Multiselect(nameof(Product.Checked), true)
@@ -468,11 +467,11 @@
                                        .Render(), null).Width(200)
                  )
         .Pagination(() => new Pagination().PageIndex(1)
-                                          .PageItems(2)
+                                          .PageItems(10)
                                           .Total(Model.ProductDataSource.Count())
                                           .PaginationButtons(6)
                                           .Url("/Grid/Page"))
-        .ActionSort("/Grid/Sort")
+        .ActionSort("/Grid/Page")
         .AllowColumnResize()
         .Render()
  )

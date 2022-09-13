@@ -18,16 +18,27 @@ namespace Prowler.Presentation.Controllers
             return View(MockHelper.GetMockProducts(false));
         }
         
-        public ActionResult Sort(GridDataSourceRequest<Product> gridDataSourceRequest, FormCollection collection)
-        {
-            return Json(MockHelper.GetMockProducts(false).ProductDataSource.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems).Take(gridDataSourceRequest.PageInfo.PageItems));
-        }
-
-        public JsonResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, FormCollection collection)
+        public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName, string DescriptionFiltersSort)
         {
             Thread.Sleep(2000);
 
-            return Json(MockHelper.GetMockProducts(false).ProductDataSource.Skip(( gridDataSourceRequest.PageInfo.PageIndex -1) * gridDataSourceRequest.PageInfo.PageItems).Take(gridDataSourceRequest.PageInfo.PageItems));
+            var list = MockHelper.GetMockProducts(false).ProductDataSource.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(SortColumnName))
+            {
+               list = MockHelper.SortByName(list, SortColumnName);
+            }
+
+            if (!string.IsNullOrEmpty(DescriptionFiltersSort))
+            {
+               list = MockHelper.SortByDescription(list, DescriptionFiltersSort);
+            }
+
+            var data = list.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems)
+                           .Take(gridDataSourceRequest.PageInfo.PageItems)
+                           .ToList();
+
+            return Json(data);
         }
     }
 }
