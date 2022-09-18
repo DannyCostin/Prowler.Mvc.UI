@@ -18,4 +18,11 @@ namespace Prowler.Mvc.UI
         public int PageIndex { get; set; }        
         public int PageItems { get; set; }
     }
+
+    public class GridDatasourceResponse<T> where T: class
+    {
+        public int TotalItems { get; set; }
+        public int PageIndex { get; set; }
+        public List<T> DataSource { get; set; }
+    }
 }

@@ -10,6 +10,8 @@ namespace Prowler.Presentation.Models
         public List<Product> ProductDataSource { get; set; }
         public Product SingleProduct { get; set; }
         public List<Product> MultiProducts { get; set; }
+        public List<FilterGroup> FilterGroups { get; set; }
+
     }  
 
     public class Product
@@ -22,5 +24,12 @@ namespace Prowler.Presentation.Models
         public string Description { get; set; }
         public string Image { get; set; }
         public bool Deleted { get; set; }        
-    }   
+    }
+
+    public class FilterGroup
+    {
+        public bool Checked { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
 }

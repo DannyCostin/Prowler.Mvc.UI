@@ -891,8 +891,7 @@
         var inputContainer = $(this).parent().find('.pw-grid-pag-index-nam');
         $(inputContainer).attr('value', $(this).attr('pw-grid-pag-itm-index'));
         var paginationUrl = $(this).closest('.pw-grid-pagination-container').attr('pw-grid-pag-url');
-
-        prowlerGridHelper.createPagination($(this).parent(), $(this).attr('pw-grid-pag-itm-index'));
+    
         prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);
     });
 
@@ -1023,8 +1022,17 @@
             $(container).html('');
 
             $(container).append(headerRow);
-            
-            $.each(results, function (i, result) {
+
+            var dataSource = results.DataSource;
+
+            debugger;
+
+            var paginationContainer = $(container).closest('.pw-grid-table-container').find('.pw-grid-pagination-container');
+            var totalPages = Math.ceil(results.TotalItems / Number($(paginationContainer).attr('pw-grid-pag-size')));
+
+            prowlerGridHelper.createPagination(paginationContainer, results.PageIndex, totalPages);
+
+            $.each(dataSource, function (i, result) {
 
                 var templateElement = templateElementDefault.clone();
                 var attribute = $(templateElement).attr("pw-grd-dts-binding").split(',');                    
@@ -1046,7 +1054,7 @@
             $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').hide(); 
         }
 
-        function prowler_gridCreatePaginationContainer(container, pageIndex) {
+        function prowler_gridCreatePaginationContainer(container, pageIndex, totalItems) {
          
             pageIndex = Number(pageIndex);
 
@@ -1057,7 +1065,7 @@
 
             let rangeGrow = Number($(container).attr('pw-grid-pag-range-grow'));
 
-            totalPages = Number($(container).attr('pw-grid-pag-total'));
+            totalPages = totalItems;
             maxRange = Number($(container).attr('pw-grid-pag-numbermax'));
 
             if (totalPages < maxRange) {

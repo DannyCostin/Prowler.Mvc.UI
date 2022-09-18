@@ -359,6 +359,13 @@ namespace Prowler.Presentation.Helpers
                 Description = "Pasta with bolognese sauce from beef and pork"
             });
 
+            mockProduct.FilterGroups = mockProduct.ProductDataSource
+                                                  .Select(i => new{ i.Checked, i.GroupId, i.GroupName })
+                                                  .Distinct()
+                                                  .ToList()
+                                                  .Select(i => new FilterGroup { Checked = i.Checked, Id = i.GroupId, Name = i.GroupName })
+                                                  .ToList();
+
             return mockProduct;
         }
 
@@ -393,5 +400,24 @@ namespace Prowler.Presentation.Helpers
 
             return list;
         }
+
+        public static IEnumerable<Product> FilterByGroup(IEnumerable<Product> dataSource, List<FilterGroup> groups)
+        {
+            IEnumerable<Product> list;
+
+            if (groups != null)
+            {
+                var groupIds = groups.Select(i => i.Id).ToList();
+                list = dataSource.Where(i => groupIds.Contains(i.GroupId));
+            }
+            else
+            {
+                list = dataSource;
+            }
+
+            return list;
+        }
+
+
     }
 }

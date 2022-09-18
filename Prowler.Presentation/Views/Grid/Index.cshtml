@@ -7,464 +7,28 @@
 
 <center><h2>Grid List</h2></center>
 
-<style>
+<div style="padding-top:10px">
 
-    .pw-grid-loader-cnt{
-        position:absolute;
-        left:45%;
-        top:45%;
-    }
-
-    .pw-grid-table-defaultrow {
-        display: none;
-    }
-
-    .p-grid-table-checkBox-container {
-        display: block;
-        position: relative;
-        font-size: 22px;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        height: 20px;
-        margin: auto;
-        width: 20px;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
-    }
-
-        .p-grid-table-checkBox-container input {
-            position: absolute;
-            opacity: 0;
-            height: 0;
-            width: 0;
-            display: none;
-        }
-
-
-    .p-grid-table-checkBox-checkmark {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        height: 20px;
-        width: 20px;
-        background-color: white;
-        border: 2px solid #e6e6e6;
-    }
-
-
-    .p-grid-table-checkBox-container:hover input ~ .p-grid-table-checkBox-checkmark {
-        background-color: #ccc;
-        border: 2px solid #e6e6e6;
-    }
-
-
-    .p-grid-table-checkBox-container input:checked ~ .p-grid-table-checkBox-checkmark {
-        background-color: #408dc8;
-        border: 2px solid #e6e6e6;
-    }
-
-    .p-grid-table-checkBox-checkmark:after {
-        content: "";
-        position: absolute;
-        display: none;
-    }
-
-
-    .p-grid-table-checkBox-container input:checked ~ .p-grid-table-checkBox-checkmark:after {
-        display: block;
-    }
-
-    .p-grid-table-checkBox-container .p-grid-table-checkBox-checkmark:after {
-        left: 4px;
-        top: 1px;
-        width: 7px;
-        height: 11px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        -webkit-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        transform: rotate(45deg);
-    }
-
-
-    .pw-validation-err-tip {
-        position: relative;
-        display: inline-block;
-        border-bottom: 1px dotted black;
-    }
-
-    .pw-validation-err-tip {
-        visibility: visible;
-        background-color: red;
-        color: #fff;
-        text-align: center;
-        border-radius: 2px;
-        padding: 3px 4px;
-        z-index: 1;
-        margin-top: 5px;
-    }
-
-        .pw-validation-err-tip::after {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 6px;
-            border-style: solid;
-            border-color: transparent transparent red transparent;
-        }
-
-    .pw-grid-pagination-sel {
-        background-color: #408dc8;
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
-        border-radius: 5px;
-        color: whitesmoke !important;
-    }
-
-    .pw-grid-pagination-item-dis {
-        color: cadetblue !important;
-    }
-
-    .pw-grid-pagination-container {
-        display: inline-block;
-        background-color: #fafafa;
-        width: 100%;
-        padding-top: 5px;
-        padding-left: 5px;
-        border-top: 1px solid #e6e6e6;
-        cursor: default;
-    }
-
-        .pw-grid-pagination-container a {
-            color: black;
-            float: left;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-            .pw-grid-pagination-container a.active {
-                background-color: #4CAF50;
-                color: white;
-                border-radius: 5px;
-            }
-
-            .pw-grid-pagination-container a:hover:not(.pw-grid-pagination-sel) {
-                background-color: #ddd;
-                border-radius: 5px;
-            }
-
-    .pw-grid-table th {
-        border: 1px solid #e6e6e6;
-        border-top: 0;
-        background-color: #fafafa;
-        font-weight: normal;
-        position: sticky;
-        top: -1px;
-        z-index: 2;
-    }
-
-    .pw-grid-row-cell-container {
-        height: 100%;
-    }
-
-    .pw-grid-row-cell-disable {
-        pointer-events: none;
-    }
-
-    .pw-grid-table td {
-        padding: 8px;
-        border-right: 1px solid #e6e6e6;
-        border-bottom: 1px solid #e6e6e6;
-    }
-
-    /* .pw-grid-table tr:hover td {
-        background-color: #408dc8 !important;
-        color:whitesmoke;
-    }*/
-
-    .pw-grid-command-container {
-        display: flex;
-        pointer-events: all;
-    }
-
-    .pw-grid-command-button {
-        border: 1px solid;
-        border-color: rgba(0,0,0,.08);
-        color: #424242;
-        background-color: #f5f5f5;
-        background-image: linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.02));
-        vertical-align: auto;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        cursor: default;
-        overflow: hidden;
-        border-radius: 2px;
-        padding: 5px;
-        margin-right: 5px;
-        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
-        white-space:nowrap;
-    }
-
-        .pw-grid-command-button:hover {
-            background-color: #ebebeb;
-        }
-
-        .pw-grid-command-button:active:not(.pw-grid-command-del,.pw-grid-command-upd) {
-            background-color: rgba(0,0,0,0.2);
-        }
-
-    .pw-grid-command-del {
-        background-color: red;
-        color: white;
-    }
-
-        .pw-grid-command-del:hover {
-            background-color: rgba(254,0,0,0.5);
-            color: white;
-        }
-
-        .pw-grid-command-del:active {
-            background-color: rgba(254,0,0,0.3);
-            color: white;
-        }
-
-    .pw-grid-command-upd {
-        background-color: rgb(76,175,80);
-        color: white;
-    }
-
-        .pw-grid-command-upd:hover {
-            background-color: rgba(76,175,80,0.5);
-            color: white;
-        }
-
-        .pw-grid-command-upd:active {
-            background-color: rgba(76,175,80,0.3);
-            color: white;
-        }
-
-    .pw-grid-table-container {
-        display: inline-block;
-        border: 1px solid #e6e6e6;
-        background-color: #fafafa;
-        position: sticky;
-    }
-
-    .pw-grid-table {
-        border-collapse: separate;
-        border-spacing: 0;
-        display: block;
-        table-layout: fixed;
-    }
-
-    .pw-grid-table-input-edit {
-        max-width: none;
-        max-height: none;
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border: 2px solid #ebebeb;
-        padding: 8px;
-        border-radius: 3px;
-        outline: none;
-        box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
-    }
-
-        .pw-grid-table-input-edit::-ms-clear {
-            width: 0;
-            height: 0;
-        }
-
-    .pw-grid-table-input-edit-validation-err {
-        max-width: none;
-        max-height: none;
-        width: 100%;
-        height: 100%;
-        background-color: white;
-        border: 2px solid red;
-        padding: 8px;
-        border-radius: 3px;
-    }
-
-    .pw-grid-table-input-edit:not(.pw-grid-table-input-edit-validation-err):focus {
-        outline: none;
-        border: 2px solid;
-        border-color: #408dc8;
-    }
-
-    .pw-grid-table tr:nth-child(odd) td {
-        background-color: #f5f5f5;
-    }
-
-    .pw-grid-table tr:nth-child(even) td {
-        background-color: white;
-    }
-
-    .pw-grid-resize-point {
-        width: 10px;
-        height: 100%;
-        background-color: red;
-        position: absolute;
-    }
-
-    .pt-grid th {
-        position: relative;
-    }
-
-    .pw-grid-row-del-cnt {
-        display: none;
-    }
-
-    .pw-grid-filter-cnt {
-        margin-top: 5px;
-        margin-bottom: 5px;
-    }
-
-    .pw-glb-svg-search-ico {
-        position: absolute;
-        top: 3px;
-        right: 5px;
-        height: 32px;
-        background-color: white;
-        fill: #ebebeb;
-    }
-
-    .pw-glb-filter-container {
-        background-color: #fafafa;
-        border: 1px solid #ebebeb;
-        height: 41px;        
-        position: relative;
-        border-bottom: 1px solid #e6e6e6;
-        border-radius: 8px;
-    }
-
-    .pw-glb-filter-container-layer {
-        margin: 2px;
-    }
-
-    .pw-glb-filter-input {
-        background-color: white;
-        border: 1px solid #ebebeb;
-        height: 35px;
-        position: relative;
-        max-width: none;
-        width: 100%;
-        font-size: 14px;
-        padding: 5px;
-        outline: none;
-        border-radius: 4px;
-    }
-
-    .pw-glb-sort-by-asc-ico {
-        left: 3px;
-        display: inline-block;
-        width: 0;
-        height: 0;
-        border: solid 5px transparent;
-        margin: 4px 4px 0 3px;
-        background: transparent;
-        border-bottom: solid 7px black;
-        border-top-width: 0;
-    }
-
-    .pw-glb-sort-by-desc-ico {
-        left: 3px;
-        display: inline-block;
-        width: 0;
-        height: 0;
-        border: solid 5px transparent;
-        margin: 4px 4px 0 3px;
-        background: transparent;
-        border-top: solid 7px black;
-        border-bottom-width: 0;
-    }
-
-    /*   .pw-grid-row-iden-cls{
-        position:relative;
-    }*/
-
-    .pw-grid-row-disable-flt {
-        background-color: transparent;
-        top: 0px;
-        left: 0px;
-        right: 0px;
-        bottom: 0px;
-        position: absolute;
-    }
-
-    .pw-grid-block-resize {
-        background-color: transparent;
-        width: 5px;
-        /* height: 100%; */
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        margin: auto;
-        padding: 0px;
-        cursor: ew-resize;
-        bottom: -8px;
-        display: block;
-    }
-
-    .pw-grid-col-head-cnt {
-        position: relative;
-        display: block;
-    }
-
-    .pw-grid-col-head-cnt {
-        min-width: 30px;
-    }
-
-    .pw-grid-content-no-select {
-        -webkit-touch-callout: none; /* iOS Safari */
-        -webkit-user-select: none; /* Safari */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-        user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
-        cursor:default;
-    }
-
-    .pw-grid-table-main{
-        position:relative;
-    }
-
-    .pw-grid-overlayer-cnt {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        bottom: 0px;
-        right: 0px;
-        background-color: transparent;
-        opacity:0.7;
-        display:none;
-    }
-</style>
-
-@(Html.Prowler().Grid()
+    @(Html.Prowler().Grid()
         .BindTo(Model.ProductDataSource)
         .Height(500)
-        .Width(1000)
+        //.Width(1000)
         .Columns(
                 i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                 i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
                 i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
-                i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Width(46),
-                i => i.BindTo(nameof(MockProduct.MultiProducts))
-                      .RowTemplate(Html.Prowler().DropDownList()
-                                       .Name("MultiProducts")
-                                       .ServerFiltering(@"/DropDownList/Search", "value")
-                                       .BindTo(Model.ProductDataSource, "Select a product...")
-                                       .DataTextField(nameof(Product.Name))
-                                       .DataValueField(nameof(Product.Id))
-                                       .Multiselect(nameof(Product.Checked), true)
-                                       .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
-                                       .Render(), null).Width(200)
+                i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
+                i => i.BindTo(nameof(Product.GroupName))
+                .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                                              .BindTo(Model.FilterGroups, "Product Group")
+                                              .DataTextField(nameof(Product.Name))
+                                              .DataValueField(nameof(Product.Id))
+                                              .Multiselect(nameof(Product.Checked), true)
+                                              .Event(EventDropDown.Selected, "itemSelectionTest")
+                                              .HtmlAttributes("style", "width:200px;height:32px;")
+                                              .Render(),null),
+                i => i.BindTo(nameof(Product.Image)).Title("Image")
+                //i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image")
                  )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(10)
@@ -475,27 +39,65 @@
         .AllowColumnResize()
         .Render()
  )
+</div>
 
-<script>
-    function ValidationNameField(value) {
-        if (value == "") {
-            return 'Name field is required!';
+<h3>Description</h3>
+
+<h4>The ASP.NET MVC GridList lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility</h4>
+<h4>The current demo of the UI for ASP.NET MVC GridList demonstrates an implementation of the most common scenarios in which the component is used.</h4>
+
+<h3>Dependencies</h3>
+
+@{
+    string basicUsage = @"@using Prowler.Mvc.UI
+
+<script type=""text/javascript"" src=""~/Scripts/jquery-3.4.1.min.js""></script>
+<script type=""text/javascript"" src=""~/Scripts/prowler-mvc.js""></script>
+<link rel=""stylesheet"" href=""~/Content/prowler-mvc.css""/> ";
+
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@basicUsage</code>
+</div>
+
+
+<h4>Using the System.Web.Mvc.HtmlHelper object that is used to render HTML elements, under this object the Prowler HTML helper is available</h4>
+@{
+    string methods = @" @Html.Prowler().Grid()";
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@methods</code>
+</div>
+<h4>To begin configuring, a series of methods are available that allows customizing the control.</h4>
+<h4>The binding mecanism requires the property name that belongs to the model the value will be retreived at runtime.</h4>
+
+<h3>Methods</h3>
+
+
+
+    <script>function ValidationNameField(value) {
+            if (value == "") {
+                return 'Name field is required!';
+            }
+
+            return '';
+}
+
+        function itemSelectionTest(value, label) {
+            debugger;ß
         }
 
-        return '';
-    }
+        function ValidationDescField(value) {
+            if (value == "") {
+                return 'Description field is required aaaaaaaaaaaaaaaaaaa aaaaaxxxxxxxxxxxxxxxxgdsdfsdf asdaszxc 435345!';
+            }
 
-    function ValidationDescField(value) {
-        if (value == "") {
-            return 'Description field is required aaaaaaaaaaaaaaaaaaa aaaaaxxxxxxxxxxxxxxxxgdsdfsdf asdaszxc 435345!';
+            return '';
         }
 
-        return '';
-    }
-
-    function moveOf(e) {
-        debugger;
-        var x = e.clientWidth;
-    }
-
-</script>
+        function moveOf(e) {
+            debugger;
+            var x = e.clientWidth;
+        }</script>

@@ -18,12 +18,4 @@ namespace Prowler.Presentation.Models
     {
         public List<GridMock> GridData { get; set; }
     }
-
-    public class GridFilters
-    {
-        public string NameFilter { get; set; }
-        public string DescriptionFilter { get; set; }
-        public string SortColumnName { get; set; }
-        public string DescriptionFiltersSort { get; set; }
-    }
 }

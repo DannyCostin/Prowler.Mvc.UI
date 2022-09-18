@@ -18,7 +18,8 @@ namespace Prowler.Presentation.Controllers
             return View(MockHelper.GetMockProducts(false));
         }
         
-        public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName, string DescriptionFiltersSort)
+        public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
+            string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups)
         {
             Thread.Sleep(2000);
 
@@ -34,11 +35,23 @@ namespace Prowler.Presentation.Controllers
                list = MockHelper.SortByDescription(list, DescriptionFiltersSort);
             }
 
+            if(filterGroups != null)
+            {
+                list = MockHelper.FilterByGroup(list, filterGroups);
+            }
+
             var data = list.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems)
                            .Take(gridDataSourceRequest.PageInfo.PageItems)
                            .ToList();
 
-            return Json(data);
+            var datasouce = new GridDatasourceResponse<Product>
+            {
+                DataSource = data,
+                TotalItems = 48,
+                PageIndex = gridDataSourceRequest.PageInfo.PageIndex
+            };
+
+            return Json(datasouce);
         }
     }
 }
