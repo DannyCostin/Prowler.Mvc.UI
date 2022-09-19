@@ -418,6 +418,21 @@ namespace Prowler.Presentation.Helpers
             return list;
         }
 
+        public static IEnumerable<Product> FilterByGroup(IEnumerable<Product> dataSource, FilterGroup group)
+        {
+            IEnumerable<Product> list;
 
+            if (group != null && group.Id > -1)
+            {
+                var groupIds = group.Id;                
+                list = dataSource.Where(i => groupIds == i.GroupId);
+            }
+            else
+            {
+                list = dataSource;
+            }
+
+            return list;
+        }
     }
 }

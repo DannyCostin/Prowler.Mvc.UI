@@ -1153,15 +1153,26 @@
             RemoveGridLoader: prowler_GridRemoveLoader,
             dataBind: prowler_gridDataBindingParser,
             createPagination: prowler_gridCreatePaginationContainer
+            
         }
     })();
 
     window.prowlerGrid = function ProwlerGridFunctions(id) {
 
+        var gridListId = "#" + id;
+
+        function prowlerGridRefresh() {
+            var tableContainer = $(gridListId);
+
+            var containerHost = $(tableContainer).find(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
+
+            var paginationUrl = $(tableContainer).find('.pw-grid-pagination-container').attr('pw-grid-pag-url');
+
+            prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);           
+        }
 
         return {
-
-            APITest: helper.TestClassCall
+            Refresh: prowlerGridRefresh
         }
     }
 });

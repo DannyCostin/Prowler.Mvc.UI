@@ -25,5 +25,6 @@ namespace Prowler.Mvc.UI
         internal int Height { get; set; }
         internal int Width { get; set; }
         internal string CurrentRowItemIndex { get; set; }
+        internal Dictionary<string, string> HtmlAttributes { get; set; }
     }
 }

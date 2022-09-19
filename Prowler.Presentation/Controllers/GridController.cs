@@ -19,7 +19,7 @@ namespace Prowler.Presentation.Controllers
         }
         
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
-            string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups)
+            string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups, FilterGroup filterGroup)
         {
             Thread.Sleep(2000);
 
@@ -40,6 +40,13 @@ namespace Prowler.Presentation.Controllers
                 list = MockHelper.FilterByGroup(list, filterGroups);
             }
 
+            if(filterGroup != null)
+            {
+                list = MockHelper.FilterByGroup(list, filterGroup);
+            }
+
+            var totalItems = list.Count();
+
             var data = list.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems)
                            .Take(gridDataSourceRequest.PageInfo.PageItems)
                            .ToList();
@@ -47,7 +54,7 @@ namespace Prowler.Presentation.Controllers
             var datasouce = new GridDatasourceResponse<Product>
             {
                 DataSource = data,
-                TotalItems = 48,
+                TotalItems = totalItems,
                 PageIndex = gridDataSourceRequest.PageInfo.PageIndex
             };
 

@@ -63,6 +63,61 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> HtmlAttributes<TModel>(this Grid<TModel> entity, string key, string value)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                return entity;
+            }
+
+            if (entity.HtmlAttributes == null)
+            {
+                entity.HtmlAttributes = new Dictionary<string, string>();
+            }
+
+            if (!entity.HtmlAttributes.ContainsKey(key))
+            {
+                entity.HtmlAttributes.Add(key, value);
+            }
+
+            return entity;
+        }
+
+
+        public static Grid<TModel> Columns<TModel>(this Grid<TModel> entity, params Action<Column>[] column)
+        {
+            entity.Columns = new List<Column>();
+
+            foreach (var item in column)
+            {
+                var columnElement = new Column();
+                item.Invoke(columnElement);
+                entity.Columns.Add(columnElement);
+            }
+
+            return entity;
+        }
+
+        public static Grid<TModel> ActionSort<TModel>(this Grid<TModel> entity, string url)
+        {
+            entity.ActionSort = url;
+
+            return entity;
+        }
+
+        private static void MergeHtmlAttributes(TagBuilder tag, Dictionary<string, string> htmlAttributes)
+        {
+            if (htmlAttributes == null || !htmlAttributes.Any())
+            {
+                return;
+            }
+
+            foreach (var item in htmlAttributes)
+            {
+                tag.MergeAttribute(item.Key, item.Value);
+            }
+        }
+
         private static void ApplyTableSize<TModel>(TagBuilder tag, Grid<TModel> entity)
         {
             string tableSize = "";
@@ -87,27 +142,6 @@ namespace Prowler.Mvc.UI
             tag.MergeAttribute("style", tableSize);
         }
 
-        public static Grid<TModel> Columns<TModel>(this Grid<TModel> entity, params Action<Column>[] column)
-        {
-            entity.Columns = new List<Column>();
-
-            foreach (var item in column)
-            {
-                var columnElement = new Column();
-                item.Invoke(columnElement);
-                entity.Columns.Add(columnElement);
-            }
-
-            return entity;
-        }
-
-        public static Grid<TModel> ActionSort<TModel>(this Grid<TModel> entity, string url)
-        {
-            entity.ActionSort = url;
-
-            return entity;
-        }
-
         private static void CreateTable<TModel>(this Grid<TModel> entity)
         {
             entity.TableTemplate.Tag = new TagBuilder(TagElement.Div);
@@ -116,6 +150,7 @@ namespace Prowler.Mvc.UI
             var gridContainer = new TagBuilder(TagElement.Div);
             gridContainer.AddCssClass(CssGrid.GridContainer);
 
+            MergeHtmlAttributes(entity.TableTemplate.Tag, entity.HtmlAttributes);
 
             var table = new TagBuilder(TagElement.Table);
             ApplyTableSize(table, entity);

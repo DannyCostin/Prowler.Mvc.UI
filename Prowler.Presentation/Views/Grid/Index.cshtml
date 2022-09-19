@@ -7,10 +7,11 @@
 
 <center><h2>Grid List</h2></center>
 
-<div style="padding-top:10px">
 
-    @(Html.Prowler().Grid()
+
+    @(Html.Prowler().Grid()        
         .BindTo(Model.ProductDataSource)
+        .HtmlAttributes("id", "productgrid")
         .Height(500)
         //.Width(1000)
         .Columns(
@@ -19,11 +20,11 @@
                 i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
                 i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
                 i => i.BindTo(nameof(Product.GroupName))
-                .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroup")
                                               .BindTo(Model.FilterGroups, "Product Group")
                                               .DataTextField(nameof(Product.Name))
                                               .DataValueField(nameof(Product.Id))
-                                              .Multiselect(nameof(Product.Checked), true)
+                                              //.Multiselect(nameof(Product.Checked), true)
                                               .Event(EventDropDown.Selected, "itemSelectionTest")
                                               .HtmlAttributes("style", "width:200px;height:32px;")
                                               .Render(),null),
@@ -39,7 +40,7 @@
         .AllowColumnResize()
         .Render()
  )
-</div>
+
 
 <h3>Description</h3>
 
@@ -75,7 +76,7 @@
 
 <h3>Methods</h3>
 
-
+<input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
 
     <script>function ValidationNameField(value) {
             if (value == "") {
@@ -86,7 +87,8 @@
 }
 
         function itemSelectionTest(value, label) {
-            debugger;ß
+            debugger;
+            prowlerGrid("productgrid").Refresh();
         }
 
         function ValidationDescField(value) {
