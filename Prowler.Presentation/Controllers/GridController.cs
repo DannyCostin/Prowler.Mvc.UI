@@ -19,7 +19,7 @@ namespace Prowler.Presentation.Controllers
         }
         
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
-            string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups, FilterGroup filterGroup)
+            string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups)
         {
             Thread.Sleep(2000);
 
@@ -40,10 +40,10 @@ namespace Prowler.Presentation.Controllers
                 list = MockHelper.FilterByGroup(list, filterGroups);
             }
 
-            if(filterGroup != null)
-            {
-                list = MockHelper.FilterByGroup(list, filterGroup);
-            }
+            //if(filterGroup != null && !hasMultipleGroups)
+            //{
+            //    list = MockHelper.FilterByGroup(list, filterGroup);
+            //}
 
             var totalItems = list.Count();
 

@@ -94,6 +94,14 @@
         if ($(this).attr("p-dropdown-ms-enable") == "1") {
             prowlerDropDownHelper.multiSelectClick(this, true);
 
+            debugger;
+
+            prowlerDropDownHelper.eventSelected($(this).parent().parent().parent(),
+                $(this).attr("ps-p-value"), $(this).attr("ps-p-name"));
+
+            prowlerDropDownHelper.eventSelectedChanged($(this).parent().parent().parent(),
+                $(this).attr("ps-p-value"), $(this).attr("ps-p-name"), selectedCurrentValue);
+
             return;
         }
 
@@ -972,7 +980,7 @@
         }
 
         function prowler_postGridHeaderAndPagination(url, sender, bindingFunc, container, errorHandlerFunc) {
-            debugger;
+
             var dataSource = $(sender).closest('.pw-grid-table-container');
 
             var paginationContainer = $(dataSource).find('.pw-grid-pagination-container');
@@ -1024,8 +1032,6 @@
             $(container).append(headerRow);
 
             var dataSource = results.DataSource;
-
-            debugger;
 
             var paginationContainer = $(container).closest('.pw-grid-table-container').find('.pw-grid-pagination-container');
             var totalPages = Math.ceil(results.TotalItems / Number($(paginationContainer).attr('pw-grid-pag-size')));
