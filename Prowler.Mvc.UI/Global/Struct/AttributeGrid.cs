@@ -30,5 +30,6 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string ButtonExecutedLabel = "pw-btn-label-executed";
         public const string GridCellEnableDisable = "pw-grd-cel-enb-dis";
         public const string GridBindings = "pw-grd-dts-binding";
+        public const string GridFilterContainerId = "pw-grd-filter-cnt-id";
     }
 }

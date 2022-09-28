@@ -94,8 +94,6 @@
         if ($(this).attr("p-dropdown-ms-enable") == "1") {
             prowlerDropDownHelper.multiSelectClick(this, true);
 
-            debugger;
-
             prowlerDropDownHelper.eventSelected($(this).parent().parent().parent(),
                 $(this).attr("ps-p-value"), $(this).attr("ps-p-name"));
 
@@ -964,17 +962,25 @@
             $(container).find(".pw-grid-loader-cnt").remove();
         }
 
+        function prowler_GetFilterContainer(containerId) {
+
+            if (containerId == "") { return null;}
+
+            return $('#' + containerId).clone();
+        }
+
         function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
             var dataSource = $(container).closest('.pw-grid-table-container');
             
             if ($(dataSource).length == 0) {
                 return;
             }
-
+            var includeFilterContainerId = $(dataSource).attr('pw-grd-filter-cnt-id');
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show(); 
 
             var tip = $('<form>').html($(dataSource).clone());
+            tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
             prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errorHandlerFunc);
         }
@@ -990,7 +996,10 @@
                 return;
             }
 
+            var includeFilterContainerId = $(dataSource).attr('pw-grd-filter-cnt-id');
+
             var tip = $('<form>').html($(filterContainer).clone()).append($(paginationContainer).html());
+            tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(dataSource).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();      

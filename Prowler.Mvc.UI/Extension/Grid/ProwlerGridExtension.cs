@@ -105,6 +105,13 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> IncludeFilterContainer<TModel>(this Grid<TModel> entity, string containerId)
+        {
+            entity.FilterContainerId = containerId;
+
+            return entity;
+        }
+
         private static void MergeHtmlAttributes(TagBuilder tag, Dictionary<string, string> htmlAttributes)
         {
             if (htmlAttributes == null || !htmlAttributes.Any())
@@ -149,6 +156,7 @@ namespace Prowler.Mvc.UI
 
             var gridContainer = new TagBuilder(TagElement.Div);
             gridContainer.AddCssClass(CssGrid.GridContainer);
+            gridContainer.Attributes.Add(AttributeGrid.GridFilterContainerId, entity.FilterContainerId);
 
             MergeHtmlAttributes(entity.TableTemplate.Tag, entity.HtmlAttributes);
 
