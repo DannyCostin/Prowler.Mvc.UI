@@ -293,13 +293,13 @@ namespace Prowler.Mvc.UI
                     }
 
                     container.InnerHtml = string.Concat(container.InnerHtml, pageItem.ToString());
-                   
-                    if (item == totalPages)
-                    {
-                        disableNext = true;
-                    }
                 }
-               
+
+                if (entity.Pagination.PageIndex == totalPages)
+                {
+                    disableNext = true;
+                }
+
                 var next = new TagBuilder(TagElement.Ahref);
                 next.InnerHtml = "❯❯";
 

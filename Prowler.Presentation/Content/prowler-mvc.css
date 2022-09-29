@@ -447,6 +447,10 @@
     z-index: 2;
 }
 
+.pw-grid-table tr:hover {
+    background-color: #EDEDED!important;
+}
+
 .pw-grid-row-cell-container {
     height: 100%;
 }
@@ -579,11 +583,11 @@
     border-color: #408dc8;
 }
 
-.pw-grid-table tr:nth-child(odd) td {
+.pw-grid-table tr:nth-child(odd) {
     background-color: #f5f5f5;
 }
 
-.pw-grid-table tr:nth-child(even) td {
+.pw-grid-table tr:nth-child(even) {
     background-color: white;
 }
 
