@@ -20,9 +20,9 @@ namespace Prowler.Presentation.Controllers
         
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
             string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups,
-            string ClientName, string ClientId)
+            string ClientName, string ClientId, bool? productFilterList)
         {
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
 
             var list = MockHelper.GetMockProducts(false).ProductDataSource.AsEnumerable();
 
@@ -48,15 +48,15 @@ namespace Prowler.Presentation.Controllers
 
             var totalItems = list.Count();
 
-            var data = list.Skip((gridDataSourceRequest.PageInfo.PageIndex - 1) * gridDataSourceRequest.PageInfo.PageItems)
-                           .Take(gridDataSourceRequest.PageInfo.PageItems)
+            var data = list.Skip(gridDataSourceRequest?.PageInfo?.Skip ?? 0)
+                           .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
                            .ToList();
 
             var datasouce = new GridDatasourceResponse<Product>
             {
                 DataSource = data,
                 TotalItems = totalItems,
-                PageIndex = gridDataSourceRequest.PageInfo.PageIndex
+                PageIndex = gridDataSourceRequest?.PageInfo?.PageIndex ?? 1
             };
 
             return Json(datasouce);

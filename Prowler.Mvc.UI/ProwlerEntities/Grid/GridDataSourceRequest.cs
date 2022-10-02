@@ -17,6 +17,21 @@ namespace Prowler.Mvc.UI
     {
         public int PageIndex { get; set; }        
         public int PageItems { get; set; }
+
+        public int Skip
+        {
+            get
+            {
+                try
+                {
+                    return (PageIndex - 1) * PageItems;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+        }
     }
 
     public class GridDatasourceResponse<T> where T: class

@@ -7,44 +7,64 @@
 
 <center><h2>Grid List</h2></center>
 
-
 <div id="customContainer">
     <input type="text" name="ClientName" />
     <input type="text" name="ClientId" />
 
-    @(Html.Prowler().DropDownList().Name("filterGroups")
-    .BindTo(Model.FilterGroups, "Product Group")
-    .DataTextField(nameof(Product.Name))
-    .DataValueField(nameof(Product.Id))
-    .Multiselect(nameof(Product.Checked), true)
-    .HtmlAttributes("style", "width:200px;height:32px;")
-    .Render())
+    @*@(Html.Prowler().DropDownList().Name("filterGroups")
+        .BindTo(Model.FilterGroups, "Product Group")
+        .DataTextField(nameof(Product.Name))
+        .DataValueField(nameof(Product.Id))
+        .Multiselect(nameof(Product.Checked), true)
+        .HtmlAttributes("style", "width:200px;height:32px;")
+        .Render())*@
+
+    @*<input type="hidden" name="productFilterList.Index" value="cold" />
+        <input type="text" name="productFilterList[cold].Name" value="Beer" />
+
+        <input type="hidden" name="productFilterList.Index" value="123" />
+        <input type="text" name="productFilterList[123].Name" value="Chips" />
+
+        <input type="hidden" name="productFilterList.Index" value="caliente" />
+        <input type="text" name="productFilterList[caliente].Name" value="Salsa" />*@
+@*<form method="post" action="/Grid/Page">
+    <input type="checkbox" name="productFilterList" value="false"/>
+    <input type="submit" value="send" />
+</form>*@
+
+    
 </div>
 
-    @(Html.Prowler().Grid()        
+@(Html.Prowler().Grid()
         .BindTo(Model.ProductDataSource)
         .HtmlAttributes("id", "productgrid")
         .Height(500)
-        //.Width(1000)
+        .Width(1000)
         .Columns(
                 i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                 i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
                 i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
                 i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
-                i => i.BindTo(nameof(Product.GroupName)),
-                @*.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                i => i.BindTo(nameof(Product.GroupName))
+                .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
                                               .BindTo(Model.FilterGroups, "Product Group")
                                               .DataTextField(nameof(Product.Name))
                                               .DataValueField(nameof(Product.Id))
                                               .Multiselect(nameof(Product.Checked), true)
                                               .Event(EventDropDown.Selected, "itemSelectionTest")
                                               .HtmlAttributes("style", "width:200px;height:32px;")
-                                              .Render(),null),*@
-                //i => i.BindTo(nameof(Product.Image)).Title("Image")
-                i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image")
+                                              .Render(),null),
+                i => i.BindTo(nameof(Product.Image)).Title("Image"),
+                @*i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image"),*@
+                i => i.RowTemplate(@"<input type=""hidden"" name=""DataSource.Index"" value=""{#Id#}"" />
+                                     <input type=""checkbox"" name=""DataSource[{#Id#}].Checked"" value=""true""/>
+                                    ", nameof(Product.Checked), nameof(Product.Id)).Title("Image")
+                 @*i => i.RowTemplate(@"<input type=""hidden"" name=""productFilterList.Index"" value=""{#Id#}"" />
+                                     <input type=""text"" name=""productFilterList[{#Id#}].Name"" value=""{#Name#}"" />
+                                    ", nameof(Product.Name), nameof(Product.Id)).Title("Image")*@
                  )
         .Pagination(() => new Pagination().PageIndex(1)
-                                          .PageItems(10)
+                                          .PageItems(5)
                                           .Total(Model.ProductDataSource.Count())
                                           .PaginationButtons(6)
                                           .Url("/Grid/Page"))
@@ -55,64 +75,32 @@
  )
 
 
-<h3>Description</h3>
 
-<h4>The ASP.NET MVC GridList lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility</h4>
-<h4>The current demo of the UI for ASP.NET MVC GridList demonstrates an implementation of the most common scenarios in which the component is used.</h4>
-
-<h3>Dependencies</h3>
-
-@{
-    string basicUsage = @"@using Prowler.Mvc.UI
-
-<script type=""text/javascript"" src=""~/Scripts/jquery-3.4.1.min.js""></script>
-<script type=""text/javascript"" src=""~/Scripts/prowler-mvc.js""></script>
-<link rel=""stylesheet"" href=""~/Content/prowler-mvc.css""/> ";
-
-}
-
-<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
-    <code style="white-space:pre; display:block; margin:10px">@basicUsage</code>
-</div>
-
-
-<h4>Using the System.Web.Mvc.HtmlHelper object that is used to render HTML elements, under this object the Prowler HTML helper is available</h4>
-@{
-    string methods = @" @Html.Prowler().Grid()";
-}
-
-<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
-    <code style="white-space:pre; display:block; margin:10px">@methods</code>
-</div>
-<h4>To begin configuring, a series of methods are available that allows customizing the control.</h4>
-<h4>The binding mecanism requires the property name that belongs to the model the value will be retreived at runtime.</h4>
-
-<h3>Methods</h3>
 
 <input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
 
-    <script>function ValidationNameField(value) {
-            if (value == "") {
-                return 'Name field is required!';
-            }
-
-            return '';
-}
-
-        function itemSelectionTest(value, label) {
-            debugger;
-            prowlerGrid("productgrid").Refresh();
+<script>function ValidationNameField(value) {
+        if (value == "") {
+            return 'Name field is required!';
         }
 
-        function ValidationDescField(value) {
-            if (value == "") {
-                return 'Description field is required aaaaaaaaaaaaaaaaaaa aaaaaxxxxxxxxxxxxxxxxgdsdfsdf asdaszxc 435345!';
-            }
+        return '';
+    }
 
-            return '';
+    function itemSelectionTest(value, label) {
+        debugger;
+        prowlerGrid("productgrid").Refresh("/Grid/Page");
+    }
+
+    function ValidationDescField(value) {
+        if (value == "") {
+            return 'Description field is required aaaaaaaaaaaaaaaaaaa aaaaaxxxxxxxxxxxxxxxxgdsdfsdf asdaszxc 435345!';
         }
 
-        function moveOf(e) {
-            debugger;
-            var x = e.clientWidth;
-        }</script>
+        return '';
+    }
+
+    function moveOf(e) {
+        debugger;
+        var x = e.clientWidth;
+    }</script>

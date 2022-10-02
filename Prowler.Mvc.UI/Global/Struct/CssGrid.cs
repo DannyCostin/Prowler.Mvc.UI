@@ -40,6 +40,8 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string PaginationItemsPerPageInput = "pw-grid-pag-index-itmpg";
         public const string GridHeaderContainer = "pw-grid-header-container";
         public const string GridRowCellContainer = "pw-grid-row-cell-container";
-        public const string GridContentNoSelect = "pw-grid-content-no-select";        
+        public const string GridContentNoSelect = "pw-grid-content-no-select";
+        public const string GridPaginationToolBarRight = "pw-grid-pagination-tlb-right";
+        public const string GridPaginationPageItemLabel = "pw-grd-pagination-lbl-txt";
     }
 }

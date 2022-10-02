@@ -14,6 +14,8 @@ namespace Prowler.Mvc.UI
 {
     public static class ProwlerGridExtension
     {
+        internal const string DataSourceRequestProperty = "DataSource";
+
         public static Grid<TModel> BindTo<TModel>(this Grid<TModel> entity, IEnumerable<dynamic> dataSource)
         {
             entity.DataSource = dataSource;
@@ -200,6 +202,7 @@ namespace Prowler.Mvc.UI
             container.MergeAttribute(AttributeGrid.PaginationSize, entity.Pagination.PageItems.ToString());
             container.MergeAttribute(AttributeGrid.PaginationNumberMax, entity.Pagination.PaginationButtons.ToString());
             container.MergeAttribute(AttributeGrid.PaginationRangeGrow, entity.Pagination.PaginationRangeGow.ToString());
+            container.MergeAttribute(AttributeGrid.PaginationTotalItems, entity.Pagination.Total.ToString());
 
             bool disableNext = false;
           
@@ -314,6 +317,7 @@ namespace Prowler.Mvc.UI
                 }
 
                 container.TagSetInnerHtml(next);
+                container.TagSetInnerHtml(CreatePaginationToolBarRight(entity));
             }
             catch (Exception ex)
             {
@@ -322,6 +326,34 @@ namespace Prowler.Mvc.UI
 
             parentcontainer.InnerHtml = String.Concat(parentcontainer.InnerHtml, container.ToString());
         }
+
+        private static TagBuilder CreatePaginationToolBarRight<TModel>(Grid<TModel> entity)
+        {
+            var container = new TagBuilder(TagElement.Div);
+            container.AddCssClass(CssGrid.GridPaginationToolBarRight);
+
+            container.TagSetInnerHtml(CreatePaginationCurentPageItemsLabel(entity));
+
+            return container;
+        }
+
+        private static TagBuilder CreatePaginationCurentPageItemsLabel<TModel>(Grid<TModel> entity)
+        {
+            var label = new TagBuilder(TagElement.Span);
+            label.AddCssClass(CssGrid.GridPaginationPageItemLabel);
+
+            var itemPositionStart = (entity.Pagination.PageIndex - 1) * entity.Pagination.PageItems + 1;
+            var itemPositionEnd = entity.Pagination.PageIndex * entity.Pagination.PageItems;
+            var itemsText = "items";
+
+            if (entity.Pagination.Total <= 1) { itemsText = "item"; }
+            if (itemPositionEnd > entity.Pagination.Total) { itemPositionEnd = entity.Pagination.Total; }
+
+            label.SetInnerText($"{itemPositionStart} - {itemPositionEnd} of {entity.Pagination.Total} {itemsText}");
+
+            return label;
+        }
+
 
         private static TagBuilder CreateTableHeader<TModel>(Grid<TModel> entity)
         {
@@ -401,7 +433,7 @@ namespace Prowler.Mvc.UI
 
                 entity.CurrentRowItemIndex = $"prg{entity.Pagination?.PageIndex}{itemIndex}";
 
-                dataRows.Append(CreateTableRow(entity, dataItem).ToString());
+                dataRows.Append(CreateTableRow(entity, dataItem, itemIndex).ToString());
             }
 
             return dataRows.ToString();
@@ -414,7 +446,8 @@ namespace Prowler.Mvc.UI
                 rowContainer.InnerHtml = defaultItem ? column.RowTemplate : ProwlerHelper.ApplyTemplateValues(column.RowTemplateBindings, column.RowTemplate, item);
             }
         }
-        private static TagBuilder CreateTableRow<TModel>(Grid<TModel> entity, dynamic dataItem)
+
+        private static TagBuilder CreateTableRow<TModel>(Grid<TModel> entity, dynamic dataItem, int index)
         {
             var tr = new TagBuilder(TagElement.Tr);
 
@@ -432,6 +465,18 @@ namespace Prowler.Mvc.UI
             }
 
             return tr;
+        }
+
+        private static void CreateCheckBox<TModel>(Grid<TModel> entity, Column column, string bindingValue, int index)
+        {
+            if (column.HasRowTemplate) { return; }
+
+            var checkBox = new TagBuilder(TagElement.Input);
+            checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, index.ToString());
+
+            if(bindingValue?.ToLower() == "true") { checkBox.TagSetChecked(); }
+
+
         }
 
         private static void CreateDefaultTable<TModel>(Grid<TModel> entity, TagBuilder parentcontainer)

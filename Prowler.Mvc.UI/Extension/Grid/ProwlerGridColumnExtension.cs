@@ -97,5 +97,12 @@ namespace Prowler.Mvc.UI
 
             return entity;
         }
+
+        public static Column AsEditable(this Column entity)
+        {
+            entity.AsEditable = true;
+
+            return entity;
+        }
     }
 }

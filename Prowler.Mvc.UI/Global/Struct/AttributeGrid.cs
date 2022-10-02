@@ -31,5 +31,6 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridCellEnableDisable = "pw-grd-cel-enb-dis";
         public const string GridBindings = "pw-grd-dts-binding";
         public const string GridFilterContainerId = "pw-grd-filter-cnt-id";
+        public const string PaginationTotalItems = "pw-grd-pag-total-items";
     }
 }

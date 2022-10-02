@@ -965,13 +965,13 @@
         function prowler_GetFilterContainer(containerId) {
 
             if (containerId == "") { return null;}
-
-            return $('#' + containerId).clone();
+            
+            return $('#' + containerId).clone(true);
         }
 
         function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
             var dataSource = $(container).closest('.pw-grid-table-container');
-            
+
             if ($(dataSource).length == 0) {
                 return;
             }
@@ -979,7 +979,7 @@
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show(); 
 
-            var tip = $('<form>').html($(dataSource).clone());
+            var tip = $('<form>').html($(dataSource).clone(true));
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
             prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errorHandlerFunc);
@@ -998,7 +998,7 @@
 
             var includeFilterContainerId = $(dataSource).attr('pw-grd-filter-cnt-id');
 
-            var tip = $('<form>').html($(filterContainer).clone()).append($(paginationContainer).html());
+            var tip = $('<form>').html($(filterContainer).clone(true)).append($(paginationContainer).html());
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
             dataSource.append(prowlerGridHelper.GetGridLoader());
@@ -1045,11 +1045,12 @@
             var paginationContainer = $(container).closest('.pw-grid-table-container').find('.pw-grid-pagination-container');
             var totalPages = Math.ceil(results.TotalItems / Number($(paginationContainer).attr('pw-grid-pag-size')));
 
-            prowlerGridHelper.createPagination(paginationContainer, results.PageIndex, totalPages);
+            prowlerGridHelper.createPagination(paginationContainer, results.PageIndex, totalPages, results.TotalItems);
 
             $.each(dataSource, function (i, result) {
 
                 var templateElement = templateElementDefault.clone();
+
                 var attribute = $(templateElement).attr("pw-grd-dts-binding").split(',');                    
 
                 var html = $(templateElement).html();
@@ -1066,10 +1067,34 @@
             });
                     
             prowlerGridHelper.RemoveGridLoader($(container).closest('.pw-grid-table-container'));
-            $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').hide(); 
+            $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').hide();
+         
+            $(container).closest('.pw-grid-table').scrollTop(0);
         }
 
-        function prowler_gridCreatePaginationContainer(container, pageIndex, totalItems) {
+        function prowler_gridUpdatePaginationPageItemLabel(container, pageIndex) {
+
+            var labelElement = $(container).find(".pw-grd-pagination-lbl-txt");
+            var totalItems = Number($(container).attr("pw-grd-pag-total-items"));
+            var itemsPerPage = Number($(container).attr("pw-grid-pag-size"));
+
+
+            if (labelElement == null) { return; }
+
+            pageIndex = Number(pageIndex);
+            totalItems = Number(totalItems);
+
+            var itemPositionStart = (pageIndex - 1) * itemsPerPage + 1;
+            var itemPositionEnd = pageIndex * itemsPerPage;
+            var itemsText = "items";
+
+            if (totalItems <= 1) { itemsText = "item"; }
+            if (itemPositionEnd > totalItems) { itemPositionEnd = totalItems; }
+
+            $(labelElement).html(itemPositionStart + " - " + itemPositionEnd + " of " + totalItems + " " + itemsText);
+        }
+
+        function prowler_gridCreatePaginationContainer(container, pageIndex, totalPagesForItems, totalItems) {
          
             pageIndex = Number(pageIndex);
 
@@ -1080,13 +1105,14 @@
 
             let rangeGrow = Number($(container).attr('pw-grid-pag-range-grow'));
 
-            totalPages = totalItems;
+            totalPages = totalPagesForItems;
             maxRange = Number($(container).attr('pw-grid-pag-numbermax'));
 
             if (totalPages < maxRange) {
                 maxRange = totalPages;
             }
 
+            $(container).attr("pw-grd-pag-total-items", totalItems);
             $(container).find('.pw-grid-pagination-cnt').remove();
             $(container).find('.pw-grid-pagination-item-dis').remove();
 
@@ -1156,6 +1182,8 @@
                'pw-grid-pag-itm-index':totalPages,
                class: firstLastElementClass
             }).html('❯❯').appendTo(container);
+
+            prowler_gridUpdatePaginationPageItemLabel(container, pageIndex);
         }
 
         return {
@@ -1176,12 +1204,16 @@
 
         var gridListId = "#" + id;
 
-        function prowlerGridRefresh() {
+        function prowlerGridRefresh(url) {
             var tableContainer = $(gridListId);
 
             var containerHost = $(tableContainer).find(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
-
+  
             var paginationUrl = $(tableContainer).find('.pw-grid-pagination-container').attr('pw-grid-pag-url');
+
+            if (url != null) {
+                paginationUrl = url;
+            }
 
             prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);           
         }
