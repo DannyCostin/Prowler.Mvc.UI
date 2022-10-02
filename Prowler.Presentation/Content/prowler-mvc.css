@@ -331,19 +331,19 @@
     height: 20px;
     width: 20px;
     background-color: white;
-    border: 2px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
 }
 
 
 .p-grid-table-checkBox-container:hover input ~ .p-grid-table-checkBox-checkmark {
     background-color: #ccc;
-    border: 2px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
 }
 
 
 .p-grid-table-checkBox-container input:checked ~ .p-grid-table-checkBox-checkmark {
     background-color: #408dc8;
-    border: 2px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
 }
 
 .p-grid-table-checkBox-checkmark:after {
@@ -358,8 +358,8 @@
 }
 
 .p-grid-table-checkBox-container .p-grid-table-checkBox-checkmark:after {
-    left: 4px;
-    top: 1px;
+    left: 5px;
+    top: 2px;
     width: 7px;
     height: 11px;
     border: solid white;
@@ -549,7 +549,7 @@
     width: 100%;
     height: 100%;
     background-color: white;
-    border: 2px solid #ebebeb;
+    border: 1px solid #ebebeb;
     padding: 8px;
     border-radius: 3px;
     outline: none;
@@ -567,14 +567,14 @@
     width: 100%;
     height: 100%;
     background-color: white;
-    border: 2px solid red;
+    border: 1px solid red;
     padding: 8px;
     border-radius: 3px;
 }
 
 .pw-grid-table-input-edit:not(.pw-grid-table-input-edit-validation-err):focus {
     outline: none;
-    border: 2px solid;
+    border: 1px solid;
     border-color: #408dc8;
 }
 
