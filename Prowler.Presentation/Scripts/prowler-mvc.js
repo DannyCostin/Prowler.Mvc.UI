@@ -1000,6 +1000,7 @@
 
             var tip = $('<form>').html($(filterContainer).clone(true)).append($(paginationContainer).html());
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
+            tip.append($(dataSource).clone(true));
 
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(dataSource).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();      

@@ -27,42 +27,39 @@
 
         <input type="hidden" name="productFilterList.Index" value="caliente" />
         <input type="text" name="productFilterList[caliente].Name" value="Salsa" />*@
-@*<form method="post" action="/Grid/Page">
-    <input type="checkbox" name="productFilterList" value="false"/>
-    <input type="submit" value="send" />
-</form>*@
+    @*<form method="post" action="/Grid/Page">
+            <input type="checkbox" name="productFilterList" value="false"/>
+            <input type="submit" value="send" />
+        </form>*@
 
-    
+
 </div>
 
 @(Html.Prowler().Grid()
-        .BindTo(Model.ProductDataSource)
-        .HtmlAttributes("id", "productgrid")
-        .Height(500)
-        .Width(1000)
-        .Columns(
-                i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
-                i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
-                i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
-                i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
-                i => i.BindTo(nameof(Product.GroupName))
-                .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
-                                              .BindTo(Model.FilterGroups, "Product Group")
-                                              .DataTextField(nameof(Product.Name))
-                                              .DataValueField(nameof(Product.Id))
-                                              .Multiselect(nameof(Product.Checked), true)
-                                              .Event(EventDropDown.Selected, "itemSelectionTest")
-                                              .HtmlAttributes("style", "width:200px;height:32px;")
-                                              .Render(),null),
-                i => i.BindTo(nameof(Product.Image)).Title("Image"),
-                @*i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image"),*@
-                i => i.RowTemplate(@"<input type=""hidden"" name=""DataSource.Index"" value=""{#Id#}"" />
-                                     <input type=""checkbox"" name=""DataSource[{#Id#}].Checked"" value=""true""/>
-                                    ", nameof(Product.Checked), nameof(Product.Id)).Title("Image")
-                 @*i => i.RowTemplate(@"<input type=""hidden"" name=""productFilterList.Index"" value=""{#Id#}"" />
-                                     <input type=""text"" name=""productFilterList[{#Id#}].Name"" value=""{#Name#}"" />
-                                    ", nameof(Product.Name), nameof(Product.Id)).Title("Image")*@
-                 )
+            .UniqueId(nameof(Product.Id))
+            .BindTo(Model.ProductDataSource)
+            .HtmlAttributes("id", "productgrid")
+            .Height(500)
+            .Width(1000)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
+                    i => i.BindTo(nameof(Product.GroupName))
+                    .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                                                  .BindTo(Model.FilterGroups, "Product Group")
+                                                  .DataTextField(nameof(Product.Name))
+                                                  .DataValueField(nameof(Product.Id))
+                                                  .Multiselect(nameof(Product.Checked), true)
+                                                  .Event(EventDropDown.Selected, "itemSelectionTest")
+                                                  .HtmlAttributes("style", "width:200px;height:32px;")
+                                                  .Render(), null),
+                    i => i.BindTo(nameof(Product.Image)).Title("Image"),
+                    i => i.BindTo(nameof(Product.Name)).AsEditable(GridInputType.Text).Width(500),
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.Checkbox)
+                     @*i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image"),*@
+                    )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(5)
                                           .Total(Model.ProductDataSource.Count())
@@ -79,7 +76,8 @@
 
 <input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
 
-<script>function ValidationNameField(value) {
+<script>
+    function ValidationNameField(value) {
         if (value == "") {
             return 'Name field is required!';
         }
@@ -88,7 +86,6 @@
     }
 
     function itemSelectionTest(value, label) {
-        debugger;
         prowlerGrid("productgrid").Refresh("/Grid/Page");
     }
 

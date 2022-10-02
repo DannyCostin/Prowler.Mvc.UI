@@ -9,7 +9,6 @@ namespace Prowler.Mvc.UI
     public class GridDataSourceRequest<T> where T : class
     {
        public GridDataSourcePagination PageInfo { get; set; }
-       public Filters Filter { get; set; }
        public List<T> DataSource { get; set; }
     }
 

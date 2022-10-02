@@ -20,6 +20,9 @@ namespace Prowler.Mvc.UI
         internal bool AllowColumnResize { get; set; } = true;
         internal string RowTemplateName { get; set; }
         internal bool AsEditable { get; set; }
+        internal string ValidationEvent { get; set; }
+        internal GridInputType EditableInputType { get; set; }
+
         internal bool HasRowTemplate 
         { 
             get 

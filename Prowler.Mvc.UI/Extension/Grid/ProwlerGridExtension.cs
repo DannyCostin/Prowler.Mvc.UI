@@ -23,6 +23,13 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> UniqueId<TModel>(this Grid<TModel> entity, string bindingProperty)
+        {
+            entity.UniqueId = bindingProperty;
+
+            return entity;
+        }
+
         public static Grid<TModel> Name<TModel>(this Grid<TModel> entity, string name)
         {
             entity.Name = name;
@@ -433,7 +440,7 @@ namespace Prowler.Mvc.UI
 
                 entity.CurrentRowItemIndex = $"prg{entity.Pagination?.PageIndex}{itemIndex}";
 
-                dataRows.Append(CreateTableRow(entity, dataItem, itemIndex).ToString());
+                dataRows.Append(CreateTableRow(entity, dataItem).ToString());
             }
 
             return dataRows.ToString();
@@ -447,19 +454,29 @@ namespace Prowler.Mvc.UI
             }
         }
 
-        private static TagBuilder CreateTableRow<TModel>(Grid<TModel> entity, dynamic dataItem, int index)
+        private static TagBuilder CreateTableRow<TModel>(Grid<TModel> entity, dynamic dataItem)
         {
             var tr = new TagBuilder(TagElement.Tr);
 
-            foreach (var item in entity.Columns)
+            var uniqueIdAlocated = false;
+
+            foreach (var column in entity.Columns)
             {
                 var td = new TagBuilder(TagElement.Td);
 
                 td.AddCssClass(CssGrid.GridRowIdentityClass);
-                string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, item.RowBinding);
+                string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, column.RowBinding);
 
-                CreateRowLabel(entity, bindingValue, td, item);
-                CreateTableRowTemplate(entity, item, dataItem, td);
+                CreateRowLabel(entity, bindingValue, td, column);
+                CreateTableRowTemplate(entity, column, dataItem, td);
+                CreateCheckBox(entity, td, bindingValue, column);
+                CreateTextBox(entity, td, bindingValue, column);
+
+                if (!uniqueIdAlocated)
+                {
+                    CreateUniqueIdIdentifier(entity, td, dataItem);
+                    uniqueIdAlocated = true;
+                }                
 
                 tr.InnerHtml = String.Concat(tr.InnerHtml, td.ToString());
             }
@@ -467,17 +484,102 @@ namespace Prowler.Mvc.UI
             return tr;
         }
 
-        private static void CreateCheckBox<TModel>(Grid<TModel> entity, Column column, string bindingValue, int index)
+        private static void CreateTextBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value, Column column, bool defaultItem = false)
         {
-            if (column.HasRowTemplate) { return; }
+            if (column.AsEditable && !column.HasRowTemplate && column.EditableInputType == GridInputType.Text)
+            {
+                var textBox = new TagBuilder(TagElement.Input);
+                textBox.TagAsTextBox();
+                textBox.TagSetValue(defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) : value);
+                textBox.AddCssClass(CssGrid.InputEdit);
+                textBox.AddCssClass(CssGrid.GridRowEditContainer);
 
-            var checkBox = new TagBuilder(TagElement.Input);
-            checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, index.ToString());
+                if (defaultItem)
+                {
+                    textBox.TagSetName(DataSourceRequestProperty, column.RowBinding, ProwlerHelper.GetBindingString(entity.UniqueId));
+                }
+                else
+                {
+                    textBox.TagSetName(DataSourceRequestProperty, column.RowBinding, entity.CurrentRowItemIndex);
+                }                             
 
-            if(bindingValue?.ToLower() == "true") { checkBox.TagSetChecked(); }
+                if (column.ValidationEvent != null)
+                {
+                    textBox.MergeAttribute(AttributeGrid.ValidationEvent, column.ValidationEvent);
+                }
 
-
+                tdContainer.TagSetInnerHtml(textBox);
+            }
         }
+
+        private static void CreateUniqueIdIdentifier<TModel>(Grid<TModel> entity, TagBuilder tdContainer, dynamic dataItem, bool defaultItem = false)
+        {
+            if (string.IsNullOrEmpty(entity.UniqueId)) { return; }
+
+            string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, entity.UniqueId);
+
+            var textBoxUniqueId = new TagBuilder(TagElement.Input).TagAsTextHidden();
+            textBoxUniqueId.TagSetValue(defaultItem ? ProwlerHelper.GetBindingString(entity.UniqueId) : bindingValue);
+
+            if (defaultItem)
+            {
+                textBoxUniqueId.TagSetName(DataSourceRequestProperty, entity.UniqueId, ProwlerHelper.GetBindingString(entity.UniqueId));
+            }
+            else
+            {
+                textBoxUniqueId.TagSetName(DataSourceRequestProperty, entity.UniqueId, entity.CurrentRowItemIndex);
+            }
+
+            var textBoxIndexMap = new TagBuilder(TagElement.Input).TagAsTextHidden();
+
+            textBoxIndexMap.TagSetName($"{DataSourceRequestProperty}.Index");
+            textBoxIndexMap.TagSetValue(defaultItem ? ProwlerHelper.GetBindingString(entity.UniqueId)
+                                                    : entity.CurrentRowItemIndex);
+
+            tdContainer.TagSetInnerHtml(textBoxUniqueId);
+            tdContainer.TagSetInnerHtml(textBoxIndexMap);
+        }
+
+        private static void CreateCheckBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value, Column column, bool defaultItem = false)
+        {
+            if (column.AsEditable && !column.HasRowTemplate && column.EditableInputType == GridInputType.Checkbox)
+            {
+                var checkBoxContainer = new TagBuilder(TagElement.Div);
+                var checkBoxIcon = new TagBuilder(TagElement.Span);
+                var checkBox = new TagBuilder(TagElement.Input);
+
+                if (defaultItem)
+                {
+                    checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, ProwlerHelper.GetBindingString(entity.UniqueId));
+                }
+                else
+                {
+                    checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, entity.CurrentRowItemIndex);
+                }                
+          
+                checkBox.TagAsCheckBox();
+                checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+                checkBoxContainer.AddCssClass(CssGrid.GridRowEditContainer);
+                checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+
+                bool.TryParse(value, out bool bindingValue);
+
+                checkBox.TagSetValue( defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) 
+                                                  : bindingValue.ToString());
+
+                if (bindingValue && !defaultItem)
+                {
+                    checkBox.TagSetChecked();
+                }
+
+                checkBoxContainer.TagSetInnerHtml(checkBox);
+                checkBoxContainer.TagSetInnerHtml(checkBoxIcon);
+
+                tdContainer.TagSetInnerHtml(checkBoxContainer);             
+            }
+        }
+
+
 
         private static void CreateDefaultTable<TModel>(Grid<TModel> entity, TagBuilder parentcontainer)
         {
@@ -490,29 +592,44 @@ namespace Prowler.Mvc.UI
             defaultRowContainer.TagSetInnerHtml(table);
             parentcontainer.TagSetInnerHtml(defaultRowContainer);
         }
+
         private static TagBuilder CreateTableDefaultRow<TModel>(Grid<TModel> entity)
         {
             dynamic dataItem = entity.DataSource.FirstOrDefault();
             var tr = new TagBuilder(TagElement.Tr);
+            var uniqueIdAlocated = false;
 
-            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();
+            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();            
 
-            foreach (var item in entity.Columns)
+            foreach (var column in entity.Columns)
             {
-                if (item.RowTemplateBindings != null)
+                if (column.RowTemplateBindings != null)
                 {
-                    templateBindingProperties.AddRange(item.RowTemplateBindings);
+                    templateBindingProperties.AddRange(column.RowTemplateBindings);
                 }
 
                 var td = new TagBuilder(TagElement.Td);
 
                 td.AddCssClass(CssGrid.GridRowIdentityClass);
-                string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, item.RowBinding);
+                string bindingValue = ProwlerHelper.GetPropValue<string>(dataItem, column.RowBinding);
 
-                CreateRowLabel(entity, bindingValue, td, item, true);
-                CreateTableRowTemplate(entity, item, dataItem, td, true);
+                CreateRowLabel(entity, bindingValue, td, column, true);
+                CreateTableRowTemplate(entity, column, dataItem, td, true);
+                CreateCheckBox(entity, td, bindingValue, column, true);
+                CreateTextBox(entity, td, bindingValue, column, true);
+
+                if (!uniqueIdAlocated)
+                {
+                    CreateUniqueIdIdentifier(entity, tr, dataItem, true);
+                    uniqueIdAlocated = true;
+                }                
 
                 tr.InnerHtml = String.Concat(tr.InnerHtml, td.ToString());
+            }
+
+            if(!String.IsNullOrEmpty(entity.UniqueId) && !templateBindingProperties.Any(i => i == entity.UniqueId))
+            {
+                templateBindingProperties.Add(entity.UniqueId);
             }
 
             tr.MergeAttribute(AttributeGrid.GridBindings, string.Join(",", templateBindingProperties.Select(i => i)));
@@ -533,6 +650,8 @@ namespace Prowler.Mvc.UI
 
         private static void CreateRowLabel<TModel>(Grid<TModel> entity, string bindingValue, TagBuilder container, Column column, bool defaultItem = false)
         {
+            if (column.AsEditable) { return; }
+
             var span = new TagBuilder(TagElement.Span);
             span.InnerHtml = defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) : bindingValue;
             span.AddCssClass(CssGrid.GridRowLabel);

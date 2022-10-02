@@ -98,9 +98,10 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Column AsEditable(this Column entity)
+        public static Column AsEditable(this Column entity, GridInputType inputType)
         {
             entity.AsEditable = true;
+            entity.EditableInputType = inputType;
 
             return entity;
         }
