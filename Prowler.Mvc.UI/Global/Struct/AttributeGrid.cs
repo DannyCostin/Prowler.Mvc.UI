@@ -32,5 +32,8 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridBindings = "pw-grd-dts-binding";
         public const string GridFilterContainerId = "pw-grd-filter-cnt-id";
         public const string PaginationTotalItems = "pw-grd-pag-total-items";
+        public const string CheckBoxName = "pw-grd-chk-name-s";
+        public const string CheckBoxHeaderName = "pw-grd-chk-head-name-s";
+        public const string GridErrorFunction = "pw-grd-err-func";
     }
 }

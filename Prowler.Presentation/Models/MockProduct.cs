@@ -23,7 +23,8 @@ namespace Prowler.Presentation.Models
         public string GroupName { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
-        public bool Deleted { get; set; }        
+        public bool Deleted { get; set; }
+        public bool Disable { get; set; }
     }
 
     public class FilterGroup

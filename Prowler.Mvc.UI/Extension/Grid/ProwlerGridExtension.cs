@@ -107,6 +107,13 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> ErrorFunction<TModel>(this Grid<TModel> entity, string function)
+        {
+            entity.ErrorFunction = function;
+
+            return entity;
+        }
+
         public static Grid<TModel> ActionSort<TModel>(this Grid<TModel> entity, string url)
         {
             entity.ActionSort = url;
@@ -167,6 +174,11 @@ namespace Prowler.Mvc.UI
             gridContainer.AddCssClass(CssGrid.GridContainer);
             gridContainer.Attributes.Add(AttributeGrid.GridFilterContainerId, entity.FilterContainerId);
 
+            if (!string.IsNullOrEmpty(entity.ErrorFunction))
+            {
+                gridContainer.Attributes.Add(AttributeGrid.GridErrorFunction, entity.ErrorFunction);
+            }
+
             MergeHtmlAttributes(entity.TableTemplate.Tag, entity.HtmlAttributes);
 
             var table = new TagBuilder(TagElement.Table);
@@ -181,7 +193,7 @@ namespace Prowler.Mvc.UI
 
                 gridContainer.InnerHtml = table.ToString();
 
-                CreateDefaultTable(entity, gridContainer);
+                CreateDefaultTable(entity, entity.TableTemplate.Tag);
             }
 
             CreatePaginationArea(entity, gridContainer);
@@ -403,10 +415,17 @@ namespace Prowler.Mvc.UI
                 span.AddCssClass(CssGrid.GridContentNoSelect);
                 span.SetInnerText(item.Title);
 
+                if(item.SortName != null)
+                {
+                    span.AddCssClass(CssGrid.GridColumnHeaderContainerSort);
+                }
+
                 labelContainer.TagSetInnerHtml(span);
 
                 CreateColumnTemplate(item, labelContainer);
                 container.TagSetInnerHtml(labelContainer);
+
+                CreateHeaderCheckBox(entity, container, item);
 
                 ApplyRowHtmlAttributes(entity, item, th);
 
@@ -426,7 +445,6 @@ namespace Prowler.Mvc.UI
 
             header.InnerHtml = string.Concat(header.InnerHtml, column.ColumnTemplate);
         }
-
 
         private static string CreateTableRows<TModel>(Grid<TModel> entity)
         {
@@ -469,8 +487,8 @@ namespace Prowler.Mvc.UI
 
                 CreateRowLabel(entity, bindingValue, td, column);
                 CreateTableRowTemplate(entity, column, dataItem, td);
-                CreateCheckBox(entity, td, bindingValue, column);
-                CreateTextBox(entity, td, bindingValue, column);
+                CreateCheckBox(entity, td, bindingValue, column, dataItem);
+                CreateTextBox(entity, td, bindingValue, column, dataItem);
 
                 if (!uniqueIdAlocated)
                 {
@@ -484,7 +502,8 @@ namespace Prowler.Mvc.UI
             return tr;
         }
 
-        private static void CreateTextBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value, Column column, bool defaultItem = false)
+        private static void CreateTextBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value,
+            Column column, dynamic dataItem, bool defaultItem = false)
         {
             if (column.AsEditable && !column.HasRowTemplate && column.EditableInputType == GridInputType.Text)
             {
@@ -494,18 +513,20 @@ namespace Prowler.Mvc.UI
                 textBox.AddCssClass(CssGrid.InputEdit);
                 textBox.AddCssClass(CssGrid.GridRowEditContainer);
 
+                string uniqueIdValue = ProwlerHelper.GetPropValue<string>(dataItem, entity.UniqueId);
+
+                if (column.ValidationEvent != null)
+                {
+                    textBox.MergeAttribute(AttributeGrid.ValidationEvent, column.ValidationEvent);
+                }
+
                 if (defaultItem)
                 {
                     textBox.TagSetName(DataSourceRequestProperty, column.RowBinding, ProwlerHelper.GetBindingString(entity.UniqueId));
                 }
                 else
                 {
-                    textBox.TagSetName(DataSourceRequestProperty, column.RowBinding, entity.CurrentRowItemIndex);
-                }                             
-
-                if (column.ValidationEvent != null)
-                {
-                    textBox.MergeAttribute(AttributeGrid.ValidationEvent, column.ValidationEvent);
+                    textBox.TagSetName(DataSourceRequestProperty, column.RowBinding, uniqueIdValue);
                 }
 
                 tdContainer.TagSetInnerHtml(textBox);
@@ -527,26 +548,68 @@ namespace Prowler.Mvc.UI
             }
             else
             {
-                textBoxUniqueId.TagSetName(DataSourceRequestProperty, entity.UniqueId, entity.CurrentRowItemIndex);
+                textBoxUniqueId.TagSetName(DataSourceRequestProperty, entity.UniqueId, bindingValue);
             }
 
             var textBoxIndexMap = new TagBuilder(TagElement.Input).TagAsTextHidden();
 
             textBoxIndexMap.TagSetName($"{DataSourceRequestProperty}.Index");
             textBoxIndexMap.TagSetValue(defaultItem ? ProwlerHelper.GetBindingString(entity.UniqueId)
-                                                    : entity.CurrentRowItemIndex);
+                                                    : bindingValue);
 
             tdContainer.TagSetInnerHtml(textBoxUniqueId);
             tdContainer.TagSetInnerHtml(textBoxIndexMap);
         }
 
-        private static void CreateCheckBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value, Column column, bool defaultItem = false)
+        private static void CreateHeaderCheckBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, Column column, bool defaultItem = false)
         {
-            if (column.AsEditable && !column.HasRowTemplate && column.EditableInputType == GridInputType.Checkbox)
+            if (column.AsEditable && !column.HasRowTemplate
+                && column.EditableInputType == GridInputType.CheckBox
+                && column.HeaderAsCheckbox)
+            {
+                var checkBoxContainer = new TagBuilder(TagElement.Div);
+                var checkBoxIcon = new TagBuilder(TagElement.Span);
+                var checkBox = new TagBuilder(TagElement.Input).TagAsCheckBox();                
+
+                checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+                checkBoxContainer.AddCssClass(CssGrid.CheckBoxHeader);
+                checkBoxContainer.AddCssClass(CssGrid.GridRowEditContainer);
+                checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+                checkBoxContainer.MergeAttribute(AttributeGrid.CheckBoxHeaderName, column.RowBinding);
+                checkBox.AddCssClass(CssGrid.CheckboxHeaderId);
+
+                checkBox.TagSetValue(column.HeaderCheckboxValue.ToString());
+
+                if (column.HeaderCheckboxValue)
+                {
+                    checkBox.TagSetChecked();
+                }
+
+                checkBoxContainer.TagSetInnerHtml(checkBox);
+                checkBoxContainer.TagSetInnerHtml(checkBoxIcon);
+
+                if(column.HeaderCheckboxLabel != null)
+                {
+                    var label = new TagBuilder(TagElement.Span);
+                    label.SetInnerText(column.HeaderCheckboxLabel);
+                    tdContainer.TagSetInnerHtml(label);
+                }
+
+                tdContainer.TagSetInnerHtml(checkBoxContainer);
+            }
+        }
+
+        private static void CreateCheckBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value,
+            Column column, dynamic dataItem, bool defaultItem = false)
+        {
+            if (column.AsEditable && !column.HasRowTemplate && column.EditableInputType == GridInputType.CheckBox)
             {
                 var checkBoxContainer = new TagBuilder(TagElement.Div);
                 var checkBoxIcon = new TagBuilder(TagElement.Span);
                 var checkBox = new TagBuilder(TagElement.Input);
+
+                string uniqueIdValue = ProwlerHelper.GetPropValue<string>(dataItem, entity.UniqueId);
+
 
                 if (defaultItem)
                 {
@@ -554,13 +617,15 @@ namespace Prowler.Mvc.UI
                 }
                 else
                 {
-                    checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, entity.CurrentRowItemIndex);
+                    checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, uniqueIdValue);
                 }                
           
                 checkBox.TagAsCheckBox();
                 checkBoxContainer.AddCssClass(CssGrid.CheckBox);
                 checkBoxContainer.AddCssClass(CssGrid.GridRowEditContainer);
                 checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+                checkBox.MergeAttribute(AttributeGrid.CheckBoxName, column.RowBinding);
+                checkBox.AddCssClass(CssGrid.CheckBoxInputId);
 
                 bool.TryParse(value, out bool bindingValue);
 
@@ -578,8 +643,6 @@ namespace Prowler.Mvc.UI
                 tdContainer.TagSetInnerHtml(checkBoxContainer);             
             }
         }
-
-
 
         private static void CreateDefaultTable<TModel>(Grid<TModel> entity, TagBuilder parentcontainer)
         {
@@ -615,8 +678,8 @@ namespace Prowler.Mvc.UI
 
                 CreateRowLabel(entity, bindingValue, td, column, true);
                 CreateTableRowTemplate(entity, column, dataItem, td, true);
-                CreateCheckBox(entity, td, bindingValue, column, true);
-                CreateTextBox(entity, td, bindingValue, column, true);
+                CreateCheckBox(entity, td, bindingValue, column, dataItem, true);
+                CreateTextBox(entity, td, bindingValue, column, dataItem, true);
 
                 if (!uniqueIdAlocated)
                 {
@@ -655,7 +718,6 @@ namespace Prowler.Mvc.UI
             var span = new TagBuilder(TagElement.Span);
             span.InnerHtml = defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) : bindingValue;
             span.AddCssClass(CssGrid.GridRowLabel);
-
             container.InnerHtml = string.Concat(container.InnerHtml, span.ToString());
         }
 

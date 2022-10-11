@@ -42,23 +42,24 @@
             .Height(500)
             .Width(1000)
             .Columns(
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox().ColumnTemplate("<p>{#ID#}</p>"),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
-                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
-                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
-                    i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100),
-                    i => i.BindTo(nameof(Product.GroupName))
-                    .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").AsEditable(GridInputType.Text),
+                    i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100).AsEditable(GridInputType.Text),
+                    
+                    @*.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
                                                   .BindTo(Model.FilterGroups, "Product Group")
                                                   .DataTextField(nameof(Product.Name))
                                                   .DataValueField(nameof(Product.Id))
                                                   .Multiselect(nameof(Product.Checked), true)
                                                   .Event(EventDropDown.Selected, "itemSelectionTest")
                                                   .HtmlAttributes("style", "width:200px;height:32px;")
-                                                  .Render(), null),
-                    i => i.BindTo(nameof(Product.Image)).Title("Image"),
-                    i => i.BindTo(nameof(Product.Name)).AsEditable(GridInputType.Text).Width(500),
-                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.Checkbox)
-                     @*i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""></img>", nameof(Product.Image)).Title("Image"),*@
+                                                  .Render()),*@
+                    @*nuli => i.BindTo(nameof(Product.Image)).Title("Image"),*@
+                    i => i.BindTo(nameof(Product.Name)).Width(500),
+                    i => i.BindTo(nameof(Product.Checked)),
+                    i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Title("Image")
                     )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(5)
@@ -68,6 +69,7 @@
         .ActionSort("/Grid/Page")
         .AllowColumnResize()
         .IncludeFilterContainer("customContainer")
+        .ErrorFunction("GridErrorParser")
         .Render()
  )
 
@@ -77,6 +79,9 @@
 <input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
 
 <script>
+    function GridErrorParser(result) {
+        alert(result.responseJSON);
+    }
     function ValidationNameField(value) {
         if (value == "") {
             return 'Name field is required!';

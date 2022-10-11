@@ -28,5 +28,6 @@ namespace Prowler.Mvc.UI
         internal Dictionary<string, string> HtmlAttributes { get; set; }
         internal string FilterContainerId { get; set; }
         internal string UniqueId { get; set; }
+        internal string ErrorFunction { get; set; }
     }
 }

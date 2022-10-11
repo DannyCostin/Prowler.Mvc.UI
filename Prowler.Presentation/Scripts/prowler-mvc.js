@@ -277,7 +277,7 @@
                 },
                 error: function (request, status, error) {
                     if (bindingErrorHandlingFunc != undefined) {
-                        bindingErrorHandlingFunc(request, container)
+                        prowlerHelper.callFunction(bindingErrorHandlingFunc, window, request);
                     }
                 }
             });
@@ -871,6 +871,9 @@
                 $(inputText).attr('value', "True");
                 inputText[0].checked = true;
             }
+            
+            prowlerGridHelper.checkBoxHeaderClick(this);
+            prowlerGridHelper.checkBoxHeaderStateUpdateByChild(this);
         }
     });
 
@@ -900,6 +903,7 @@
     
         prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);
     });
+
 
     $(document).on('click', '.pw-grid-col-head-lbl-cnt', function (e) {
         event.stopImmediatePropagation();
@@ -970,7 +974,9 @@
         }
 
         function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
+
             var dataSource = $(container).closest('.pw-grid-table-container');
+            var errFunction = dataSource.attr('pw-grd-err-func');
 
             if ($(dataSource).length == 0) {
                 return;
@@ -982,12 +988,13 @@
             var tip = $('<form>').html($(dataSource).clone(true));
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
-            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errorHandlerFunc);
+            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction);
         }
 
         function prowler_postGridHeaderAndPagination(url, sender, bindingFunc, container, errorHandlerFunc) {
 
             var dataSource = $(sender).closest('.pw-grid-table-container');
+            var errFunction = dataSource.attr('pw-grd-err-func');
 
             var paginationContainer = $(dataSource).find('.pw-grid-pagination-container');
             var filterContainer = $(dataSource).find('.pw-grid-header-container');
@@ -1005,7 +1012,7 @@
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(dataSource).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();      
 
-            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errorHandlerFunc);
+            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction);
         }
 
         function prowler_gridServerFiltering(obj, inputDelay, filterUrl) {
@@ -1032,8 +1039,8 @@
         }
 
         function prowler_gridDataBindingParser(results, container) {
-            
-            var templateElementDefault = $(container).closest(".pw-grid-table-container").find(".pw-grid-table-defaultrow").find("tr");
+
+            var templateElementDefault = $(container).closest(".pw-grid-table-main").find(".pw-grid-table-defaultrow").find("tr");
 
             var headerRow = $(container).find('tr.pw-grid-header-container');
 
@@ -1187,6 +1194,61 @@
             prowler_gridUpdatePaginationPageItemLabel(container, pageIndex);
         }
 
+        function prowler_CheckBoxSetValue(sender, value) {
+
+            if (sender == null) { return; }
+
+            $(sender).attr('value', value);
+            $(sender).prop("checked", (value.toLowerCase() === "true"))
+        }
+
+        function prowler_CheckBoxHeaderStateUpdateByChild(sender) {
+
+            if (sender == null) { return; }
+
+            var checkBoxIsChild = $(sender).hasClass("p-grid-table-checkBox-container");
+
+            if (!checkBoxIsChild) { return;}
+
+            var containerName = $(sender).find("input").attr('pw-grd-chk-name-s');
+            if (containerName == null) { return; }
+
+            var parentContainer = $(sender).closest('.pw-grid-table'); 
+
+            var elements = $(parentContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + containerName + "']");
+
+            var allCheckBoxSelected = "true";
+
+            if (elements != undefined) {
+                $(elements).each(function (index) {
+                    if ($(this).attr('value').toLowerCase() == "false"){
+                        allCheckBoxSelected = "false";
+                    }
+                });
+
+                var checkBoxHead = $(parentContainer).find(".p-grid-table-checkBox-container-head[pw-grd-chk-head-name-s='" + containerName + "']");
+                prowler_CheckBoxSetValue($(checkBoxHead).find(".pw-grd-chk-name-id-s"), allCheckBoxSelected);
+            }
+        }
+
+        function prowler_CheckBoxHeaderClick(sender) {
+
+            var parentContainer = $(sender).closest('.pw-grid-table');
+            var containerName = $(sender).attr('pw-grd-chk-head-name-s');
+
+            if (containerName == null) { return; }
+
+            var checkState = $(sender).find('input').attr('value');
+
+            var elements = $(parentContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + containerName + "']");
+
+            if (elements != undefined) {
+                $(elements).each(function (index) {
+                    prowler_CheckBoxSetValue(this, checkState)
+                });
+            }
+        }
+
         return {
             filter: prowler_gridServerFiltering,
             resizeColumnDoDrag: doDrag,
@@ -1196,8 +1258,9 @@
             GetGridLoader: prowler_GirdGetLoader,
             RemoveGridLoader: prowler_GridRemoveLoader,
             dataBind: prowler_gridDataBindingParser,
-            createPagination: prowler_gridCreatePaginationContainer
-            
+            createPagination: prowler_gridCreatePaginationContainer,
+            checkBoxHeaderClick: prowler_CheckBoxHeaderClick,
+            checkBoxHeaderStateUpdateByChild: prowler_CheckBoxHeaderStateUpdateByChild
         }
     })();
 

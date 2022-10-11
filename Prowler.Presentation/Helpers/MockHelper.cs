@@ -34,7 +34,8 @@ namespace Prowler.Presentation.Helpers
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/shaorma.jpg",
-                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce"
+                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",
+                Disable =true
             });
             mockProduct.ProductDataSource.Add( new Product
             {

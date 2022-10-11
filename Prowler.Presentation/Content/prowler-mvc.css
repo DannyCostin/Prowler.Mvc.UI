@@ -730,3 +730,7 @@
     .pw-grid-pagination-tlb-right span {
         line-height: 40px;
     }
+
+.pw-grid-col-head-cnt-srt {
+    cursor:pointer;
+}

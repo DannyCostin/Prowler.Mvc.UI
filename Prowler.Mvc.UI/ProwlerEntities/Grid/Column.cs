@@ -11,7 +11,6 @@ namespace Prowler.Mvc.UI
         internal string RowBinding { get; set; }
         internal int Width { get; set; }
         internal string ColumnTemplate { get; set; }
-        internal List<string> ColumnTemplateBindings { get; set; }
         internal string Title { get; set; }
         internal string RowTemplate { get; set; }
         internal List<string> RowTemplateBindings { get; set; }
@@ -22,6 +21,9 @@ namespace Prowler.Mvc.UI
         internal bool AsEditable { get; set; }
         internal string ValidationEvent { get; set; }
         internal GridInputType EditableInputType { get; set; }
+        internal bool HeaderAsCheckbox { get; set; }
+        internal bool HeaderCheckboxValue { get; set; }
+        internal string HeaderCheckboxLabel { get; set; }
 
         internal bool HasRowTemplate 
         { 

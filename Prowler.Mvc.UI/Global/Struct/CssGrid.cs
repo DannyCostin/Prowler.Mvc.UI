@@ -14,6 +14,7 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridDefaultRowItem = "pw-grid-table-defaultrow";
         public const string GridMainContainer = "pw-grid-table-main";
         public const string CheckBox = "p-grid-table-checkBox-container";
+        public const string CheckBoxHeader = "p-grid-table-checkBox-container-head";
         public const string CheckBoxIcon = "p-grid-table-checkBox-checkmark";
         public const string PaginationContainer = "pw-grid-pagination-container";
         public const string GridCommandDelete = "pw-grid-command-del";
@@ -35,6 +36,7 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridRowDisableControl = "pw-grid-row-cell-disable";
         public const string GridColumnResizeBlock = "pw-grid-block-resize";
         public const string GridColumnHeaderContainer = "pw-grid-col-head-cnt";
+        public const string GridColumnHeaderContainerSort = "pw-grid-col-head-cnt-srt";
         public const string GridColumnHeaderLabelContainer = "pw-grid-col-head-lbl-cnt";
         public const string PaginationIndexInput = "pw-grid-pag-index-nam";
         public const string PaginationItemsPerPageInput = "pw-grid-pag-index-itmpg";
@@ -43,5 +45,7 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridContentNoSelect = "pw-grid-content-no-select";
         public const string GridPaginationToolBarRight = "pw-grid-pagination-tlb-right";
         public const string GridPaginationPageItemLabel = "pw-grd-pagination-lbl-txt";
+        public const string CheckboxHeaderId = "pw-grd-chk-name-id-s";
+        public const string CheckBoxInputId = "pw-grd-chk-name-inpt-s";
     }
 }

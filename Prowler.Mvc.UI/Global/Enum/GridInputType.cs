@@ -9,6 +9,6 @@ namespace Prowler.Mvc.UI
     public enum GridInputType
     {
         Text,
-        Checkbox
+        CheckBox
     }
 }

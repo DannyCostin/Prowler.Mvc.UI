@@ -24,18 +24,16 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Column ColumnTemplate(this Column entity, string template, params string[] templateBindings)
+        public static Column ColumnTemplate(this Column entity, string template)
         {
             entity.ColumnTemplate = template;
-            entity.ColumnTemplateBindings = templateBindings?.ToList();
 
             return entity;
         }
 
-        public static Column ColumnTemplate(this Column entity, IHtmlString template, params string[] templateBindings)
+        public static Column ColumnTemplate(this Column entity, IHtmlString template)
         {
             entity.ColumnTemplate = template.ToString();
-            entity.ColumnTemplateBindings = templateBindings?.ToList();
 
             return entity;
         }
@@ -48,7 +46,7 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Column RowTemplate(this Column entity, IProwlerControl template)
+        private static Column RowTemplate(this Column entity, IProwlerControl template)
         {
             entity.RowTemplate = template.Render().ToHtmlString();
             entity.RowTemplateName = template.GetName();
@@ -102,6 +100,15 @@ namespace Prowler.Mvc.UI
         {
             entity.AsEditable = true;
             entity.EditableInputType = inputType;
+
+            return entity;
+        }
+
+        public static Column HeaderAsCheckbox(this Column entity, string label = null, bool stateChecked = false)
+        {
+            entity.HeaderAsCheckbox = true;
+            entity.HeaderCheckboxValue = stateChecked;
+            entity.HeaderCheckboxLabel = label;
 
             return entity;
         }
