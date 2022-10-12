@@ -1071,13 +1071,17 @@
                 });
 
                 $(templateElement).html(html);
+                prowlerGridHelper.checkBoxUpdateState(templateElement);
                 $(container).append(templateElement);
+                
             });
                     
             prowlerGridHelper.RemoveGridLoader($(container).closest('.pw-grid-table-container'));
             $(container).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').hide();
          
             $(container).closest('.pw-grid-table').scrollTop(0);
+
+            prowlerGridHelper.checkBoxHeaderStateRevaluate(container);
         }
 
         function prowler_gridUpdatePaginationPageItemLabel(container, pageIndex) {
@@ -1203,7 +1207,7 @@
         }
 
         function prowler_CheckBoxHeaderStateUpdateByChild(sender) {
-
+            
             if (sender == null) { return; }
 
             var checkBoxIsChild = $(sender).hasClass("p-grid-table-checkBox-container");
@@ -1249,6 +1253,38 @@
             }
         }
 
+        function prowler_CheckBoxHeaderStateRevaluate(sender) {
+            
+            var parentContainer = $(sender).closest('.pw-grid-table');
+
+            var checkBoxHeaders = parentContainer.find(".p-grid-table-checkBox-container-head");
+            
+
+            if (checkBoxHeaders == null) { return; }
+
+            $(checkBoxHeaders).each(function (index) {
+                var containerName = $(this).attr('pw-grd-chk-head-name-s');
+                var firstContainer = $(parentContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + containerName + "']").first().closest('.p-grid-table-checkBox-container');
+                
+                if (firstContainer != null) {
+                    prowler_CheckBoxHeaderStateUpdateByChild(firstContainer);
+                }
+            });
+        }
+
+        function prowler_CheckBoxUpdateState(template) {
+            
+            var checkBox = $(template).find('.pw-grd-chk-name-inpt-s');
+
+            if (checkBox == null) { return; }
+
+            $(checkBox).each(function (index) {
+                if ($(this).attr('value').toLowerCase() == "true") {
+                    $(this).prop("checked", "checked");
+                }
+            });
+        }
+
         return {
             filter: prowler_gridServerFiltering,
             resizeColumnDoDrag: doDrag,
@@ -1260,7 +1296,9 @@
             dataBind: prowler_gridDataBindingParser,
             createPagination: prowler_gridCreatePaginationContainer,
             checkBoxHeaderClick: prowler_CheckBoxHeaderClick,
-            checkBoxHeaderStateUpdateByChild: prowler_CheckBoxHeaderStateUpdateByChild
+            checkBoxHeaderStateUpdateByChild: prowler_CheckBoxHeaderStateUpdateByChild,
+            checkBoxHeaderStateRevaluate: prowler_CheckBoxHeaderStateRevaluate,
+            checkBoxUpdateState: prowler_CheckBoxUpdateState
         }
     })();
 

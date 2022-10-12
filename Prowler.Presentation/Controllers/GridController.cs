@@ -25,8 +25,6 @@ namespace Prowler.Presentation.Controllers
         {
             try
             {
-
-
                 Thread.Sleep(500);
 
                 var list = MockHelper.GetMockProducts(false).ProductDataSource.AsEnumerable();
@@ -56,6 +54,10 @@ namespace Prowler.Presentation.Controllers
                 var data = list.Skip(gridDataSourceRequest?.PageInfo?.Skip ?? 0)
                                .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
                                .ToList();
+
+                //data.ForEach(i => i.Checked = true);
+
+                //data[3].Checked = false;
 
                 var datasouce = new GridDatasourceResponse<Product>
                 {

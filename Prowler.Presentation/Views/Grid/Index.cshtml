@@ -42,7 +42,7 @@
             .Height(500)
             .Width(1000)
             .Columns(
-                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox().ColumnTemplate("<p>{#ID#}</p>"),
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox(),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
                     i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").AsEditable(GridInputType.Text),
@@ -57,7 +57,7 @@
                                                   .HtmlAttributes("style", "width:200px;height:32px;")
                                                   .Render()),*@
                     @*nuli => i.BindTo(nameof(Product.Image)).Title("Image"),*@
-                    i => i.BindTo(nameof(Product.Name)).Width(500),
+                    i => i.BindTo(nameof(Product.Name)),
                     i => i.BindTo(nameof(Product.Checked)),
                     i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Title("Image")
                     )
