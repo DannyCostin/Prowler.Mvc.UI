@@ -24,6 +24,8 @@ namespace Prowler.Mvc.UI
         internal bool HeaderAsCheckbox { get; set; }
         internal bool HeaderCheckboxValue { get; set; }
         internal string HeaderCheckboxLabel { get; set; }
+        internal bool AsReadOnlyInput { get; set; }
+        internal string AsReadOnlyInputBinding { get; set; }
 
         internal bool HasRowTemplate 
         { 

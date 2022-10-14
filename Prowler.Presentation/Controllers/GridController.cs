@@ -16,7 +16,13 @@ namespace Prowler.Presentation.Controllers
         // GET: Grid
         public ActionResult Index()
         {
-            return View(MockHelper.GetMockProducts(false));
+            var dataSource = MockHelper.GetMockProducts(false);
+
+                 dataSource.ProductDataSource.ForEach(i => {
+                     i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
+                     i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
+                 });
+            return View(dataSource);
         }
         
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
@@ -55,9 +61,12 @@ namespace Prowler.Presentation.Controllers
                                .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
                                .ToList();
 
-                //data.ForEach(i => i.Checked = true);
+                data.ForEach(i => {
+                    i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
+                    i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
+                });
 
-                //data[3].Checked = false;
+                //data[3].Checked = true;
 
                 var datasouce = new GridDatasourceResponse<Product>
                 {

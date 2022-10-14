@@ -1039,7 +1039,7 @@
         }
 
         function prowler_gridDataBindingParser(results, container) {
-
+           
             var templateElementDefault = $(container).closest(".pw-grid-table-main").find(".pw-grid-table-defaultrow").find("tr");
 
             var headerRow = $(container).find('tr.pw-grid-header-container');
@@ -1222,13 +1222,24 @@
             var elements = $(parentContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + containerName + "']");
 
             var allCheckBoxSelected = "true";
+            var allCheckBoxDisable = "true";
 
             if (elements != undefined) {
                 $(elements).each(function (index) {
-                    if ($(this).attr('value').toLowerCase() == "false"){
+                    if ($(this).attr('value').toLowerCase() == "false"
+                        && $(this).attr('pw-grd-ckk-dis-state').toLowerCase() == "false"
+                    ) {
                         allCheckBoxSelected = "false";
                     }
+
+                    if ($(this).attr('pw-grd-ckk-dis-state').toLowerCase() == "false") {
+                        allCheckBoxDisable = "false";
+                    }
                 });
+
+                if (allCheckBoxSelected == "true" && allCheckBoxDisable == "true") {
+                    allCheckBoxSelected = "false";
+                }
 
                 var checkBoxHead = $(parentContainer).find(".p-grid-table-checkBox-container-head[pw-grd-chk-head-name-s='" + containerName + "']");
                 prowler_CheckBoxSetValue($(checkBoxHead).find(".pw-grd-chk-name-id-s"), allCheckBoxSelected);
@@ -1248,7 +1259,9 @@
 
             if (elements != undefined) {
                 $(elements).each(function (index) {
-                    prowler_CheckBoxSetValue(this, checkState)
+                    if ($(this).attr('pw-grd-ckk-dis-state').toLowerCase() == "false") {
+                        prowler_CheckBoxSetValue(this, checkState)
+                    }
                 });
             }
         }
@@ -1273,7 +1286,7 @@
         }
 
         function prowler_CheckBoxUpdateState(template) {
-            
+
             var checkBox = $(template).find('.pw-grd-chk-name-inpt-s');
 
             if (checkBox == null) { return; }
@@ -1281,6 +1294,13 @@
             $(checkBox).each(function (index) {
                 if ($(this).attr('value').toLowerCase() == "true") {
                     $(this).prop("checked", "checked");
+                }
+
+                if ($(this).attr('pw-grd-ckk-dis-state').toLowerCase() == "true") {
+                    var parent = $(this).closest(".p-grid-table-checkBox-container");
+                    parent.removeClass("p-grid-table-checkBox-container");
+                    parent.addClass("p-grid-table-checkBox-container-dis");
+                    parent.find(".p-grid-table-checkBox-checkmark").removeClass("p-grid-table-checkBox-checkmark").addClass("p-grid-table-checkBox-checkmark-dis");
                 }
             });
         }

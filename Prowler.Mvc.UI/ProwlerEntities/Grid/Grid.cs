@@ -29,5 +29,6 @@ namespace Prowler.Mvc.UI
         internal string FilterContainerId { get; set; }
         internal string UniqueId { get; set; }
         internal string ErrorFunction { get; set; }
+        internal bool AutoSizeHeaders { get; set; }
     }
 }

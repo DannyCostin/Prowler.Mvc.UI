@@ -112,5 +112,13 @@ namespace Prowler.Mvc.UI
 
             return entity;
         }
+
+        public static Column AsReadOnly(this Column entity, string readOnlyBinding = null)
+        {
+            entity.AsReadOnlyInput = true;
+            entity.AsReadOnlyInputBinding = readOnlyBinding;
+
+            return entity;
+        }
     }
 }

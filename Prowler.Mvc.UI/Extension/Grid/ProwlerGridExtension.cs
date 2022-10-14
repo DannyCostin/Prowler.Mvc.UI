@@ -23,6 +23,13 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel>AutoSizeHeaders<TModel>(this Grid<TModel> entity)
+        {
+            entity.AutoSizeHeaders = true;
+
+            return entity;
+        }
+
         public static Grid<TModel> UniqueId<TModel>(this Grid<TModel> entity, string bindingProperty)
         {
             entity.UniqueId = bindingProperty;
@@ -183,6 +190,7 @@ namespace Prowler.Mvc.UI
 
             var table = new TagBuilder(TagElement.Table);
             ApplyTableSize(table, entity);
+            AppyAutoSizeHeaders(entity);
 
             table.AddCssClass(CssGrid.Grid);
 
@@ -200,6 +208,22 @@ namespace Prowler.Mvc.UI
 
             entity.TableTemplate.Tag.TagSetInnerHtml(gridContainer);
             CreateOverLayerContainer(entity.TableTemplate.Tag);
+        }
+
+        private static void AppyAutoSizeHeaders<TModel>(Grid<TModel> entity)
+        {
+            if(entity.Columns == null || !entity.AutoSizeHeaders) { return; }
+
+            var unsetColumns = entity.Columns.Count(i => i.Width == 0);
+
+            if(unsetColumns <= 0 || entity.Width <= 0) { return; }
+
+            var columnSize = entity.Width / unsetColumns;
+
+            entity.Columns.ForEach(i =>
+            {
+                if (i.Width == 0) { i.Width = columnSize; }
+            });
         }
 
         private static void CreatePaginationArea<TModel>(Grid<TModel> entity, TagBuilder parentcontainer)
@@ -599,6 +623,65 @@ namespace Prowler.Mvc.UI
             }
         }
 
+        private static void SetupCheckBoxReadOnlyForDefaultItem(TagBuilder checkBox, Column column,
+            TagBuilder checkBoxContainer, TagBuilder checkBoxIcon)
+        {
+            checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+            checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+
+            if (column.AsReadOnlyInput && column.AsReadOnlyInputBinding != null)
+            {
+                checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, ProwlerHelper.GetBindingString(column.AsReadOnlyInputBinding));
+
+                return;
+            }
+
+            if (column.AsReadOnlyInput && column.AsReadOnlyInputBinding == null)
+            {
+                checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, "true");
+
+                return;
+            }
+
+            checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, "false");
+        }
+
+        private static void SetupCheckBoxReadOnlyForItem(TagBuilder checkBox, Column column, dynamic dataItem
+           ,TagBuilder checkBoxContainer, TagBuilder checkBoxIcon)
+        {
+            if (column.AsReadOnlyInput && column.AsReadOnlyInputBinding != null)
+            {
+                var bindingValue = ProwlerHelper.GetPropValue<bool>(dataItem, column.AsReadOnlyInputBinding);
+                checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, bindingValue.ToString().ToLower());
+
+                if (bindingValue)
+                {
+                    checkBoxContainer.AddCssClass(CssGrid.CheckBoxDisable);
+                    checkBoxIcon.AddCssClass(CssGrid.CheckBoxIconDisable);
+                }
+                else
+                {
+                    checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+                    checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+                }
+
+                return;
+            }
+
+            if (column.AsReadOnlyInput && column.AsReadOnlyInputBinding == null)
+            {
+                checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, "true");
+                checkBoxContainer.AddCssClass(CssGrid.CheckBoxDisable);
+                checkBoxIcon.AddCssClass(CssGrid.CheckBoxIconDisable);
+
+                return;
+            }
+
+            checkBox.Attributes.Add(AttributeGrid.CheckBoxDisableState, "false");
+            checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+            checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+        }
+
         private static void CreateCheckBox<TModel>(Grid<TModel> entity, TagBuilder tdContainer, string value,
             Column column, dynamic dataItem, bool defaultItem = false)
         {
@@ -610,20 +693,21 @@ namespace Prowler.Mvc.UI
 
                 string uniqueIdValue = ProwlerHelper.GetPropValue<string>(dataItem, entity.UniqueId);
 
-
                 if (defaultItem)
                 {
                     checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, ProwlerHelper.GetBindingString(entity.UniqueId));
+                    SetupCheckBoxReadOnlyForDefaultItem(checkBox, column, checkBoxContainer, checkBoxIcon);
                 }
                 else
                 {
                     checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, uniqueIdValue);
+                    SetupCheckBoxReadOnlyForItem(checkBox, column, dataItem, checkBoxContainer, checkBoxIcon);
                 }                
           
                 checkBox.TagAsCheckBox();
-                checkBoxContainer.AddCssClass(CssGrid.CheckBox);
+                
                 checkBoxContainer.AddCssClass(CssGrid.GridRowEditContainer);
-                checkBoxIcon.AddCssClass(CssGrid.CheckBoxIcon);
+                
                 checkBox.MergeAttribute(AttributeGrid.CheckBoxName, column.RowBinding);
                 checkBox.AddCssClass(CssGrid.CheckBoxInputId);
 
@@ -671,6 +755,11 @@ namespace Prowler.Mvc.UI
                     templateBindingProperties.AddRange(column.RowTemplateBindings);
                 }
 
+                if(column.AsReadOnlyInputBinding != null)
+                {
+                    templateBindingProperties.Add(column.AsReadOnlyInputBinding);
+                }
+
                 var td = new TagBuilder(TagElement.Td);
 
                 td.AddCssClass(CssGrid.GridRowIdentityClass);
@@ -695,7 +784,10 @@ namespace Prowler.Mvc.UI
                 templateBindingProperties.Add(entity.UniqueId);
             }
 
-            tr.MergeAttribute(AttributeGrid.GridBindings, string.Join(",", templateBindingProperties.Select(i => i)));
+            var res = templateBindingProperties.Select(i => i).Distinct().ToList();
+
+            templateBindingProperties.RemoveAll(i => i == null);
+            tr.MergeAttribute(AttributeGrid.GridBindings, string.Join(",", templateBindingProperties.Select(i => i).Distinct().ToList()));
 
             return tr;
         }

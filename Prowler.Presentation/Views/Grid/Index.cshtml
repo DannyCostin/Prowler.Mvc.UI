@@ -42,24 +42,25 @@
             .Height(500)
             .Width(1000)
             .Columns(
-                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox(),
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox().AsReadOnly("Disable"),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
-                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").AsEditable(GridInputType.Text),
-                    i => i.BindTo(nameof(Product.GroupId)).Title("Group Id").Width(100).AsEditable(GridInputType.Text),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    i => i.BindTo(nameof(Product.GroupId)).Title("Group Id")
                     
-                    @*.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+
+                    .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
                                                   .BindTo(Model.FilterGroups, "Product Group")
                                                   .DataTextField(nameof(Product.Name))
                                                   .DataValueField(nameof(Product.Id))
                                                   .Multiselect(nameof(Product.Checked), true)
                                                   .Event(EventDropDown.Selected, "itemSelectionTest")
                                                   .HtmlAttributes("style", "width:200px;height:32px;")
-                                                  .Render()),*@
-                    @*nuli => i.BindTo(nameof(Product.Image)).Title("Image"),*@
+                                                  .Render()),
+                    i => i.BindTo(nameof(Product.Image)).Title("Image"),
                     i => i.BindTo(nameof(Product.Name)),
                     i => i.BindTo(nameof(Product.Checked)),
-                    i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Title("Image")
+                    i => i.RowTemplate(@"<img src=""{#Image#}"" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Width(50).Title("Image")
                     )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(5)
@@ -67,6 +68,7 @@
                                           .PaginationButtons(6)
                                           .Url("/Grid/Page"))
         .ActionSort("/Grid/Page")
+        .AutoSizeHeaders()
         .AllowColumnResize()
         .IncludeFilterContainer("customContainer")
         .ErrorFunction("GridErrorParser")

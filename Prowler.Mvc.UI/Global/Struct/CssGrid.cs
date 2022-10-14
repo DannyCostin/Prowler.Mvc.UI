@@ -14,8 +14,10 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridDefaultRowItem = "pw-grid-table-defaultrow";
         public const string GridMainContainer = "pw-grid-table-main";
         public const string CheckBox = "p-grid-table-checkBox-container";
+        public const string CheckBoxDisable = "p-grid-table-checkBox-container-dis";
         public const string CheckBoxHeader = "p-grid-table-checkBox-container-head";
         public const string CheckBoxIcon = "p-grid-table-checkBox-checkmark";
+        public const string CheckBoxIconDisable = "p-grid-table-checkBox-checkmark-dis";
         public const string PaginationContainer = "pw-grid-pagination-container";
         public const string GridCommandDelete = "pw-grid-command-del";
         public const string GridCommandEdit = "pw-grid-command-edit";
