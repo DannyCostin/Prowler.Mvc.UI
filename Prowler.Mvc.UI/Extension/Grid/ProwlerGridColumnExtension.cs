@@ -104,7 +104,7 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Column HeaderAsCheckbox(this Column entity, string label = null, bool stateChecked = false)
+        public static Column HeaderAsCheckBox(this Column entity, string label = null, bool stateChecked = false)
         {
             entity.HeaderAsCheckbox = true;
             entity.HeaderCheckboxValue = stateChecked;

@@ -42,7 +42,7 @@
             .Height(500)
             .Width(1000)
             .Columns(
-                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckbox().AsReadOnly("Disable"),
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox().AsReadOnly("Disable"),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
                     i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
