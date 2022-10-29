@@ -30,5 +30,6 @@ namespace Prowler.Mvc.UI
         internal string UniqueId { get; set; }
         internal string ErrorFunction { get; set; }
         internal bool AutoSizeHeaders { get; set; }
+        internal string ToolBarTemplate { get; set; }
     }
 }

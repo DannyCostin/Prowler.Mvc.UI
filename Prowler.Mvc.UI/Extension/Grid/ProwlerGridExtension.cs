@@ -135,6 +135,20 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> ToolBarTemplate<TModel>(this Grid<TModel> entity, string template)
+        {
+            entity.ToolBarTemplate = template;
+
+            return entity;
+        }
+
+        public static Grid<TModel> ToolBarTemplate<TModel>(this Grid<TModel> entity, IHtmlString template)
+        {
+            entity.ToolBarTemplate = template.ToString();
+
+            return entity;
+        }
+
         private static void MergeHtmlAttributes(TagBuilder tag, Dictionary<string, string> htmlAttributes)
         {
             if (htmlAttributes == null || !htmlAttributes.Any())
@@ -377,7 +391,21 @@ namespace Prowler.Mvc.UI
 
             container.TagSetInnerHtml(CreatePaginationCurentPageItemsLabel(entity));
 
+            if(entity.ToolBarTemplate != null)
+            {
+                container.TagSetInnerHtml(CreateToolBarTemplate(entity));
+            }
+
             return container;
+        }
+
+        private static TagBuilder CreateToolBarTemplate<TModel>(Grid<TModel> entity)
+        {
+            var div = new TagBuilder(TagElement.Div);
+
+            div.InnerHtml = entity.ToolBarTemplate;
+
+            return div;
         }
 
         private static TagBuilder CreatePaginationCurentPageItemsLabel<TModel>(Grid<TModel> entity)
