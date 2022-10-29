@@ -1317,7 +1317,8 @@
             checkBoxHeaderClick: prowler_CheckBoxHeaderClick,
             checkBoxHeaderStateUpdateByChild: prowler_CheckBoxHeaderStateUpdateByChild,
             checkBoxHeaderStateRevaluate: prowler_CheckBoxHeaderStateRevaluate,
-            checkBoxUpdateState: prowler_CheckBoxUpdateState
+            checkBoxUpdateState: prowler_CheckBoxUpdateState,
+            checkBoxSetValue: prowler_CheckBoxSetValue
         }
     })();
 
@@ -1339,8 +1340,30 @@
             prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);
         }
 
+        function prowler_CheckBoxUpdate(binding, state) {
+            var tableContainer = $(gridListId);
+
+            if (tableContainer == null) { return; }
+
+            var elements = $(tableContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + binding + "']");
+
+            if (elements == null) { return; }
+
+            if (elements != undefined) {
+                $(elements).each(function (index) {
+                    if ($(this).attr('pw-grd-ckk-dis-state').toLowerCase() == "false") {
+                        prowlerGridHelper.checkBoxSetValue(this, String(state))
+                    }
+                });
+            }
+
+            var checkBoxHead = $(tableContainer).find(".p-grid-table-checkBox-container-head[pw-grd-chk-head-name-s='" + binding + "']");
+            prowlerGridHelper.checkBoxSetValue($(checkBoxHead).find(".pw-grd-chk-name-id-s"), String(state));
+        }
+
         return {
-            Refresh: prowlerGridRefresh
+            Refresh: prowlerGridRefresh,
+            SetCheckBoxContainersState: prowler_CheckBoxUpdate
         }
     }
 });

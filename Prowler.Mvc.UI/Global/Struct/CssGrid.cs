@@ -49,5 +49,6 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string GridPaginationPageItemLabel = "pw-grd-pagination-lbl-txt";
         public const string CheckboxHeaderId = "pw-grd-chk-name-id-s";
         public const string CheckBoxInputId = "pw-grd-chk-name-inpt-s";
+        public const string ToolBarRightContainer = "p-grid-tollbar-right-container";
     }
 }

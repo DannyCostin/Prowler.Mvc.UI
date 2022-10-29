@@ -725,6 +725,7 @@
     position: absolute;
     right: 20px;
     height: 40px;
+    display: flex;
 }
 
     .pw-grid-pagination-tlb-right span {
@@ -800,3 +801,7 @@
         position: absolute;
         display: none;
     }
+
+.p-grid-tollbar-right-container {
+    padding-left: 10px;
+}

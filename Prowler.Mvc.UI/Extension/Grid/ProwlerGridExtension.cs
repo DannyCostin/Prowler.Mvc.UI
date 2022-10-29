@@ -402,6 +402,7 @@ namespace Prowler.Mvc.UI
         private static TagBuilder CreateToolBarTemplate<TModel>(Grid<TModel> entity)
         {
             var div = new TagBuilder(TagElement.Div);
+            div.AddCssClass(CssGrid.ToolBarRightContainer);
 
             div.InnerHtml = entity.ToolBarTemplate;
 

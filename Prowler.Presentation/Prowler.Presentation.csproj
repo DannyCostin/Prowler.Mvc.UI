@@ -201,6 +201,7 @@
     <Content Include="Views\DropDownList\Index.cshtml" />
     <Content Include="Views\DropDownList\DropDownItem.cshtml" />
     <Content Include="Views\Grid\Index.cshtml" />
+    <Content Include="Views\Grid\ToolBarContainer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
