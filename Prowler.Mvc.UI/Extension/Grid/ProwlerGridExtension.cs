@@ -486,6 +486,11 @@ namespace Prowler.Mvc.UI
                 tr.TagSetInnerHtml(th);
             }
 
+            var thEmpty = new TagBuilder(TagElement.Th);
+            thEmpty.MergeAttribute("valign", "top");
+            thEmpty.MergeAttribute("style", "width:100%");
+            tr.TagSetInnerHtml(thEmpty);
+
             return tr;
         }
 
