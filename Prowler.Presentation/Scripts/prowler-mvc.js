@@ -973,7 +973,7 @@
             return $('#' + containerId).clone(true);
         }
 
-        function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
+        function prowler_postGrid(url, sender, bindingFunc, container, objectData) {
 
             var dataSource = $(container).closest('.pw-grid-table-container');
             var errFunction = dataSource.attr('pw-grd-err-func');
@@ -988,7 +988,16 @@
             var tip = $('<form>').html($(dataSource).clone(true));
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
-            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction);
+            var dataObjectPost = $(tip).serializeArray();
+
+            if (objectData != null) {
+
+                $.each(objectData, function (key, value) {
+                    dataObjectPost.push(value);
+                });                                    
+            }
+
+            prowlerHelper.AjaxSend(url, 'POST', dataObjectPost, bindingFunc, container, errFunction);
         }
 
         function prowler_postGridHeaderAndPagination(url, sender, bindingFunc, container, errorHandlerFunc) {
@@ -1327,7 +1336,7 @@
 
         var gridListId = "#" + id;
 
-        function prowlerGridRefresh(url) {
+        function prowlerGridRefresh(url, objectData) {
             var tableContainer = $(gridListId);
 
             var containerHost = $(tableContainer).find(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
@@ -1338,7 +1347,7 @@
                 paginationUrl = url;
             }
 
-            prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);           
+            prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost, objectData);           
         }
 
         function prowler_CheckBoxUpdate(binding, state) {

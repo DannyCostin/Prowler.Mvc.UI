@@ -805,3 +805,8 @@
 .p-grid-tollbar-right-container{
     padding-left:10px;
 }
+
+.pw-grid-table tbody {
+    display:table;
+    width:100%;
+}

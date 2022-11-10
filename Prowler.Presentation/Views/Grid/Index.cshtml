@@ -39,13 +39,14 @@
             .UniqueId(nameof(Product.Id))
             .BindTo(Model.ProductDataSource)
             .HtmlAttributes("id", "productgrid")
+            .HtmlAttributes("style", "width:800%")
             .Height(500)
             .Width(1000)
             .Columns(
                     i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox().AsReadOnly("Disable"),                    
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
-                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(600),
                     i => i.BindTo(nameof(Product.GroupName)).Width(200)
                     .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
                                                   .BindTo(Model.FilterGroups, "Product Group")
@@ -89,6 +90,11 @@
     }
 
     function itemSelectionTest(value, label) {
+        debugger;
+        var data = {};
+        data[0] = { name: "additionalClient", value: "clientF" };
+        data[1] = { name: "additionalFilter", value: "1" };
+
         prowlerGrid("productgrid").Refresh("/Grid/Page");
     }
 

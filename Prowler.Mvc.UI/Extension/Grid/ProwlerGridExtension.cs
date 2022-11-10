@@ -488,7 +488,6 @@ namespace Prowler.Mvc.UI
 
             var thEmpty = new TagBuilder(TagElement.Th);
             thEmpty.MergeAttribute("valign", "top");
-            thEmpty.MergeAttribute("style", "width:100%");
             tr.TagSetInnerHtml(thEmpty);
 
             return tr;

@@ -27,7 +27,7 @@ namespace Prowler.Presentation.Controllers
         
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
             string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups,
-            string ClientName, string ClientId, bool? productFilterList)
+            string ClientName, string ClientId, bool? productFilterList, string additionalClient, string additionalFilter)
         {
             try
             {
