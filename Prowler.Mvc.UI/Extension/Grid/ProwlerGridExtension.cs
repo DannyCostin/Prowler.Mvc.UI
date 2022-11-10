@@ -480,7 +480,7 @@ namespace Prowler.Mvc.UI
 
                 CreateHeaderCheckBox(entity, container, item);
 
-                ApplyRowHtmlAttributes(entity, item, th);
+                ApplyRowHtmlAttributes(entity, item, container);
 
                 th.TagSetInnerHtml(container);
                 tr.TagSetInnerHtml(th);
