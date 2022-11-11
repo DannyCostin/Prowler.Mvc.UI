@@ -1034,17 +1034,16 @@
         }
 
         function doDrag(e) {
-
+           
             var resizeValue = (startWidth + e.clientX - startX);
 
-            $(resizeContent).width(resizeValue)      
-            $(resizeColumn).width(resizeValue)
-                                 
+            $(resizeContent).width(resizeValue);                               
         }
 
         function stopDrag(e) {
             document.documentElement.removeEventListener('mousemove', doDrag, false);
             document.documentElement.removeEventListener('mouseup', stopDrag, false);
+            $(resizeContent).width(parseInt($(resizeColumn).width(), 10));
         }
 
         function prowler_gridDataBindingParser(results, container) {
