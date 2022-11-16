@@ -70,7 +70,7 @@
     <Compile Include="Extension\ProwlerExtension.cs" />
     <Compile Include="Extension\Grid\ProwlerGridColumnExtension.cs" />
     <Compile Include="Extension\Grid\ProwlerGridExtension.cs" />
-    <Compile Include="Global\Enum\GridInputType.cs" />
+    <Compile Include="Global\Enum\GridEnums.cs" />
     <Compile Include="Global\ProwlerHelper.cs" />
     <Compile Include="Global\Struct\AttributeDropDownList.cs" />
     <Compile Include="Global\Struct\AttributeGrid.cs" />

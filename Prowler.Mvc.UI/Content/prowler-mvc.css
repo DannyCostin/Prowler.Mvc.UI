@@ -676,15 +676,16 @@
 
 .pw-grid-block-resize {
     background-color: transparent;
-    width: 5px;
+    width: 3px;
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: 0px;
+    right: -1px;
     margin: auto;
     padding: 0px;
-    cursor: ew-resize;
-    bottom: -8px;
+    cursor: col-resize;
+    bottom: 0px;
     display: block;
+    z-index: 10;
 }
 
 .pw-grid-col-head-cnt {
@@ -809,4 +810,9 @@
 .pw-grid-table tbody {
     display: table;
     width: 100%;
+}
+
+.pw-grid-block-resize:hover {
+    background-color: #408dc8 !important;
+    cursor: col-resize;
 }

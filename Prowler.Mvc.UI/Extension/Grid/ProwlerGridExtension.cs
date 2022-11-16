@@ -121,6 +121,21 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
+        public static Grid<TModel> GridEvent<TModel>(this Grid<TModel> entity, GridEvents gridEvent, string function)
+        {
+            switch (gridEvent)
+            {
+                case GridEvents.DataBindError:
+                    entity.ErrorFunction = function;
+                    break;
+                case GridEvents.DataBindSuccess:
+                    entity.DataBindedFunction = function;
+                    break;
+            }
+           
+            return entity;
+        }
+
         public static Grid<TModel> ActionSort<TModel>(this Grid<TModel> entity, string url)
         {
             entity.ActionSort = url;
@@ -195,10 +210,7 @@ namespace Prowler.Mvc.UI
             gridContainer.AddCssClass(CssGrid.GridContainer);
             gridContainer.Attributes.Add(AttributeGrid.GridFilterContainerId, entity.FilterContainerId);
 
-            if (!string.IsNullOrEmpty(entity.ErrorFunction))
-            {
-                gridContainer.Attributes.Add(AttributeGrid.GridErrorFunction, entity.ErrorFunction);
-            }
+            ApplyEvents(gridContainer, entity);
 
             MergeHtmlAttributes(entity.TableTemplate.Tag, entity.HtmlAttributes);
 
@@ -222,6 +234,19 @@ namespace Prowler.Mvc.UI
 
             entity.TableTemplate.Tag.TagSetInnerHtml(gridContainer);
             CreateOverLayerContainer(entity.TableTemplate.Tag);
+        }
+
+        private static void ApplyEvents<TModel>(TagBuilder gridContainer, Grid<TModel> entity)
+        {
+            if (!string.IsNullOrEmpty(entity.ErrorFunction))
+            {
+                gridContainer.Attributes.Add(AttributeGrid.GridErrorFunction, entity.ErrorFunction);
+            }
+
+            if (!string.IsNullOrEmpty(entity.DataBindedFunction))
+            {
+                gridContainer.Attributes.Add(AttributeGrid.GridDataBindedFunction, entity.DataBindedFunction);
+            }
         }
 
         private static void AppyAutoSizeHeaders<TModel>(Grid<TModel> entity)
@@ -454,7 +479,7 @@ namespace Prowler.Mvc.UI
                     labelContainer.MergeAttribute(AttributeGrid.ColumnSortParameterName, item.SortName);
                 }
 
-                CreateHeaderResizeBlock(entity, container, item);
+                CreateHeaderResizeBlock(entity, th, item);
 
                 if (item.SortName != null)
                 {
@@ -481,6 +506,7 @@ namespace Prowler.Mvc.UI
                 CreateHeaderCheckBox(entity, container, item);
 
                 ApplyRowHtmlAttributes(entity, item, container);
+                ApplyRowHtmlAttributes(entity, item, th);
 
                 th.TagSetInnerHtml(container);
                 tr.TagSetInnerHtml(th);

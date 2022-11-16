@@ -259,7 +259,7 @@
             return original.replace(regex, replaceTxt);
         }
 
-        function prowler_DataBind(serverUrl, type, properties, bindingFunc, container, bindingErrorHandlingFunc) {
+        function prowler_DataBind(serverUrl, type, properties, bindingFunc, container, bindingErrorHandlingFunc, bindingSuccessFunc) {
 
             if (serverUrl == "" || serverUrl == undefined) {
                 return;
@@ -273,6 +273,10 @@
                 success: function (results) {
                     if (bindingFunc != undefined) {
                         bindingFunc(results, container);
+
+                        if (bindingSuccessFunc != undefined) {
+                            prowlerHelper.callFunction(bindingSuccessFunc, window, results);
+                        }
                     }
                 },
                 error: function (request, status, error) {
@@ -884,7 +888,7 @@
 
         startX = e.clientX;
         resizeColumn = $(this).closest('th');
-        resizeContent = $(this).parent();
+        resizeContent = $(this).parent().find('.pw-grid-col-head-cnt');
         startWidth = parseInt($(resizeColumn).width(), 10);
 
         document.documentElement.addEventListener('mousemove', prowlerGridHelper.resizeColumnDoDrag, false);
@@ -972,10 +976,11 @@
             return $('#' + containerId).clone(true);
         }
 
-        function prowler_postGrid(url, sender, bindingFunc, container, errorHandlerFunc) {
+        function prowler_postGrid(url, sender, bindingFunc, container, objectData) {
 
             var dataSource = $(container).closest('.pw-grid-table-container');
             var errFunction = dataSource.attr('pw-grd-err-func');
+            var dataBindedFunction = dataSource.attr('pw-grd-databinded-func');
 
             if ($(dataSource).length == 0) {
                 return;
@@ -987,13 +992,23 @@
             var tip = $('<form>').html($(dataSource).clone(true));
             tip.append(prowler_GetFilterContainer(includeFilterContainerId));
 
-            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction);
+            var dataObjectPost = $(tip).serializeArray();
+
+            if (objectData != null) {
+
+                $.each(objectData, function (key, value) {
+                    dataObjectPost.push(value);
+                });
+            }
+
+            prowlerHelper.AjaxSend(url, 'POST', dataObjectPost, bindingFunc, container, errFunction, dataBindedFunction);
         }
 
         function prowler_postGridHeaderAndPagination(url, sender, bindingFunc, container, errorHandlerFunc) {
 
             var dataSource = $(sender).closest('.pw-grid-table-container');
             var errFunction = dataSource.attr('pw-grd-err-func');
+            var dataBindedFunction = dataSource.attr('pw-grd-databinded-func');
 
             var paginationContainer = $(dataSource).find('.pw-grid-pagination-container');
             var filterContainer = $(dataSource).find('.pw-grid-header-container');
@@ -1011,7 +1026,7 @@
             dataSource.append(prowlerGridHelper.GetGridLoader());
             $(dataSource).closest('.pw-grid-table-main').find('.pw-grid-overlayer-cnt').show();
 
-            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction);
+            prowlerHelper.AjaxSend(url, 'POST', $(tip).serialize(), bindingFunc, container, errFunction, dataBindedFunction);
         }
 
         function prowler_gridServerFiltering(obj, inputDelay, filterUrl) {
@@ -1024,15 +1039,15 @@
         }
 
         function doDrag(e) {
-
+            e.preventDefault();
             var resizeValue = (startWidth + e.clientX - startX);
 
-            $(resizeContent).width(resizeValue)
-            $(resizeColumn).width(resizeValue)
-
+            $(resizeContent).width(resizeValue);
+            $(resizeColumn).width(resizeValue);
         }
 
         function stopDrag(e) {
+            e.preventDefault();
             document.documentElement.removeEventListener('mousemove', doDrag, false);
             document.documentElement.removeEventListener('mouseup', stopDrag, false);
         }
@@ -1065,6 +1080,8 @@
                 $.each(attribute, function (index, paramenter) {
 
                     var value = result[paramenter];
+
+                    if (value == null) { value = ""; }
 
                     html = prowlerHelper.StringReplace(html, '{#' + paramenter + '#}', value);
                 });
@@ -1326,7 +1343,7 @@
 
         var gridListId = "#" + id;
 
-        function prowlerGridRefresh(url) {
+        function prowlerGridRefresh(url, objectData) {
             var tableContainer = $(gridListId);
 
             var containerHost = $(tableContainer).find(".pw-grid-table-container").find(".pw-grid-table").find("tbody");
@@ -1337,7 +1354,7 @@
                 paginationUrl = url;
             }
 
-            prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost);
+            prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost, objectData);
         }
 
         function prowler_CheckBoxUpdate(binding, state) {

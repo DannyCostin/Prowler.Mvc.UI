@@ -11,4 +11,10 @@ namespace Prowler.Mvc.UI
         Text,
         CheckBox
     }
+
+    public enum GridEvents
+    {
+        DataBindError,
+        DataBindSuccess
+    }
 }

@@ -39,24 +39,31 @@
             .UniqueId(nameof(Product.Id))
             .BindTo(Model.ProductDataSource)
             .HtmlAttributes("id", "productgrid")
-            .HtmlAttributes("style", "width:800%")
             .Height(500)
             .Width(1000)
             .Columns(
-                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox().AsReadOnly("Disable"),                    
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox().AsReadOnly("Disable"),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
-                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
-                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(600),
-                    i => i.BindTo(nameof(Product.GroupName)).Width(200)
-                    .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
-                                                  .BindTo(Model.FilterGroups, "Product Group")
-                                                  .DataTextField(nameof(Product.Name))
-                                                  .DataValueField(nameof(Product.Id))
-                                                  .Multiselect(nameof(Product.Checked), true)
-                                                  .Event(EventDropDown.Selected, "itemSelectionTest")
-                                                  .HtmlAttributes("style", "width:200px;height:32px;")
-                                                  .Render()),
-                    i => i.RowTemplate(@"<img src=""{#Image#}"" alt="""" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Width(50).Title("Image")
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(1300)
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort")
+                    //i => i.BindTo(nameof(Product.GroupName)).Width(200)
+                    //.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                    //                              .BindTo(Model.FilterGroups, "Product Group")
+                    //                              .DataTextField(nameof(Product.Name))
+                    //                              .DataValueField(nameof(Product.Id))
+                    //                              .Multiselect(nameof(Product.Checked), true)
+                    //                              .Event(EventDropDown.Selected, "itemSelectionTest")
+                    //                              .HtmlAttributes("style", "width:200px;height:32px;")
+                    //                              .Render())
+                    // i => i.RowTemplate(@"<img src=""{#Image#}"" alt="""" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Width(50).Title("Image")
                     )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(5)
@@ -64,10 +71,11 @@
                                           .PaginationButtons(6)
                                           .Url("/Grid/Page"))
         .ActionSort("/Grid/Page")
-        .AutoSizeHeaders()
+        //.AutoSizeHeaders()
         .AllowColumnResize()
         .IncludeFilterContainer("customContainer")
-        .ErrorFunction("GridErrorParser")
+        .GridEvent(GridEvents.DataBindSuccess, "DataBindedEvent")
+        .GridEvent(GridEvents.DataBindError, "GridErrorParser")
         .ToolBarTemplate(Html.Partial("ToolBarContainer"))
         .Render()
  )
@@ -78,9 +86,14 @@
 <input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
 
 <script>
-    function GridErrorParser(result) {
+    function GridErrorParser(result) {        
         alert(result.responseJSON);
     }
+
+    function DataBindedEvent(result) {
+        alert(JSON.stringify(result));
+    }
+
     function ValidationNameField(value) {
         if (value == "") {
             return 'Name field is required!';
@@ -91,11 +104,12 @@
 
     function itemSelectionTest(value, label) {
         debugger;
+
         var data = {};
         data[0] = { name: "additionalClient", value: "clientF" };
         data[1] = { name: "additionalFilter", value: "1" };
 
-        prowlerGrid("productgrid").Refresh("/Grid/Page");
+        prowlerGrid("productgrid").Refresh("/Grid/Page", data);
     }
 
     function ValidationDescField(value) {
