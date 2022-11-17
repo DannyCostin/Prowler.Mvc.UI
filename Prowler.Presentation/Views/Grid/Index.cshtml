@@ -35,17 +35,18 @@
 
 </div>
 
-@(Html.Prowler().Grid()
+<div style="padding:10px;width:200%;height:170%;background-color:rebeccapurple";>
+    @(Html.Prowler().Grid()
             .UniqueId(nameof(Product.Id))
             .BindTo(Model.ProductDataSource)
             .HtmlAttributes("id", "productgrid")
-            .Height(500)
-            .Width(1000)
+            //.Width(1000)
+            //.Height(750)
             .Columns(
                     i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox().AsReadOnly("Disable"),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID"),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
-                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(1300)
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort")
                     //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
                     //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
                     //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
@@ -53,7 +54,34 @@
                     //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
                     //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
                     //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
-                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort")
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
                     //i => i.BindTo(nameof(Product.GroupName)).Width(200)
                     //.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
                     //                              .BindTo(Model.FilterGroups, "Product Group")
@@ -62,7 +90,7 @@
                     //                              .Multiselect(nameof(Product.Checked), true)
                     //                              .Event(EventDropDown.Selected, "itemSelectionTest")
                     //                              .HtmlAttributes("style", "width:200px;height:32px;")
-                    //                              .Render())
+                    //                              .Render()),
                     // i => i.RowTemplate(@"<img src=""{#Image#}"" alt="""" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Width(50).Title("Image")
                     )
         .Pagination(() => new Pagination().PageIndex(1)
@@ -79,8 +107,7 @@
         .ToolBarTemplate(Html.Partial("ToolBarContainer"))
         .Render()
  )
-
-
+</div>
 
 
 <input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />

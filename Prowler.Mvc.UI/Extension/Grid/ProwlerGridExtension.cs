@@ -23,7 +23,7 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static Grid<TModel>AutoSizeHeaders<TModel>(this Grid<TModel> entity)
+        public static Grid<TModel> AutoSizeHeaders<TModel>(this Grid<TModel> entity)
         {
             entity.AutoSizeHeaders = true;
 
@@ -132,7 +132,7 @@ namespace Prowler.Mvc.UI
                     entity.DataBindedFunction = function;
                     break;
             }
-           
+
             return entity;
         }
 
@@ -210,6 +210,8 @@ namespace Prowler.Mvc.UI
             gridContainer.AddCssClass(CssGrid.GridContainer);
             gridContainer.Attributes.Add(AttributeGrid.GridFilterContainerId, entity.FilterContainerId);
 
+            if (entity.Width == 0) { gridContainer.Attributes.Add("style", "width:100%"); }
+
             ApplyEvents(gridContainer, entity);
 
             MergeHtmlAttributes(entity.TableTemplate.Tag, entity.HtmlAttributes);
@@ -251,11 +253,11 @@ namespace Prowler.Mvc.UI
 
         private static void AppyAutoSizeHeaders<TModel>(Grid<TModel> entity)
         {
-            if(entity.Columns == null || !entity.AutoSizeHeaders) { return; }
+            if (entity.Columns == null || !entity.AutoSizeHeaders) { return; }
 
             var unsetColumns = entity.Columns.Count(i => i.Width == 0);
 
-            if(unsetColumns <= 0 || entity.Width <= 0) { return; }
+            if (unsetColumns <= 0 || entity.Width <= 0) { return; }
 
             var columnSize = entity.Width / unsetColumns;
 
@@ -271,8 +273,8 @@ namespace Prowler.Mvc.UI
             {
                 return;
             }
-            
-            if(entity.Pagination.PaginationRangeGow < 1)
+
+            if (entity.Pagination.PaginationRangeGow < 1)
             {
                 entity.Pagination.PaginationRangeGow = 1;
             }
@@ -287,12 +289,12 @@ namespace Prowler.Mvc.UI
             container.MergeAttribute(AttributeGrid.PaginationTotalItems, entity.Pagination.Total.ToString());
 
             bool disableNext = false;
-          
+
             try
             {
                 var rangeList = new List<int>();
-              
-                
+
+
                 int totalPages = (int)Math.Ceiling((double)entity.Pagination.Total / entity.Pagination.PageItems);
 
                 if (totalPages < entity.Pagination.PaginationButtons)
@@ -310,9 +312,9 @@ namespace Prowler.Mvc.UI
                     lowRangeUnalocated = totalPages - highRageGrow;
                 }
 
-                for(int index = lowValue -1; index <= entity.Pagination.PageIndex; index++)
+                for (int index = lowValue - 1; index <= entity.Pagination.PageIndex; index++)
                 {
-                    if(index > 0)
+                    if (index > 0)
                     {
                         rangeList.Add(index);
                     }
@@ -324,7 +326,7 @@ namespace Prowler.Mvc.UI
 
                 var highRange = entity.Pagination.PageIndex + lowRangeUnalocated + entity.Pagination.PaginationRangeGow + 1;
 
-                for(int index = entity.Pagination.PageIndex + 1; index < highRange; index++)
+                for (int index = entity.Pagination.PageIndex + 1; index < highRange; index++)
                 {
                     rangeList.Add(index);
                 }
@@ -334,7 +336,7 @@ namespace Prowler.Mvc.UI
                 var previous = new TagBuilder(TagElement.Ahref);
                 previous.InnerHtml = "❮❮";
                 previous.MergeAttribute(AttributeGrid.PaginationItemIndex, "1");
-             
+
                 if (entity.Pagination.PageIndex <= 1)
                 {
                     previous.AddCssClass(CssGrid.PaginationItemDisable);
@@ -356,8 +358,8 @@ namespace Prowler.Mvc.UI
                 container.TagSetInnerHtml(itemPerPageInput);
 
                 container.MergeAttribute(AttributeGrid.PaginationSize, entity.Pagination.PageItems.ToString());
-              
-                foreach(var item in rangeList)
+
+                foreach (var item in rangeList)
                 {
                     var pageItem = new TagBuilder(TagElement.Ahref);
                     pageItem.AddCssClass(CssGrid.PaginationItem);
@@ -416,7 +418,7 @@ namespace Prowler.Mvc.UI
 
             container.TagSetInnerHtml(CreatePaginationCurentPageItemsLabel(entity));
 
-            if(entity.ToolBarTemplate != null)
+            if (entity.ToolBarTemplate != null)
             {
                 container.TagSetInnerHtml(CreateToolBarTemplate(entity));
             }
@@ -493,7 +495,7 @@ namespace Prowler.Mvc.UI
                 span.AddCssClass(CssGrid.GridContentNoSelect);
                 span.SetInnerText(item.Title);
 
-                if(item.SortName != null)
+                if (item.SortName != null)
                 {
                     span.AddCssClass(CssGrid.GridColumnHeaderContainerSort);
                 }
@@ -512,9 +514,12 @@ namespace Prowler.Mvc.UI
                 tr.TagSetInnerHtml(th);
             }
 
-            var thEmpty = new TagBuilder(TagElement.Th);
-            thEmpty.MergeAttribute("valign", "top");
-            tr.TagSetInnerHtml(thEmpty);
+            if (entity.AllowColumnResize)
+            {
+                var thEmpty = new TagBuilder(TagElement.Th);
+                thEmpty.MergeAttribute("valign", "top");
+                tr.TagSetInnerHtml(thEmpty);
+            }
 
             return tr;
         }
@@ -577,7 +582,7 @@ namespace Prowler.Mvc.UI
                 {
                     CreateUniqueIdIdentifier(entity, td, dataItem);
                     uniqueIdAlocated = true;
-                }                
+                }
 
                 tr.InnerHtml = String.Concat(tr.InnerHtml, td.ToString());
             }
@@ -652,7 +657,7 @@ namespace Prowler.Mvc.UI
             {
                 var checkBoxContainer = new TagBuilder(TagElement.Div);
                 var checkBoxIcon = new TagBuilder(TagElement.Span);
-                var checkBox = new TagBuilder(TagElement.Input).TagAsCheckBox();                
+                var checkBox = new TagBuilder(TagElement.Input).TagAsCheckBox();
 
                 checkBoxContainer.AddCssClass(CssGrid.CheckBox);
                 checkBoxContainer.AddCssClass(CssGrid.CheckBoxHeader);
@@ -671,7 +676,7 @@ namespace Prowler.Mvc.UI
                 checkBoxContainer.TagSetInnerHtml(checkBox);
                 checkBoxContainer.TagSetInnerHtml(checkBoxIcon);
 
-                if(column.HeaderCheckboxLabel != null)
+                if (column.HeaderCheckboxLabel != null)
                 {
                     var label = new TagBuilder(TagElement.Span);
                     label.SetInnerText(column.HeaderCheckboxLabel);
@@ -706,7 +711,7 @@ namespace Prowler.Mvc.UI
         }
 
         private static void SetupCheckBoxReadOnlyForItem(TagBuilder checkBox, Column column, dynamic dataItem
-           ,TagBuilder checkBoxContainer, TagBuilder checkBoxIcon)
+           , TagBuilder checkBoxContainer, TagBuilder checkBoxIcon)
         {
             if (column.AsReadOnlyInput && column.AsReadOnlyInputBinding != null)
             {
@@ -761,18 +766,18 @@ namespace Prowler.Mvc.UI
                 {
                     checkBox.TagSetName(DataSourceRequestProperty, column.RowBinding, uniqueIdValue);
                     SetupCheckBoxReadOnlyForItem(checkBox, column, dataItem, checkBoxContainer, checkBoxIcon);
-                }                
-          
+                }
+
                 checkBox.TagAsCheckBox();
-                
+
                 checkBoxContainer.AddCssClass(CssGrid.GridRowEditContainer);
-                
+
                 checkBox.MergeAttribute(AttributeGrid.CheckBoxName, column.RowBinding);
                 checkBox.AddCssClass(CssGrid.CheckBoxInputId);
 
                 bool.TryParse(value, out bool bindingValue);
 
-                checkBox.TagSetValue( defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding) 
+                checkBox.TagSetValue(defaultItem ? ProwlerHelper.GetBindingString(column.RowBinding)
                                                   : bindingValue.ToString());
 
                 if (bindingValue && !defaultItem)
@@ -783,7 +788,7 @@ namespace Prowler.Mvc.UI
                 checkBoxContainer.TagSetInnerHtml(checkBox);
                 checkBoxContainer.TagSetInnerHtml(checkBoxIcon);
 
-                tdContainer.TagSetInnerHtml(checkBoxContainer);             
+                tdContainer.TagSetInnerHtml(checkBoxContainer);
             }
         }
 
@@ -805,7 +810,7 @@ namespace Prowler.Mvc.UI
             var tr = new TagBuilder(TagElement.Tr);
             var uniqueIdAlocated = false;
 
-            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();            
+            var templateBindingProperties = entity.Columns.Select(i => i.RowBinding).ToList();
 
             foreach (var column in entity.Columns)
             {
@@ -814,7 +819,7 @@ namespace Prowler.Mvc.UI
                     templateBindingProperties.AddRange(column.RowTemplateBindings);
                 }
 
-                if(column.AsReadOnlyInputBinding != null)
+                if (column.AsReadOnlyInputBinding != null)
                 {
                     templateBindingProperties.Add(column.AsReadOnlyInputBinding);
                 }
@@ -833,12 +838,12 @@ namespace Prowler.Mvc.UI
                 {
                     CreateUniqueIdIdentifier(entity, tr, dataItem, true);
                     uniqueIdAlocated = true;
-                }                
+                }
 
                 tr.InnerHtml = String.Concat(tr.InnerHtml, td.ToString());
             }
 
-            if(!String.IsNullOrEmpty(entity.UniqueId) && !templateBindingProperties.Any(i => i == entity.UniqueId))
+            if (!String.IsNullOrEmpty(entity.UniqueId) && !templateBindingProperties.Any(i => i == entity.UniqueId))
             {
                 templateBindingProperties.Add(entity.UniqueId);
             }

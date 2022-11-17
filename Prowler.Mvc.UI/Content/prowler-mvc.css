@@ -313,6 +313,7 @@
     margin: auto;
     width: 20px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
 }
 
     .p-grid-table-checkBox-container input {
@@ -321,6 +322,7 @@
         height: 0;
         width: 0;
         display: none;
+        border-radius: 3px;
     }
 
 
@@ -332,29 +334,34 @@
     width: 20px;
     background-color: white;
     border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 
 .p-grid-table-checkBox-container:hover input ~ .p-grid-table-checkBox-checkmark {
     background-color: #ccc;
     border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 
 .p-grid-table-checkBox-container input:checked ~ .p-grid-table-checkBox-checkmark {
     background-color: #408dc8;
     border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 .p-grid-table-checkBox-checkmark:after {
     content: "";
     position: absolute;
     display: none;
+    border-radius: 3px;
 }
 
 
 .p-grid-table-checkBox-container input:checked ~ .p-grid-table-checkBox-checkmark:after {
     display: block;
+    border-radius: 3px;
 }
 
 .p-grid-table-checkBox-container .p-grid-table-checkBox-checkmark:after {
@@ -367,6 +374,7 @@
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+    border-radius: 3px;
 }
 
 
@@ -541,6 +549,7 @@
     border-spacing: 0;
     display: block;
     table-layout: fixed;
+    overflow: auto;
 }
 
 .pw-grid-table-input-edit {
@@ -750,6 +759,7 @@
     margin: auto;
     width: 20px;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+    border-radius: 3px;
 }
 
     .p-grid-table-checkBox-container-dis input {
@@ -758,21 +768,25 @@
         height: 0;
         width: 0;
         display: none;
+        border-radius: 3px;
     }
 
     .p-grid-table-checkBox-container-dis:hover input ~ .p-grid-table-checkBox-checkmark-dis {
         background-color: #ccc;
         border: 1px solid #e6e6e6;
+        border-radius: 3px;
     }
 
 
     .p-grid-table-checkBox-container-dis input:checked ~ .p-grid-table-checkBox-checkmark-dis {
         background-color: #9fabb4;
         border: 1px solid #e6e6e6;
+        border-radius: 3px;
     }
 
         .p-grid-table-checkBox-container-dis input:checked ~ .p-grid-table-checkBox-checkmark-dis:after {
             display: block;
+            border-radius: 3px;
         }
 
     .p-grid-table-checkBox-container-dis .p-grid-table-checkBox-checkmark-dis:after {
@@ -785,6 +799,7 @@
         -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         transform: rotate(45deg);
+        border-radius: 3px;
     }
 
 .p-grid-table-checkBox-checkmark-dis {
@@ -795,12 +810,14 @@
     width: 20px;
     background-color: #9fabb4;
     border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
     .p-grid-table-checkBox-checkmark-dis:after {
         content: "";
         position: absolute;
         display: none;
+        border-radius: 3px;
     }
 
 .p-grid-tollbar-right-container {
