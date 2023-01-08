@@ -18,13 +18,14 @@ namespace Prowler.Presentation.Controllers
         {
             var dataSource = MockHelper.GetMockProducts(false);
 
-                 dataSource.ProductDataSource.ForEach(i => {
-                     i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
-                     i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
-                 });
+            dataSource.ProductDataSource.ForEach(i =>
+            {
+                i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
+                i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
+            });
             return View(dataSource);
         }
-        
+
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
             string DescriptionFiltersSort, FormCollection form, List<FilterGroup> filterGroups,
             string ClientName, string ClientId, bool? productFilterList, string additionalClient, string additionalFilter)
@@ -61,7 +62,8 @@ namespace Prowler.Presentation.Controllers
                                .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
                                .ToList();
 
-                data.ForEach(i => {
+                data.ForEach(i =>
+                {
                     i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
                     i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
                 });
@@ -79,7 +81,7 @@ namespace Prowler.Presentation.Controllers
 
                 return Json(datasouce);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json(ex.Message);

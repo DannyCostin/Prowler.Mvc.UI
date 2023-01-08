@@ -131,6 +131,9 @@ namespace Prowler.Mvc.UI
                 case GridEvents.DataBindSuccess:
                     entity.DataBindedFunction = function;
                     break;
+                case GridEvents.CkeckBoxSelectAllStateChanged:
+                    entity.CheckBoxStateChangedFunction = function;
+                    break;
             }
 
             return entity;
@@ -248,6 +251,11 @@ namespace Prowler.Mvc.UI
             if (!string.IsNullOrEmpty(entity.DataBindedFunction))
             {
                 gridContainer.Attributes.Add(AttributeGrid.GridDataBindedFunction, entity.DataBindedFunction);
+            }
+
+            if (!string.IsNullOrEmpty(entity.CheckBoxStateChangedFunction))
+            {
+                gridContainer.Attributes.Add(AttributeGrid.GridCheckBoxStateChangedFunction, entity.CheckBoxStateChangedFunction);
             }
         }
 

@@ -15,6 +15,7 @@ namespace Prowler.Mvc.UI
     public enum GridEvents
     {
         DataBindError,
-        DataBindSuccess
+        DataBindSuccess,
+        CkeckBoxSelectAllStateChanged
     }
 }

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
 
 namespace Prowler.Presentation.Controllers
 {

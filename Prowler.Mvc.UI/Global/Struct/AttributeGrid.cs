@@ -36,6 +36,7 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string CheckBoxHeaderName = "pw-grd-chk-head-name-s";
         public const string GridErrorFunction = "pw-grd-err-func";
         public const string GridDataBindedFunction = "pw-grd-databinded-func";
+        public const string GridCheckBoxStateChangedFunction = "pw-grd-databinded-chkstate-func";
         public const string CheckBoxDisableState = "pw-grd-ckk-dis-state";
     }
 }
