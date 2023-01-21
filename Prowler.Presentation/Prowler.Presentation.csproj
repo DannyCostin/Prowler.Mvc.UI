@@ -126,6 +126,8 @@
     <Compile Include="Helpers\MockHelper.cs" />
     <Compile Include="Models\GridMock.cs" />
     <Compile Include="Models\MockProduct.cs" />
+    <Compile Include="Models\SideMenuItemModel.cs" />
+    <Compile Include="Models\SideMenuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +175,8 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -181,6 +185,7 @@
     <Content Include="Scripts\prowler-mvc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\side-menu.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -199,6 +204,7 @@
     <Content Include="Views\DropDownList\DropDownItem.cshtml" />
     <Content Include="Views\Grid\Index.cshtml" />
     <Content Include="Views\Grid\ToolBarContainer.cshtml" />
+    <Content Include="Views\Shared\_SideMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

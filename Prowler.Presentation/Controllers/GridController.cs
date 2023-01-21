@@ -23,7 +23,8 @@ namespace Prowler.Presentation.Controllers
                 i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
                 i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
             });
-            return View(dataSource);
+        
+            return PartialView(dataSource);
         }
 
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,

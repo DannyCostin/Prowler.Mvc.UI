@@ -1,0 +1,20 @@
+﻿@model Prowler.Presentation.Models.SideMenuModel
+<div style="padding:20px; overflow:auto;">
+    <h4>@Model.MenuTitle</h4>
+    <ul>
+        @{
+            bool firstElement = false;
+            foreach (var item in Model.DataSource)
+            {
+                if (!firstElement)
+                {
+                    <li pageSrc="@item.View" class="itemSideMenu menuSiteSelected">@item.Title</li>
+                    firstElement = true;
+                    continue;
+                }
+
+                <li pageSrc="@item.View" class="itemSideMenu">@item.Title</li>
+            }
+        }
+    </ul>
+</div>

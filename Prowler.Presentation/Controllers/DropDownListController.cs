@@ -15,12 +15,33 @@ namespace Prowler.Presentation.Controllers
         // GET: DropDownList
         public ActionResult Index()
         {
-            return View(MockHelper.GetMockProducts());
+            //Thread.Sleep(5000);
+            return PartialView(MockHelper.GetMockProducts());
         }
 
         public ActionResult Send(MockProduct product, FormCollection collection)
         {
            return RedirectToAction("Index");
+        }
+
+        public ActionResult GetDropDownSideMenu()
+        {
+            //Thread.Sleep(5000);
+
+            var model = new SideMenuModel();
+            model.DataSource = new List<SideMenuItemModel> { new SideMenuItemModel { Title = "Basic Usage", View = "/DropDownList/Index" }, new SideMenuItemModel { Title = "Grouping", View = "/Grid/Index" } };
+
+            for(int index =0; index <=150; index++)
+            {
+                model.DataSource.Add(new SideMenuItemModel
+                {
+                    Title = $"Item{index}"
+                });
+            }
+
+            model.MenuTitle = "Drop Down List";
+
+            return PartialView("_SideMenu", model);
         }
 
         public JsonResult Search(string value, string customFilter)

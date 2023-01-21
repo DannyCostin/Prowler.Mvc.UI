@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
-<body>
+<body style="height:100%">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container" style="width:100%;">
             <div class="navbar-header">
@@ -20,23 +20,62 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("DropDownList", "Index", "DropDownList")</li>
-                    <li>@Html.ActionLink("Grid", "Index", "Grid")</li>
+                    <li>
+                        @Ajax.ActionLink("DropDownList", "Index", "DropDownList", new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "mainContainer",
+                            OnComplete = "renderDropDownMenu();",
+                            OnBegin = "attachLoadingMainContainer();"
+                        })
+                    </li>
+                    <li>
+                        @Ajax.ActionLink("Grid", "Index", "Grid", new AjaxOptions
+                        {
+                            InsertionMode = InsertionMode.Replace,
+                            UpdateTargetId = "mainContainer",
+                            OnComplete = "renderDropDownMenu();",
+                            OnBegin = "attachLoadingMainContainer();"
+                        })
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
-        @RenderBody()
+    <div class="menuBody">
+        <div id="SideMenu" class="menuSite">
+
+        </div>
+    </div>
+    <div class="body-content" style="left:300px;right:50px;bottom:150px;top:50px;position:absolute;">
+
+        <div id="mainContainer" style="margin-bottom:120px;">
+            @RenderBody()
+        </div>
         <hr />
+    </div>
+
+    <div class="footerMenu">
         <footer>
             <p>&copy; @DateTime.Now.Year</p>
         </footer>
     </div>
 
+    <div style="display:none">
+        <div id="loadingContainer">
+            <center>
+                <div class="loader-prowler-container" style="margin:5px;height:40px;width:40px;display:block;">
+                    <div class="loader-prowler"></div>
+                </div>
+            </center>
+        </div>
+    </div>
+
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/prowler")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
+    @Scripts.Render("~/Scripts/side-menu.js")
     @RenderSection("scripts", required: false)
 </body>
 </html>
