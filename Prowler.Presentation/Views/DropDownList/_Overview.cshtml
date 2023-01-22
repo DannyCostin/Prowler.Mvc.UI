@@ -1,0 +1,111 @@
+﻿<center><h2>DropDownList</h2></center>
+<h3>Description</h3>
+
+<h5>The ASP.NET MVC DropDownList lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility</h5>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of the most common scenarios in which the component is used.</h5>
+
+<h3>Dependencies</h3>
+
+@{
+    string basicUsage = @"@using Prowler.Mvc.UI
+
+<script type=""text/javascript"" src=""~/Scripts/jquery-3.4.1.min.js""></script>
+<script type=""text/javascript"" src=""~/Scripts/prowler-mvc.js""></script>
+<link rel=""stylesheet"" href=""~/Content/prowler-mvc.css""/> ";
+
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@basicUsage</code>
+</div>
+
+
+<h5>Using the System.Web.Mvc.HtmlHelper object that is used to render HTML elements, under this object the Prowler HTML helper is available</h5>
+@{
+    string methods = @" @Html.Prowler().DropDownList()";
+}
+
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@methods</code>
+</div>
+<h5>To begin configuring, a series of methods are available that allows customizing the control.</h5>
+<h5>The binding mecanism requires the property name that belongs to the model the value will be retreived at runtime.</h5>
+
+<h3>Methods</h3>
+
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Method name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>BindTo</td>
+            <td>Model to bind</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>Serialization name for form submit</td>
+        </tr>
+        <tr>
+            <td>DataTextField</td>
+            <td>Dropdown item label</td>
+        </tr>
+        <tr>
+            <td>DataValueField</td>
+            <td>Dropdown item value</td>
+        </tr>
+        <tr>
+            <td>HtmlAttributes</td>
+            <td>Dropdown html attributes, the method can be used multiple times to add new attributes</td>
+        </tr>
+        <tr>
+            <td>SelectedIndex</td>
+            <td>Set dropdown selected item, mark as selected the item at the specified index</td>
+        </tr>
+        <tr>
+            <td>SelectedValue</td>
+            <td>Set dropdown selected item, mark as selected the item that has the Dropdown item value</td>
+        </tr>
+        <tr>
+            <td>Render</td>
+            <td>Render the dropdown control</td>
+        </tr>
+        <tr>
+            <td>ClientFiltering</td>
+            <td>Enable dropdown search from client side</td>
+        </tr>
+        <tr>
+            <td>ServerFiltering</td>
+            <td>Enable dropdown search from server side</td>
+        </tr>
+        <tr>
+            <td>Disabled</td>
+            <td>Disable dropdown</td>
+        </tr>
+        <tr>
+            <td>Event</td>
+            <td>Subscribe to dropdown events</td>
+        </tr>
+        <tr>
+            <td>GroupBy</td>
+            <td>Rearrange model elements in groups</td>
+        </tr>
+        <tr>
+            <td>Height</td>
+            <td>Set dropdown list height</td>
+        </tr>
+        <tr>
+            <td>Multiselect</td>
+            <td>Allow multiselect</td>
+        </tr>
+        <tr>
+            <td>OptionLabelTemplate</td>
+            <td>Apply default option label template</td>
+        </tr>
+        <tr>
+            <td>Template</td>
+            <td>Apply dropdown item template</td>
+        </tr>
+    </table>
+</div>

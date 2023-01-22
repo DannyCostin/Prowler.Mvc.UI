@@ -21,7 +21,6 @@ function renderDropDownMenu() {
 }
 
 $(document).on('click', '.itemSideMenu', function (event) {
-    event.stopImmediatePropagation();
     $(this).parent().find("li").removeClass("menuSiteSelected");
     $(this).addClass("menuSiteSelected");
     menuItemClick($(this).attr("pageSrc"));

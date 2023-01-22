@@ -43,7 +43,7 @@
             //.Width(1000)
             //.Height(750)
             .Columns(
-                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox),
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox(),
                     i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID").AsEditable(GridInputType.CheckBox),
                     i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
                     i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort")
@@ -104,8 +104,8 @@
         .IncludeFilterContainer("customContainer")
         .GridEvent(GridEvents.DataBindSuccess, "DataBindedEvent")
         .GridEvent(GridEvents.DataBindError, "GridErrorParser")
-        .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, "CheckBoxStateChanged")
-        .ToolBarTemplate(Html.Partial("ToolBarContainer"))
+       // .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, "CheckBoxStateChanged")
+        //.ToolBarTemplate(Html.Partial("ToolBarContainer"))
         .Render()
  )
 </div>
@@ -123,7 +123,7 @@
 
     function DataBindedEvent(result) {
        // alert(JSON.stringify(result));
-        alert(prowlerGrid("productgrid").GetCheckBoxContainersState("Checked"));
+       // alert(prowlerGrid("productgrid").GetCheckBoxContainersState("Checked"));
     }
 
     function ValidationNameField(value) {

@@ -16,7 +16,7 @@ namespace Prowler.Presentation.Controllers
         public ActionResult Index()
         {
             //Thread.Sleep(5000);
-            return PartialView(MockHelper.GetMockProducts());
+            return PartialView("_Overview", MockHelper.GetMockProducts());
         }
 
         public ActionResult Send(MockProduct product, FormCollection collection)
@@ -28,18 +28,17 @@ namespace Prowler.Presentation.Controllers
         {
             //Thread.Sleep(5000);
 
-            var model = new SideMenuModel();
-            model.DataSource = new List<SideMenuItemModel> { new SideMenuItemModel { Title = "Basic Usage", View = "/DropDownList/Index" }, new SideMenuItemModel { Title = "Grouping", View = "/Grid/Index" } };
-
-            for(int index =0; index <=150; index++)
-            {
-                model.DataSource.Add(new SideMenuItemModel
-                {
-                    Title = $"Item{index}"
-                });
-            }
-
-            model.MenuTitle = "Drop Down List";
+            var model = new SideMenuModel() { DataSource = new List<SideMenuItemModel>() };
+            model.MenuTitle = "DropDownList";
+            model.DataSource.Add("Overview", "/DropDownList/Index");
+            model.DataSource.Add("Basic Usage", "/DropDownList/GetSection?view=_BasicUsage");
+            model.DataSource.Add("Grouping", "/DropDownList/GetSection?view=_GroupBy");
+            model.DataSource.Add("Client Filtering", "/DropDownList/GetSection?view=_ClientFiltering");
+            model.DataSource.Add("Server Filtering", "/DropDownList/GetSection?view=_ServerFiltering");
+            model.DataSource.Add("Multiselect", "/DropDownList/GetSection?view=_Multiselect");
+            model.DataSource.Add("Customizing Templates", "/DropDownList/GetSection?view=_Templates");
+            model.DataSource.Add("API", "/DropDownList/GetSection?view=_Api");
+            model.DataSource.Add("Events", "/DropDownList/GetSection?view=_Events");
 
             return PartialView("_SideMenu", model);
         }
@@ -54,10 +53,10 @@ namespace Prowler.Presentation.Controllers
 
             return Json(model.ProductDataSource);
         }
-    }
 
-    public class Test1
-    {
-        public int Id { get; set; }
+        public ActionResult GetSection(string view)
+        {
+            return PartialView(view, MockHelper.GetMockProducts());
+        }
     }
 }

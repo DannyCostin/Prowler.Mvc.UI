@@ -1,0 +1,128 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+
+<h3>API</h3>
+
+<h5>A series of API methods are available allowing control manipulation from java script, use the window function name <strong>prowlerDropDown</strong> as a paramater specify the dropdown id attribute and call the appropriated method</h5>
+
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Method name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>disable</td>
+            <td>Disable dropdown</td>
+        </tr>
+        <tr>
+            <td>enable</td>
+            <td>Enable dropdown</td>
+        </tr>
+        <tr>
+            <td>getSelectedValue</td>
+            <td>Get selected dropdown value</td>
+        </tr>
+        <tr>
+            <td>databind</td>
+            <td>DataBind model from Url</td>
+        </tr>
+        <tr>
+            <td>open</td>
+            <td>Open/Close dropdown</td>
+        </tr>
+        <tr>
+            <td>serverFilterParameterAdd</td>
+            <td>Add aditional parameters when using server side filtering option</td>
+        </tr>
+        <tr>
+            <td>setSelectedValue</td>
+            <td>Set dropdown selected item, mark as selected the item that has the Dropdown item value</td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+<h5>DEMO EXAMPLE</h5>
+
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .HtmlAttributes("id", "myProductDropDown")
+          .SelectedIndex(0)
+          .Render()
+    )
+    <br />
+    <input type="button" value="Disable" onclick="prowlerDropDown('myProductDropDown').disable()" />
+    <input type="button" value="Enable" onclick="prowlerDropDown('myProductDropDown').enable()" />
+    <input type="button" value="Get selected value" onclick="alert(prowlerDropDown('myProductDropDown').getSelectedValue())" />
+    <input type="button" value="Set selected value" onclick="prowlerDropDown('myProductDropDown').setSelectedValue('3')" />
+    <input type="button" value="Data bind" onclick="dataBind()" />
+    <input type="button" value="Open/Close DropDown" onclick="prowlerDropDown('myProductDropDown').open()" />
+
+    <script>function dataBind() {
+            prowlerDropDown('myProductDropDown').open();
+            var data = { value: 'k' };
+            prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
+        }</script>
+
+    @{
+        string apiCode = @"@(Html.Prowler()
+.DropDownList()
+.HtmlAttributes(""id"", ""myProductDropDown"")
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Render())
+
+<input type=""button"" value=""Disable"" onclick=""prowlerDropDown('myProductDropDown').disable()"" />
+<input type=""button"" value=""Enable"" onclick=""prowlerDropDown('myProductDropDown').enable()"" />
+<input type=""button"" value=""Get selected value"" onclick=""alert(prowlerDropDown('myProductDropDown').getSelectedValue())""
+<input type=""button"" value=""Set selected value"" onclick=""prowlerDropDown('myProductDropDown').setSelectedValue('3')"" />
+<input type=""button"" value=""Data bind"" onclick=""dataBind()"" />
+<input type=""button"" value=""Open/Close DropDown"" onclick=""prowlerDropDown('myProductDropDown').open()"" />";
+
+        string apiJS = @"<script>
+function dataBind() {
+    prowlerDropDown('myProductDropDown').open();
+    var data = { value: 'k' };
+    prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
+}
+</script>";
+
+string apiCT = @"public JsonResult Search(string value, string customFilter)
+{
+    Thread.Sleep(3000); // simulate server response delay :)
+
+    value = value?.ToLower() ?? string.Empty;
+    var model = MockHelper.GetMockProducts();
+    model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
+
+    return Json(model.ProductDataSource);
+}
+";
+    }
+    <br />
+    <br />
+    <h5>VIEW CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@apiCode</code>
+    </div>
+    <br />
+    <h5>JAVASCRIPT CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@apiJS</code>
+    </div>
+    <br />
+    <h5>CONTROLLER CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@apiCT</code>
+    </div>
+</div>

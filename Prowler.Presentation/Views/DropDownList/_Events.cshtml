@@ -1,0 +1,78 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Events</h3>
+<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+
+<br />
+<h5>DEMO EXAMPLE</h5>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .Event(EventDropDown.Open, "fnOpen")
+          .Event(EventDropDown.SelectedChanged, "fnSelectedChanged")
+          .Render()
+    )
+
+    <script>function fnOpen() {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value = "event:Open \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function fnSelectedChanged(value, label) {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value = "event:Selected " + value + " " + label + " \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }</script>
+
+    <br />
+
+    <textarea id="eventConsole" style="width:100%; height:100px;max-width:none;overflow:hidden"></textarea>
+
+    @{
+        string eventCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.Event(EventDropDown.Open, ""fnOpen"")
+.Event(EventDropDown.SelectedChanged, ""fnSelectedChanged"")
+.Render())
+
+<textarea id=""eventConsole"" style=""width:100%; height:100px;max-width:none""></textarea>";
+
+        string eventJS = @"<script>
+function fnOpen() {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value = ""event:Open \n"";
+    logElement.scrollTop = logElement.scrollHeight;
+}
+
+function fnSelectedChanged(value, label) {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value = ""event:Selected "" + value + "" "" + label + "" \n"";
+    logElement.scrollTop = logElement.scrollHeight;
+}
+</script>";
+
+    }
+    <br />
+
+    <h5>VIEW CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@eventCode</code>
+    </div>
+    <br />
+
+    <h5>JAVASCRIPT CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@eventJS</code>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Multiselect</h3>
+<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+
+<br />
+<h5>DEMO EXAMPLE</h5>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource.Skip(1),"Please select")
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .Multiselect(nameof(Product.Checked))
+          .Render()
+    )
+
+    @{
+        string multiselectCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource.Skip(1),""Please select"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.Multiselect(nameof(Product.Checked))
+.Render())";
+
+    }
+    <br />
+    <h5>VIEW CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@multiselectCode</code>
+    </div>
+</div>
+
+<h5><strong>Multiselect</strong> method has a binding parameter and render checkbox parameter, set the binding parameter value to a property name that belongs to the model, it is important that the property used is of type Boolean, the render checkbox parameter can be set to true to add a checkbox element on the drop down item</h5>
+
+<br/>
+<h3>Multiselect with checkbox</h3>
+<br/>
+<h5>DEMO EXAMPLE</h5>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource.Skip(1), "Please select")
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .Multiselect(nameof(Product.Checked), true)
+          .Render()
+    )
+
+    @{
+        string multiselectChkCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource.Skip(1),""Please select"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.Multiselect(nameof(Product.Checked), true)
+.Render())";
+
+    }
+    <br />
+    <h5>VIEW CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@multiselectChkCode</code>
+    </div>
+</div>

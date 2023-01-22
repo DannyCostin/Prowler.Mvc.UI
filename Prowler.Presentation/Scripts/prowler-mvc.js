@@ -860,7 +860,7 @@
         prowlerGridHelper.filter(this, inputDelay, filterUrl);        
     });
 
-    $('.pw-grid-table').on('click', '.p-grid-table-checkBox-container', function (event) {
+    $(document).bind('.pw-grid-table').on('click', '.p-grid-table-checkBox-container', function (event) {
         event.stopImmediatePropagation();
         event.preventDefault();
 

@@ -436,4 +436,18 @@ namespace Prowler.Presentation.Helpers
             return list;
         }
     }
+
+    public static class ExtensionHelper
+    {
+        public static void Add(this List<SideMenuItemModel> source, string title, string url)
+        {
+            if(source == null) { source = new List<SideMenuItemModel>(); }
+
+            source.Add(new SideMenuItemModel
+            {
+                Title = title,
+                View = url
+            });
+        }
+    }
 }
