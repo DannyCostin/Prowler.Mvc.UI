@@ -98,33 +98,6 @@ namespace Prowler.Presentation.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
-        }
-
-
-        public ActionResult GridNavigateToPage(GridDataSourceRequest<Product> gridRequest)
-        {
-            try
-            {
-                var productList = MockHelper.GetMockProducts().ProductDataSource;
-
-                var data = productList.Skip(gridRequest.PageInfo.Skip)
-                                      .Take(gridRequest.PageInfo.PageItems)
-                                      .ToList();
-
-                var datasouce = new GridDataSourceResponse<Product>
-                {
-                    DataSource = data,
-                    TotalItems = productList.Count,
-                    PageIndex = gridRequest.PageInfo.PageIndex
-                };
-
-                return Json(datasouce);
-            }
-            catch (Exception ex)
-            {
-                Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                return Json(ex.Message);
-            }
-        }
+        }      
     }
 }
