@@ -17,14 +17,19 @@ namespace Prowler.Presentation.Controllers
         public ActionResult Index()
         {
             var dataSource = MockHelper.GetMockProducts(false);
+          
+            dataSource.TotalNrElements = dataSource.ProductDataSource.Count;
 
-            dataSource.ProductDataSource.ForEach(i =>
-            {
-                i.Checked = new Random().Next(1, 10) % 2 == 0 ? true : false;
-                i.Disable = new Random().Next(1, 10) % 2 == 0 ? true : false;
-            });
-        
-            return PartialView(dataSource);
+            return PartialView("_Overview", dataSource);
+        }
+
+        public ActionResult GetGridSideMenu()
+        {            
+            var model = new SideMenuModel() { DataSource = new List<SideMenuItemModel>() };
+            model.MenuTitle = "Grid";
+            model.DataSource.Add("Overview", "/Grid/Index"); 
+
+            return PartialView("_SideMenu", model);
         }
 
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,

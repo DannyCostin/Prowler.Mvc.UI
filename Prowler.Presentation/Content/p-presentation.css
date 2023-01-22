@@ -14,28 +14,28 @@
     background-color: #dddddd;
 }
 
-.menuBody{
-    position:fixed;
-    height:100%;
+.menuBody {
+    position: fixed;
+    height: 100%;
 }
 
 .menuSite {
-    background-color: #f8f9f9;    
+    background-color: #f8f9f9;
     position: absolute;
     border: 1px solid #d6d9dc;
     box-shadow: 1px 0 5px -2px #d6d9dc;
     color: black;
     overflow: auto;
-    width:250px;
-    top:0px;
-    bottom:50px;
-    margin:auto;
+    width: 250px;
+    top: 0px;
+    bottom: 50px;
+    margin: auto;
 }
 
     .menuSite ul {
         text-transform: none;
         letter-spacing: unset;
-        padding: 1px;       
+        padding: 1px;
         font-size: 1.6rem;
         line-height: 2.2rem;
         font-weight: 400;
@@ -60,11 +60,11 @@
             color: whitesmoke;
         }
 
-        .menuSiteSelected {
-            background-color: #272727;
-            border-radius: 5px;
-            color:whitesmoke;
-        }
+.menuSiteSelected {
+    background-color: #272727;
+    border-radius: 5px;
+    color: whitesmoke;
+}
 
 .footerMenu {
     position: fixed;
@@ -76,3 +76,4 @@
     border: 1px solid #d6d9dc;
     box-shadow: 1px 0 5px -2px #d6d9dc;
 }
+

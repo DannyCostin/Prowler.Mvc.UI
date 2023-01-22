@@ -140,11 +140,13 @@
     <Content Include="Content\Images\cheeseburger.png" />
     <Content Include="Content\Images\ciorba.jpg" />
     <Content Include="Content\Images\cola.png" />
+    <Content Include="Content\Images\dockbar_logo.png" />
     <Content Include="Content\Images\egg.png" />
     <Content Include="Content\Images\expreso.jpg" />
     <Content Include="Content\Images\hamburger.jpg" />
     <Content Include="Content\Images\hotdog.png" />
     <Content Include="Content\Images\kebab.jpg" />
+    <Content Include="Content\Images\keypass_logo.png" />
     <Content Include="Content\Images\limonada.jpg" />
     <Content Include="Content\Images\micdejun.png" />
     <Content Include="Content\Images\paineou.jpg" />
@@ -214,6 +216,7 @@
     <Content Include="Views\DropDownList\_Templates.cshtml" />
     <Content Include="Views\DropDownList\_Api.cshtml" />
     <Content Include="Views\DropDownList\_Events.cshtml" />
+    <Content Include="Views\Grid\_Overview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

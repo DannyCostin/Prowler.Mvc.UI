@@ -11,6 +11,7 @@ namespace Prowler.Presentation.Models
         public Product SingleProduct { get; set; }
         public List<Product> MultiProducts { get; set; }
         public List<FilterGroup> FilterGroups { get; set; }
+        public int TotalNrElements { get; set; }
 
     }  
 

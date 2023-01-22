@@ -20,6 +20,10 @@ function renderDropDownMenu() {
     renderMenu("GetDropDownSideMenu", "DropDownList")
 }
 
+function renderGridMenu() {
+    renderMenu("GetGridSideMenu", "Grid")
+}
+
 $(document).on('click', '.itemSideMenu', function (event) {
     $(this).parent().find("li").removeClass("menuSiteSelected");
     $(this).addClass("menuSiteSelected");

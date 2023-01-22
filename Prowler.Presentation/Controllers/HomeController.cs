@@ -1,6 +1,11 @@
-﻿using System;
+﻿using Prowler.Mvc.UI;
+using Prowler.Presentation.Helpers;
+using Prowler.Presentation.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 
@@ -10,7 +15,75 @@ namespace Prowler.Presentation.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            var dataSource = MockHelper.GetMockProducts(false);
+            dataSource.TotalNrElements = dataSource.ProductDataSource.Count;
+            dataSource.ProductDataSource = dataSource.ProductDataSource.Take(10).ToList();
+            return View(dataSource);
+        }
+
+        public ActionResult GridFilter(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
+           string DescriptionFiltersSort, List<FilterGroup> filterGroups, bool resetPageIndex = false)
+        {
+            return GridNavigateToPage(gridDataSourceRequest, SortColumnName, DescriptionFiltersSort, filterGroups, true);
+        }
+
+        public ActionResult GridNavigateToPage(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
+             string DescriptionFiltersSort, List<FilterGroup> filterGroups, bool resetPageIndex = false)
+        {
+            try
+            {
+                int pageIndex = 0;
+                var list = MockHelper.GetMockProducts(false).ProductDataSource.AsEnumerable();
+
+                if (!string.IsNullOrEmpty(SortColumnName))
+                {
+                    list = MockHelper.SortByName(list, SortColumnName);
+                }
+
+                if (!string.IsNullOrEmpty(DescriptionFiltersSort))
+                {
+                    list = MockHelper.SortByDescription(list, DescriptionFiltersSort);
+                }
+
+                if (filterGroups != null)
+                {
+                    list = MockHelper.FilterByGroup(list, filterGroups);
+                }
+
+                var totalItems = list.Count();
+
+                List<Product> data = null;
+
+                if (resetPageIndex)
+                {
+                    pageIndex = 1;
+                    data = list.Skip(0)
+                               .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
+                               .ToList();
+                }
+                else
+                {
+                    pageIndex = gridDataSourceRequest?.PageInfo?.PageIndex ?? 1;
+
+                    data = list.Skip(gridDataSourceRequest?.PageInfo.Skip ?? 0)
+                              .Take(gridDataSourceRequest?.PageInfo?.PageItems ?? list.Count())
+                              .ToList();
+                }
+
+                var datasouce = new GridDatasourceResponse<Product>
+                {
+                    DataSource = data,
+                    TotalItems = totalItems,
+                    PageIndex = pageIndex
+                };
+
+                return Json(datasouce);
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json(ex.Message);
+            }
         }
 
         public ActionResult About()

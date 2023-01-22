@@ -2,4 +2,88 @@
     ViewBag.Title = "Prowler MVC UI";
 }
 
+@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
 
+<div class="jumbotron">
+    <center>
+        <div style="display:flex; width:500px">
+            <a href="https://www.nuget.org/packages/Prowler.Mvc.UI/" title="Nuget">
+                <svg width="46" height="46" viewBox="0 0 32 32" fill="#000" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.563 28.844c-7.104 0-7.104-10.651 0-10.651 7.099 0 7.099 10.651 0 10.651zM12.932 16.636c-4.437 0-4.437-6.663 0-6.663 4.443 0 4.443 6.663 0 6.663zM23.797 6.24h-8.891c-4.532 0.005-8.204 3.677-8.209 8.208v8.891c0 4.531 3.677 8.203 8.209 8.203h8.891c2.172 0 4.26-0.864 5.801-2.401 1.537-1.541 2.401-3.624 2.401-5.801v-8.891c0-4.531-3.672-8.208-8.203-8.208zM5.328 3.12c0 3.552-5.328 3.552-5.328 0s5.328-3.552 5.328 0z" />
+                </svg>
+            </a>
+            <h1>Prowler.Mvc.UI</h1>
+        </div>
+        <p class="lead">Free UI library components for building modern and feature-rich ASP.NET MVC applications.</p>
+        <a href="https://www.nuget.org/packages/Prowler.Mvc.UI/" class="btn btn-primary">Get nuget package</a>
+    </center>
+</div>
+
+<div style="margin-top:20px">
+    <h3>DEMO</h3>
+    <br/>
+    <div>
+        @(Html.Prowler().Grid()
+            .UniqueId(nameof(Product.Id))
+            .BindTo(Model.ProductDataSource)
+            .HtmlAttributes("id", "productGridDemo")
+            //.Width(1000)
+            .Height(450)
+            .Columns(
+                    i => i.RowTemplate(@"<center><img src=""{#Image#}"" alt="""" style=""width:32px;height:32px;""/></center>", nameof(Product.Image)).Width(35),
+                    i => i.BindTo(nameof(Product.GroupName)).Width(200)
+                    .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                                                  .BindTo(Model.FilterGroups, "Product Type")
+                                                  .DataTextField(nameof(Product.Name))
+                                                  .DataValueField(nameof(Product.Id))
+                                                  .Multiselect(nameof(Product.Checked), true)
+                                                  .Event(EventDropDown.Selected, "selectGridGroup")
+                                                  .HtmlAttributes("style", "height:32px;")
+                                                  .Render()),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").Width(250),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox()
+                    )
+        .Pagination(() => new Pagination().PageIndex(1)
+                                          .PageItems(10)
+                                          .Total(Model.TotalNrElements)
+                                          .PaginationButtons(6)
+                                          .Url("/Home/GridNavigateToPage"))
+        .ActionSort("/Home/GridFilter")
+        .AllowColumnResize()        
+        .Render()
+ )
+    </div>
+    <br />
+    <h3>Other Products</h3>
+    <br />
+    <div style="display:flex">
+        <img src="~/Content/Images/keypass_logo.png" style="width: 128px; height: 128px;" />
+        <div style="margin-left:25px;">
+            <h4>Prowler Key Pass</h4>
+            <h5>
+                Free password manager, which helps you to manage your passwords in a secure way.
+                You can store all your passwords in one database, which is locked with a key.
+            </h5>
+            <a href="https://apps.microsoft.com/store/detail/prowler-key-pass/9NG9H39J8XM0" class="btn btn-primary" value="">Get from Microsoft Store</a>
+        </div>        
+    </div>
+    <br />
+    <div style="display:flex">
+        <img src="~/Content/Images/dockbar_logo.png" style="width: 128px; height: 128px;" />
+        <div style="margin-left:25px;">
+            <h4>Prowler Dock Bar</h4>
+            <h5>
+                Free animated dock for Windows that enables you to quickly access and launch your favorite applications, files and shortcuts. Prowler Dock Bar hide itself when not in use and will reappear when you click the edge of the screen where the Dock Bar is positioned. Customize the color and position.
+            </h5>
+            <a href="https://apps.microsoft.com/store/detail/prowler-dock-bar/9P4F92NHGCZ7" class="btn btn-primary">Get from Microsoft Store</a>
+        </div>
+    </div>
+</div>
+<script>
+    function selectGridGroup() {
+        prowlerGrid("productGridDemo").Refresh("/Home/GridFilter");
+    }
+</script>

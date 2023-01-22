@@ -95,7 +95,7 @@
                     )
         .Pagination(() => new Pagination().PageIndex(1)
                                           .PageItems(5)
-                                          .Total(Model.ProductDataSource.Count() == 0 ? 1 : Model.ProductDataSource.Count())
+                                          .Total(Model.TotalNrElements)
                                           .PaginationButtons(6)
                                           .Url("/Grid/Page"))
         .ActionSort("/Grid/Page")

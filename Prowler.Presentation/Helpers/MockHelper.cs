@@ -366,7 +366,7 @@ namespace Prowler.Presentation.Helpers
                                                   .ToList()
                                                   .Select(i => new FilterGroup { Checked = i.Checked, Id = i.GroupId, Name = i.GroupName })
                                                   .ToList();
-
+           
             return mockProduct;
         }
 
