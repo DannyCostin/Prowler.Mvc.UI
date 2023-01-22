@@ -171,6 +171,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\prowler-mvc-ui-asp-net-as - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -217,6 +218,7 @@
     <Content Include="Views\DropDownList\_Api.cshtml" />
     <Content Include="Views\DropDownList\_Events.cshtml" />
     <Content Include="Views\Grid\_Overview.cshtml" />
+    <Content Include="Views\Grid\_BasicUsage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

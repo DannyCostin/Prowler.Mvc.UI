@@ -53,7 +53,7 @@
     });
 
 
-    $(document).on('click', '.p-dropdown-container', function (event) {
+    $(document).bind(".p-dropdown-list").on('click', '.p-dropdown-container', function (event) {
         event.stopPropagation();
         event.stopImmediatePropagation();
 

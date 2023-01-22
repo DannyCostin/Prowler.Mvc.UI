@@ -88,17 +88,19 @@
                     </svg>
                 </a>
                 <p>&copy; @DateTime.Now.Year Daniel Costin</p>
-                 <h5>Prowler MVC UI provides components with flexible data binding, api, events, appearance customization through templates, accessibility</h5>
+                <h5>Prowler MVC UI provides components with flexible data binding, api, events, appearance customization through templates, accessibility</h5>
             </div>
-            
+
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/prowler")
     @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
     @Scripts.Render("~/Scripts/side-menu.js")
+    @*@Scripts.Render("~/bundles/prowler")*@
+    @Scripts.Render("~/Scripts/prowler-mvc.js")
     @RenderSection("scripts", required: false)
+
 </body>
 </html>

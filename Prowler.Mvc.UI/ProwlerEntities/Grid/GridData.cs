@@ -33,7 +33,7 @@ namespace Prowler.Mvc.UI
         }
     }
 
-    public class GridDatasourceResponse<T> where T: class
+    public class GridDataSourceResponse<T> where T: class
     {
         public int TotalItems { get; set; }
         public int PageIndex { get; set; }

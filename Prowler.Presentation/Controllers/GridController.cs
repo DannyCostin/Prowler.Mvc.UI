@@ -27,9 +27,18 @@ namespace Prowler.Presentation.Controllers
         {            
             var model = new SideMenuModel() { DataSource = new List<SideMenuItemModel>() };
             model.MenuTitle = "Grid";
-            model.DataSource.Add("Overview", "/Grid/Index"); 
+            model.DataSource.Add("Overview", "/Grid/Index");
+            model.DataSource.Add("Basic Usage", "/Grid/GetSection?view=_BasicUsage");
 
             return PartialView("_SideMenu", model);
+        }
+
+        public ActionResult GetSection(string view)
+        {
+            var dataSource = MockHelper.GetMockProducts(false);
+            dataSource.TotalNrElements = dataSource.ProductDataSource.Count;
+
+            return PartialView(view, dataSource);
         }
 
         public ActionResult Page(GridDataSourceRequest<Product> gridDataSourceRequest, string SortColumnName,
@@ -76,7 +85,7 @@ namespace Prowler.Presentation.Controllers
 
                 //data[3].Checked = true;
 
-                var datasouce = new GridDatasourceResponse<Product>
+                var datasouce = new GridDataSourceResponse<Product>
                 {
                     DataSource = data,
                     TotalItems = totalItems,

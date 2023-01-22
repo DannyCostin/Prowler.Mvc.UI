@@ -1,0 +1,91 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Basic usage</h3>
+
+<h5>This demo shows how to configure the ASP.NET MVC Data Grid to display its data and also perform the paging.</h5>
+
+<br />
+<h5>DEMO EXAMPLE</h5>
+<div style="padding-top:10px;">
+    <div>
+        @(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .Height(450)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Id)).Title("ID"),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Width(250),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description"),
+                    i => i.BindTo(nameof(Product.GroupName)).Title("Type")
+                    )
+            .Pagination(() => new Pagination().PageIndex(1)
+                                          .PageItems(10)
+                                          .Total(Model.TotalNrElements)
+                                          .PaginationButtons(6)
+                                          .Url("/Home/GridNavigateToPage"))
+            .Render()
+ )
+    </div>
+
+    @{
+        string basicCode = @"@(Html.Prowler().Grid()
+  .BindTo(Model.ProductDataSource)
+  .Height(450)
+  .Columns(
+          i => i.BindTo(nameof(Product.Id)).Title(""ID""),
+          i => i.BindTo(nameof(Product.Name)).Title(""Name"").Width(250),
+          i => i.BindTo(nameof(Product.Description)).Title(""Description""),
+          i => i.BindTo(nameof(Product.GroupName)).Title(""Type"")
+          )
+  .Pagination(() => new Pagination().PageIndex(1)
+                                    .PageItems(10)
+                                    .Total(Model.TotalNrElements)
+                                    .PaginationButtons(6)
+                                    .Url(""/Home/GridNavigateToPage"")
+             )
+  .Render()
+)";
+
+    }
+    <br />
+    <h5>VIEW CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+
+    @{ 
+        basicCode = @"
+public ActionResult GridNavigateToPage(GridDataSourceRequest<Product> gridRequest)
+{
+        try
+        {
+            var productList = MockHelper.GetMockProducts().ProductDataSource;
+
+            var data = productList.Skip(gridRequest.PageInfo.Skip)
+                                  .Take(gridRequest.PageInfo.PageItems)
+                                  .ToList();
+
+            var datasouce = new GridDataSourceResponse<Product>
+            {
+                DataSource = data,
+                TotalItems = productList.Count,
+                PageIndex = gridRequest.PageInfo.PageIndex
+            };
+
+            return Json(datasouce);
+        }
+        catch (Exception ex)
+        {
+            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            return Json(ex.Message);
+        }
+}";
+    }
+
+    <br />
+    <h5>CONTROLLER CODE</h5>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+</div>
