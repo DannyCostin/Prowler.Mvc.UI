@@ -4,13 +4,15 @@
 
 <h3>Basic usage</h3>
 
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of the most common scenarios in which the component is used.</h5>
+<h5>The binding mechanism requires the property name that belongs to the data source the value will be retrieved at runtime.</h5>
 
 <br />
 
 <h5>DEMO EXAMPLE</h5>
 <div style="padding-top:10px;">
     @(Html.Prowler().DropDownList()
+          .HtmlAttributes("id", "ProductDropDown")
           .BindTo(Model.ProductDataSource)
           .DataTextField(nameof(Product.Name))
           .DataValueField(nameof(Product.Id))
@@ -22,6 +24,7 @@
     @{
         string basicCode = @"@(Html.Prowler()
 .DropDownList()
+.HtmlAttributes(""id"", ""ProductDropDown"")
 .BindTo(Model.ProductDataSource)
 .DataTextField(nameof(Product.Name))
 .DataValueField(nameof(Product.Id))
@@ -30,16 +33,22 @@
 
     }
 
-    <br/>
+    <br />
     <h5>VIEW CODE</h5>
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
     </div>
 </div>
-<br/>
-<h5><strong>BindTo</strong> method has a datasource parameter and the option label parameter, the datasource parameter accepts an IEnumerable &lt;object&gt;, the object represents the drop down item elements, the option label parameter can be used to add a default item in the drop down for example the "Please select" label.</h5>
-<h5><strong>SelectedIndex</strong> method has a parameter that is used to select a value from the drop down list at the specified index, the <strong>SelectedValue</strong> method can also be used to select an item that has the specified value</h5>
-<h5><strong>DataTextField</strong> method has a binding parameter, set the binding parameter value to a property name that belongs to the model, this is the value that will be displayed on the drop down item label</h5>
-<h5><strong>DataValueField</strong> method has a binding parameter, set the binding parameter value to a property name that belongs to the model, this is the value that will be added on the drop down item value</h5>
-<h5>Regarding of using templates the <strong>DataValueField</strong> method must always be added even if the template contains the property value the serialization will be performed only on the value supplied in the DataValueField binding property</h5>
-<h5><strong>Render</strong> method has no parameter and it is a mandatory to be the last method called, this method will generate the drop down html code to be rendered on the view</h5>
+<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
+    <h5><strong>Note: </strong>When working with multiple dropdown controls the <strong>ID attribute</strong> is required, use the <strong>HtmlAttributes(string, string)</strong> method to specify the id as presented in the code example above.</h5>
+</div>
+<br />
+<h5><strong>HtmlAttributes</strong> method takes 2 parameters, first one sets the attribute name and the second the attribute value. This method can be chained multiple times.</h5>
+<h5><strong>BindTo</strong> method takes a data source and the option label value, the data source parameter accepts an IEnumerable &lt;object&gt;, the object represents the drop-down item elements, and the option label parameter can be used to add a default item in the drop-down for example the "Please select" label.</h5>
+<h5><strong>DataTextField</strong> set the binding parameter value to a property name that belongs to the data source, this is the value that will be displayed on the drop-down item label.</h5>
+<h5><strong>DataValueField</strong> set the binding parameter value to a property name that belongs to the data source, this is the value that will be added to the drop-down item value.</h5>
+<h5><strong>SelectedIndex</strong> is used to select a value from the drop-down list at the specified index, the <strong>SelectedValue</strong> method can also be used to select an item that has the specified value.</h5>
+<h5><strong>Render</strong> method will generate the drop-down HTML code to be rendered on the view.</h5>
+
+
+

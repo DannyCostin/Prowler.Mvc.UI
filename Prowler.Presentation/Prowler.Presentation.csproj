@@ -219,6 +219,8 @@
     <Content Include="Views\DropDownList\_Events.cshtml" />
     <Content Include="Views\Grid\_Overview.cshtml" />
     <Content Include="Views\Grid\_BasicUsage.cshtml" />
+    <Content Include="Views\Shared\_DropDownItem.cshtml" />
+    <Content Include="Views\DropDownList\_Request.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

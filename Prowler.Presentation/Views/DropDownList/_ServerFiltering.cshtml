@@ -3,7 +3,37 @@
 @model Prowler.Presentation.Models.MockProduct
 
 <h3>Server Filtering</h3>
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding search capability on the server side.</h5>
+<br />
+
+<h5><strong>ServerFiltering(string, string, int)</strong> parameters:</h5>
+
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>url</td>
+            <td>Sets the URL to POST.</td>
+        </tr>
+        <tr>
+            <td>parameterName</td>
+            <td>Sets the name of the parameter to POST, this parameter will hold the search value.</td>
+        </tr>
+        <tr>
+            <td>delay</td>
+            <td>Sets the search delay in milliseconds, controls the user input search box type delay before POST, the default value is 500.</td>
+        </tr>
+    </table>
+</div>
+
+<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
+    <h5><strong>Note:</strong> It is also possible to post additional information by using the API method <strong>serverFilterParameterAdd</strong> as shown in the JAVASCRIPT CODE example.</h5>
+</div>
+
+
 
 <br />
 
@@ -15,7 +45,6 @@
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:400px")
           .HtmlAttributes("id", "serverFilter")
-          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
           .ServerFiltering(@"/DropDownList/Search", "value")
           .SelectedIndex(0)
           .Event(EventDropDown.Open, "openEvent")
@@ -24,7 +53,8 @@
     )
     <br />
 
-    <script>function openEvent() {
+    <script>
+        function openEvent() {
             var data = { customFilter: 'customValue' };
             prowlerDropDown('serverFilter').serverFilterParameterAdd(data);
         }</script>
@@ -36,11 +66,11 @@
 .DataValueField(nameof(Product.Id))
 .HtmlAttributes(""style"", ""width: 400px"")
 .HtmlAttributes(""id"", ""serverFilter"")
-.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
 .ServerFiltering(@""/DropDownList/Search"", ""value"")
 .SelectedIndex(0)
 .Event(EventDropDown.Open, ""openEvent"")
-.Render()";
+.Render()
+)";
 
         string serverFilteringJS = @"<script>
 function openEvent() {
@@ -49,10 +79,8 @@ function openEvent() {
 }
 </script>";
 
-string serverFilteringCT = @"public JsonResult Search(string value, string customFilter)
+        string serverFilteringCT = @"public JsonResult Search(string value, string customFilter)
 {
-    Thread.Sleep(3000); // simulate server response delay :)
-
     value = value?.ToLower() ?? string.Empty;
     var model = MockHelper.GetMockProducts();
     model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
@@ -79,6 +107,4 @@ string serverFilteringCT = @"public JsonResult Search(string value, string custo
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@serverFilteringCT</code>
     </div>
-
-    <h5><strong>ServerFiltering</strong> method has an url and a name paramater, set the name parameter value to match the controller method parameter. It is also posible to send aditional information to the server by using the API method <strong>serverFilterParameterAdd</strong> as showed in the example</h5>
 </div>

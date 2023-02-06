@@ -4,9 +4,9 @@
 
 
 <h3>API</h3>
-
+The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of changing the drop-down control from Javascript.
 <h5>A series of API methods are available allowing control manipulation from java script, use the window function name <strong>prowlerDropDown</strong> as a paramater specify the dropdown id attribute and call the appropriated method</h5>
-
+<h3>Methods</h3>
 <div style="padding:0px; margin-top:10px; border-radius:5px">
     <table class="tableStyle" style="width:100%">
         <tr>
@@ -66,7 +66,8 @@
     <input type="button" value="Data bind" onclick="dataBind()" />
     <input type="button" value="Open/Close DropDown" onclick="prowlerDropDown('myProductDropDown').open()" />
 
-    <script>function dataBind() {
+    <script>
+        function dataBind() {
             prowlerDropDown('myProductDropDown').open();
             var data = { value: 'k' };
             prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
@@ -97,10 +98,8 @@ function dataBind() {
 }
 </script>";
 
-string apiCT = @"public JsonResult Search(string value, string customFilter)
+        string apiCT = @"public JsonResult Search(string value)
 {
-    Thread.Sleep(3000); // simulate server response delay :)
-
     value = value?.ToLower() ?? string.Empty;
     var model = MockHelper.GetMockProducts();
     model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();

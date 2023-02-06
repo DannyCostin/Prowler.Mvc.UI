@@ -3,10 +3,35 @@
 @model Prowler.Presentation.Models.MockProduct
 
 <h3>Customizing templates</h3>
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
-
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding a template to the drop-down item rendered from an HTML string and from a partial view.</h5>
 <br />
 
+<h5><strong>Template(string, string[])</strong></h5>
+<h5><strong>Template(MvcHtmlString, string[])</strong> parameters:</h5>
+
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>template</td>
+            <td>Sets the HTML template, which can be set as a string or rendered from a partial view.</td>
+        </tr>
+        <tr>
+            <td>templateBindings</td>
+            <td>Sets the list of template property names to bind from the data source.</td>
+        </tr>
+    </table>
+</div>
+<h5>To render values from the data source in the <strong>template </strong>requires the property name found in the data source to be wrapped in <strong>{##}</strong>, in this example <strong>{#Description#}</strong> the data source contains a property named Description the value will be bound at runtime by the binding mechanism.</h5>
+
+<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
+    <h5><strong>Note: </strong>When using templates the <strong>DataValueField</strong> method must always be added even if the template contains the property value, the serialization will be performed only on the value supplied in the DataValueField binding property.</h5>
+</div>
+
+<br />
 <h5>DEMO EXAMPLE</h5>
 <div style="padding-top:10px">
 
@@ -31,17 +56,17 @@
 .Template(
 @""<div style=""position:relative; margin:10px"">
 <table>
-    <tbody>
-        <tr>
-            <td valign=""top"">
-                <img style=""border-radius:50%;height:45px; width:45px; margin:2px"" src= ""{#Image#}"" />
-            </td>
-            <td>
-                <p style=""margin:5px;"">{#Name#}</p>
-                <p style=""margin-left:5px;margin-top:-5px;font-size:10px;"">{#Description#}</p>
-            </td>
-        </tr>
-       </tbody>
+<tbody>
+<tr>
+<td valign=""top"">
+<img style=""border-radius:50%;height:45px; width:45px; margin:2px"" src= ""{#Image#}"" />
+</td>
+<td>
+<p style=""margin:5px;"">{#Name#}</p>
+<p style=""margin-left:5px;margin-top:-5px;font-size:10px;"">{#Description#}</p>
+</td>
+</tr>
+</tbody>
 </table>
 </div>"", nameof(Product.Name),nameof(Product.Description), nameof(Product.Image)
 )
@@ -56,21 +81,38 @@
 .Template(Html.Partial(""DropDownItem""), nameof(Product.Name), nameof(Product.Description), nameof(Product.Image))
 .Render())";
 
+        string partialViewCode = @"<div style=""position:relative;margin:10px"">
+    <table>
+       <tbody>
+           <tr>
+               <td valign=""top"">
+                    <img style=""border-radius:50%;height:45px;width:45px;margin:2px"" src=""{#Image#}""/>
+               </td>
+               <td>
+                   <p style=""margin:5px;"">{#Name#}</p>
+                   <p style=""margin-left:5px;margin-top:-5px;font-size:10px;"">{#Description#}</p>
+               </td>
+           </tr>
+       </tbody>
+    </table>
+</div> ";
     }
-    <br />
-    <h5>VIEW CODE</h5>
-    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
-        <code style="white-space:pre; display:block; margin:10px">@templateCode</code>
-    </div>
-
 </div>
-
-<h5>Binding value in the template requires the property name found in the model to be wrapped in <strong>{##}</strong> example {#Description#} the model contains a property named Description the value will be binded at runtime by the binding mechanism</h5>
-<h5>The <strong>Template</strong> method has a template parameter and a binding parameter, the template parameter can be a string or an html string rendered from a partial view, the bindings parameter contains the property names from the model that are used in the template</h5>
-
 
 <br />
 <h5>VIEW CODE - RENDERING FROM PARTIAL VIEW</h5>
 <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
     <code style="white-space:pre; display:block; margin:10px">@templatePartialCode</code>
+</div>
+
+<br />
+<h5>VIEW CODE - RENDERING FROM PARTIAL VIEW</h5>
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@templatePartialCode</code>
+</div>
+
+<br />
+<h5>PARTIAL VIEW CODE</h5>
+<div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+    <code style="white-space:pre; display:block; margin:10px">@partialViewCode</code>
 </div>

@@ -3,8 +3,25 @@
 @model Prowler.Presentation.Models.MockProduct
 
 <h3>Grouping</h3>
-
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of rearranging the elements from the data source into groups, this action will render the drop-down items into groups at runtime.</h5>
+<br/>
+<h5><strong>GroupBy(string, string)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>bindingKey</td>
+            <td>Set the group key, the value will be used to rearranging the elements in the data source.</td>
+        </tr>
+        <tr>
+            <td>bindingLabel</td>
+            <td>Set the group label, the value will be used to display the group label in the drop-down item.</td>
+        </tr>
+    </table>
+</div>
 
 <br />
 
@@ -40,4 +57,3 @@
     </div>
 </div>
 
-<h5><strong>GroupBy</strong> method has a binding key and binding label parameter, set the binding parameter value to a property name that belongs to the model, the group key parameter contains the value that will be used when rearranging the elements in the model, the group label parameter is used to display the label of the dropdown item group</h5>

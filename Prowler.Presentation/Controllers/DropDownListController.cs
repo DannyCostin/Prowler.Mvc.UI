@@ -45,8 +45,6 @@ namespace Prowler.Presentation.Controllers
 
         public JsonResult Search(string value, string customFilter)
         {
-            Thread.Sleep(3000); // simulate server response delay :)
-
             value = value?.ToLower() ?? string.Empty;
             var model = MockHelper.GetMockProducts();
             model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();

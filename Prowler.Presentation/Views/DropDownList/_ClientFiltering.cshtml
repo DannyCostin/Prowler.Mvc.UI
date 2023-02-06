@@ -3,9 +3,28 @@
 @model Prowler.Presentation.Models.MockProduct
 
 <h3>Client filtering</h3>
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding search capability on the client side.</h5>
+<br/>
+<h5><strong>ClientFiltering(string)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>binding</td>
+            <td>Sets the name of a property name that belongs to the data source, the search will be performed on the binding property value.</td>
+        </tr>
+    </table>
+</div>
+<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
+    <h5><strong>Note: </strong> The parameter value can be bound to any property that belongs to the data source, the bound property value will be included in the HTML.</h5>
+</div>
 
 <br />
+
 
 <h5>DEMO EXAMPLE</h5>
 <div style="padding-top:10px">
@@ -37,4 +56,4 @@
     </div>
 </div>
 
-<h5><strong>ClientFiltering</strong> method has a binding paramater, set the binding parameter value to a property name that belongs to the model, the search will be performed on the binding property value</h5>
+

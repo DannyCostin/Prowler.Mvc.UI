@@ -3,7 +3,27 @@
 @model Prowler.Presentation.Models.MockProduct
 
 <h3>Multiselect</h3>
-<h5>The demo shows a sample scenario for using the DropDownList for ASP.NET MVC where you can bind the component to a list of values and make a selection from the available options.</h5>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding multiselect capability.</h5>
+<br />
+
+<h5><strong>Multiselect(string, bool)</strong> parameters:</h5>
+
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>bindingProperty</td>
+            <td>Sets the binding property name from the data source, expects that the property value type is boolean.</td>
+        </tr>
+        <tr>
+            <td>renderCheckBox</td>
+            <td>Sets the rendering style with checkbox.</td>
+        </tr>
+    </table>
+</div>
 
 <br />
 <h5>DEMO EXAMPLE</h5>
@@ -33,12 +53,12 @@
         <code style="white-space:pre; display:block; margin:10px">@multiselectCode</code>
     </div>
 </div>
-
-<h5><strong>Multiselect</strong> method has a binding parameter and render checkbox parameter, set the binding parameter value to a property name that belongs to the model, it is important that the property used is of type Boolean, the render checkbox parameter can be set to true to add a checkbox element on the drop down item</h5>
-
-<br/>
+<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
+    <h5><strong>Note: </strong>To prevent the drop-down from growing, add the <strong>HtmlAttributes("style", "height:30px")</strong> method.</h5>
+</div>
+<br />
 <h3>Multiselect with checkbox</h3>
-<br/>
+<br />
 <h5>DEMO EXAMPLE</h5>
 <div style="padding-top:10px">
     @(Html.Prowler().DropDownList()
@@ -46,7 +66,7 @@
           .DataTextField(nameof(Product.Name))
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:400px")
-          .Multiselect(nameof(Product.Checked), true)
+          .Multiselect(nameof(Product.Checked), true)          
           .Render()
     )
 
