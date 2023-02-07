@@ -24,6 +24,16 @@ namespace Prowler.Presentation.Controllers
            return RedirectToAction("Index");
         }
 
+        public ActionResult SendSingleProduct(Product singleProduct, FormCollection collection)
+        {
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult SendMultiProduct(List<Product> multiProducts, FormCollection collection)
+        {
+            return RedirectToAction("Index");
+        }
+
         public ActionResult GetDropDownSideMenu()
         {
             //Thread.Sleep(5000);
@@ -39,6 +49,7 @@ namespace Prowler.Presentation.Controllers
             model.DataSource.Add("Customizing Templates", "/DropDownList/GetSection?view=_Templates");
             model.DataSource.Add("API", "/DropDownList/GetSection?view=_Api");
             model.DataSource.Add("Events", "/DropDownList/GetSection?view=_Events");
+            model.DataSource.Add("Form Request", "/DropDownList/GetSection?view=_Request");
 
             return PartialView("_SideMenu", model);
         }
