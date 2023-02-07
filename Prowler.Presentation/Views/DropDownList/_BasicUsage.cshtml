@@ -9,7 +9,7 @@
 
 <br />
 
-<h5>DEMO EXAMPLE</h5>
+<h4>DEMO EXAMPLE</h4>
 <div style="padding-top:10px;">
     @(Html.Prowler().DropDownList()
           .HtmlAttributes("id", "ProductDropDown")
@@ -34,13 +34,16 @@
     }
 
     <br />
-    <h5>VIEW CODE</h5>
+    <h4>VIEW CODE</h4>
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
     </div>
 </div>
-<div style="background-color:yellowgreen;padding:20px; margin-top:15px; border-radius:5px">
-    <h5><strong>Note: </strong>When working with multiple dropdown controls the <strong>ID attribute</strong> is required, use the <strong>HtmlAttributes(string, string)</strong> method to specify the id as presented in the code example above.</h5>
+<div class="infoTipContainer">
+    <span class="dot">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16" id="IconChangeColor"> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" id="mainIconPathAttribute" fill="black"></path> </svg>
+    </span>    
+    <h5>When working with multiple dropdown controls the <strong>ID attribute</strong> is required, use the <strong>HtmlAttributes(string, string)</strong> method to specify the id as presented in the code example above.</h5>
 </div>
 <br />
 <h5><strong>HtmlAttributes</strong> method takes 2 parameters, first one sets the attribute name and the second the attribute value. This method can be chained multiple times.</h5>

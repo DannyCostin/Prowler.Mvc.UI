@@ -17,60 +17,52 @@
             <h1>Prowler.Mvc.UI</h1>
         </div>
         <p class="lead">Free UI library components for building modern and feature-rich ASP.NET MVC applications.</p>
+        <p class="lead">Provides components with flexible data binding, api, events, appearance customization through templates, accessibility.</p>
         <a href="https://www.nuget.org/packages/Prowler.Mvc.UI/" class="btn btn-primary">Get nuget package</a>
     </center>
 </div>
 
 <div style="margin-top:20px">
     <h3>DEMO</h3>
+    <h5>The current demo of the UI for ASP.NET MVC demonstrates an implementation of the most common scenarios in which the components are used.</h5>
     <br />
     <h4>DropDownList Control</h4>
-    <h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of the most common scenarios in which the component is used.</h5>
-    <br />
+    
 
-    <div>
-        <h5>Basic</h5>
-        @(Html.Prowler().DropDownList()
+    <div style="display:flex;">
+        <div style="margin-right:25px">
+            <h5>Basic</h5>
+            @(Html.Prowler().DropDownList()
           .HtmlAttributes("id","dropdownBasic")
           .BindTo(Model.ProductDataSource, "Please select")
           .DataTextField(nameof(Product.Name))
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:400px")
+          .ClientFiltering(nameof(Product.Name))
           .Render()
         )
+        </div>
 
-        <br />
-        <h5>Multiselect</h5>
+        <div>
+            <h5>Template</h5>
 
-        @(Html.Prowler().DropDownList()
-          .HtmlAttributes("id","dropdownMulti")
+            @(Html.Prowler().DropDownList()
+          .HtmlAttributes("id", "dropdownTemplate")
           .BindTo(Model.ProductDataSource, "Please select")
           .DataTextField(nameof(Product.Name))
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:400px")
-          .Multiselect(nameof(Product.Checked))
-          .Render()
-        )
-
-        <br />
-        <h5>Template</h5>
-
-        @(Html.Prowler().DropDownList()
-          .HtmlAttributes("id", "dropdownTemplate")
-          .BindTo(Model.ProductDataSource)
-          .DataTextField(nameof(Product.Name))
-          .DataValueField(nameof(Product.Id))
-          .HtmlAttributes("style", "width:500px")
-          .SelectedIndex(0)
           .Height(400)
+          .Multiselect(nameof(Product.Checked), true)
+          .ClientFiltering(nameof(Product.Name))
           .Template(Html.Partial("_DropDownItem"), nameof(Product.Name),nameof(Product.Description), nameof(Product.Image))
           .Render()
           )
+        </div>
     </div>
     <br />
     <h4>Grid Control</h4>
-    <h5>The current demo of the UI for ASP.NET MVC Grid demonstrates an implementation of the most common scenarios in which the component is used.</h5>
-    <br />
+  
     <div>
         @(Html.Prowler().Grid()
             .UniqueId(nameof(Product.Id))

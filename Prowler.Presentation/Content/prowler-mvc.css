@@ -224,8 +224,9 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    height: 15px;
-    margin: 0px;
+    height: 17px;
+    margin: 0px;    
+    border-radius: 3px;
 }
 
     .p-dropdown-list-multiselect-container input {
@@ -234,6 +235,7 @@
         height: 0;
         width: 0;
         display: none;
+        border-radius: 3px;
     }
 
 
@@ -241,42 +243,51 @@
     position: absolute;
     top: 0px;
     left: 5px;
-    height: 15px;
-    width: 15px;
-    background-color: #eee;
+    height: 17px;
+    width: 17px;
+    background-color: white;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 
 .p-dropdown-list-multiselect-container:hover input ~ .p-dropdown-list-multiselect-checkmark {
     background-color: #ccc;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 
 .p-dropdown-list-multiselect-container input:checked ~ .p-dropdown-list-multiselect-checkmark {
     background-color: #408dc8;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
 }
 
 .p-dropdown-list-multiselect-checkmark:after {
     content: "";
     position: absolute;
     display: none;
+    border-radius: 3px;
 }
 
 
 .p-dropdown-list-multiselect-container input:checked ~ .p-dropdown-list-multiselect-checkmark:after {
     display: block;
+    border-radius: 3px;
 }
 
 .p-dropdown-list-multiselect-container .p-dropdown-list-multiselect-checkmark:after {
-    left: 5px;
+    left: 4px;
     top: 2px;
-    width: 5px;
+    width: 6px;
     height: 10px;
     border: solid white;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+    border-radius: 3px;
 }
 
 .p-multiselect-selection-list-container-element {

@@ -42,7 +42,7 @@
     </table>
 </div>
 <br/>
-<h5>DEMO EXAMPLE</h5>
+<h4>DEMO EXAMPLE</h4>
 <div style="padding-top:10px">
     @(Html.Prowler().DropDownList()
           .BindTo(Model.ProductDataSource)
@@ -76,6 +76,7 @@
         string eventCode = @"@(Html.Prowler()
 .DropDownList()
 .BindTo(Model.ProductDataSource)
+.HtmlAttributes(""id"", ""ProductDropDown"")
 .DataTextField(nameof(Product.Name))
 .DataValueField(nameof(Product.Id))
 .SelectedIndex(0)
@@ -102,13 +103,13 @@ function fnSelectedChanged(value, label) {
     }
     <br />
 
-    <h5>VIEW CODE</h5>
+    <h4>VIEW CODE</h4>
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@eventCode</code>
     </div>
     <br />
 
-    <h5>JAVASCRIPT CODE</h5>
+    <h4>JAVASCRIPT CODE</h4>
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@eventJS</code>
     </div>

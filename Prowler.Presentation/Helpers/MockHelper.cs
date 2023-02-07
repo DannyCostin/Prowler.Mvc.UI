@@ -30,7 +30,7 @@ namespace Prowler.Presentation.Helpers
             mockProduct.ProductDataSource.Add(new Product
             {
                 Id = 1,
-                Name = "Shaorma",
+                Name = "Shawarma",
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/shaorma.jpg",
