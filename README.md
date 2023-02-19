@@ -1,22 +1,11 @@
 # Prowler.Mvc.UI
-Collection of ASP.NET MVC UI Custom Controls similar functionality as Telerik UI for ASP.NET MVC
+Is a Free UI library components for building modern and feature-rich ASP.NET MVC applications.
+Prowler MVC UI provides components with flexible data binding, api, events, appearance customization through templates, accessibility.
 
 Provides components with flexible data binding, api, events, appearance customization through templates, accessibility.
 
-Dependency jquery, prowler-mvc.js and prowler-mvc.css.
-
-Check the sample app for documentation on how to use the controls
-
-
-# Donation
-If this project help you reduce time to develop, you can give me a cup of coffee :)
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=79D39PJ2VKELW)
-
-# Version 1.0.1
-Construct the look and feel of the dropdown list
-
-Build a dropdown list in View with Prowler Html helper
+# Dependency 
+jquery, prowler-mvc.js and prowler-mvc.css
 
 ```@using Prowler.Mvc.UI```
 
@@ -24,16 +13,29 @@ Build a dropdown list in View with Prowler Html helper
 ```<script type="text/javascript" src="~/Scripts/prowler-mvc.js"></script>```\
 ```<link rel="stylesheet" href="~/Content/prowler-mvc.css"/>```
 
-```
-@(Html.Prowler().DropDownList()
-                .Name("Product")
-                .BindTo(Model.ProductDataSource)
-                .DataTextField(nameof(Product.Name))
-                .DataValueField(nameof(Product.Id))
-                .SelectedIndex(0)
-                .Render()
-)
-```
+# Documentation
+https://prowler-mvc-ui-asp-net-as.azurewebsites.net/
+
+# Donation
+If this project help you reduce time to develop, you can give me a cup of coffee :)
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?hosted_button_id=79D39PJ2VKELW)
+
+# Version 1.2.1
+
+New Grid Component
+
+The ASP.NET MVC Grid lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility.
+The Grid is a component for displaying data in a tabular format and comes with a variety of features, and customization.
+
+Grid main functionality:
+- Data Binding
+- Customizing templates
+- Events
+- API
+
+# Version 1.0.1
+
 Dropdown List main functionality:
 
 - Data Binding
