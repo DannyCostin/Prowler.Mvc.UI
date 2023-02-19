@@ -1,0 +1,184 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Events</h3>
+
+<h5>The current demo of the UI for ASP.NET MVC Grid demonstrates an implementation of working with grid control events.</h5>
+<br />
+
+<h5><strong>GridEvent(Prowler.Mvc.UI.GridEvents)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Prowler.Mvc.UI.GridEvents</td>
+            <td>Sets the Javascript function to raise on the event trigger</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5><strong>Enum</strong></h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Prowler.Mvc.UI.GridEvents.DataBindError</td>
+            <td>Event raise on data bind error</td>
+        </tr>
+        <tr>
+            <td>Prowler.Mvc.UI.GridEvents.DataBindSuccess</td>
+            <td>Event raise on data bind successfully</td>
+        </tr>
+        <tr>
+            <td>Prowler.Mvc.UI.GridEvents.CkeckBoxSelectAllStateChanged</td>
+            <td>Event raise when the check box states changes, the event returns value TRUE if all check boxes are checked and FALSE if not</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px;">
+    <div>
+        @(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .UniqueId(nameof(Product.Id))
+            .HtmlAttributes("id", "productGrid")
+            .Height(300)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox(),
+                    i => i.BindTo(nameof(Product.Id)).Title("ID"),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description")
+                    )
+            .Pagination(() => new Pagination
+            {
+                PageIndex = 1,
+                PageItems = 5,
+                Total = Model.TotalNrElements,
+                Url = "/Grid/GetPage"
+            })
+            .GridEvent(GridEvents.DataBindSuccess, "GridDataBinded")
+            .GridEvent(GridEvents.DataBindError, "GridDataBindError")
+            .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, "CheckBoxSelectAllStateChanged")
+            .Render()
+ )
+    </div>
+    <br />
+    <h5>Event Log</h5>
+    <textarea id="eventConsole" style="width:100%; height:100px;max-width:none;overflow:auto"></textarea>
+    <br />
+
+    @{
+        string basicCode = @"@(Html.Prowler().Grid()
+.BindTo(Model.ProductDataSource)
+.UniqueId(nameof(Product.Id))
+.HtmlAttributes(""id"", ""productGrid"")
+.Height(300)
+.Columns(
+          i => i.BindTo(nameof(Product.Id)).Title(""ID""),
+          i => i.BindTo(nameof(Product.Name)).Title(""Name""),
+          i => i.BindTo(nameof(Product.Description)).Title(""Description""),
+          i => i.BindTo(nameof(Product.GroupName)).Title(""Type"")
+        )
+.Pagination(() => new Pagination
+{
+   PageIndex = 1,
+   PageItems = 5,
+   Total = Model.TotalNrElements,
+   Url = ""/Grid/GetPage""
+})
+.GridEvent(GridEvents.DataBindSuccess, ""GridDataBinded"")
+.GridEvent(GridEvents.DataBindError, ""GridDataBindError"")
+.GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, ""CheckBoxSelectAllStateChanged"")
+.Render()
+)";
+
+
+        string controllerCode = @"public ActionResult GetPage(GridDataSourceRequest<Product> request)
+{
+    try
+    {
+        var list = MockHelper.GetMockProducts().ProductDataSource.AsEnumerable();
+        
+        var totalItems = list.Count();
+        
+        var data = list.Skip(request.PageInfo.Skip)
+                       .Take(request.PageInfo.PageItems)
+                       .ToList();
+        
+        var datasouce = new GridDataSourceResponse<Product>
+        {
+            DataSource = data,
+            TotalItems = totalItems,
+            PageIndex = request.PageInfo.PageIndex
+        };
+        
+        return Json(datasouce);
+    }
+    catch(Exception ex)
+    {
+        Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        return Json(ex.Message);
+    }
+}";
+
+        string javascriptCode = @"function GridDataBinded(response) {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value = ""Event: GridDataBind \n"" + ""Total Items: "" + response.TotalItems + ""\nPage Number: "" 
+                       + response.PageIndex + ""\nItems: "" + response.DataSource.length;
+}
+
+function GridDataBindError(result) {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value = ""Event: GridDataBindError \n"" + result.responseJSON;
+}
+
+function CheckBoxSelectAllStateChanged(state, name) {
+    var logElement = document.getElementById(""eventConsole"");
+    logElement.value = ""Event: CheckBoxSelectAllStateChanged: \n"" + ""All check boxes selected: "" + state + ""\nBinded property: "" + name;
+}";
+
+    }
+    <br />
+    <h4>VIEW CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+    <br />
+    <h4>JAVASCRIPT CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@javascriptCode</code>
+    </div>
+    <br/>
+    <h4>CONTROLLER CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@controllerCode</code>
+    </div>
+    <br />
+</div>
+
+@Html.Partial("_GridRequestResponse")
+
+<script>
+    function GridDataBinded(response) {
+        var logElement = document.getElementById("eventConsole");
+        logElement.value = "Event: GridDataBind \n" + "Total Items: " + response.TotalItems + "\nPage Number: " + response.PageIndex + "\nItems: " + response.DataSource.length;
+    }
+
+    function GridDataBindError(result) {
+        var logElement = document.getElementById("eventConsole");
+        logElement.value = "Event: GridDataBindError \n" + result.responseJSON;
+    }
+
+    function CheckBoxSelectAllStateChanged(state, name) {
+        var logElement = document.getElementById("eventConsole");
+        logElement.value = "Event: CheckBoxSelectAllStateChanged: \n" + "All check boxes selected: " + state + "\nBinded property: " + name;
+    }
+</script>

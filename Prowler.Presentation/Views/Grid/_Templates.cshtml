@@ -1,0 +1,257 @@
+﻿
+@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Customizing templates</h3>
+
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding a template to the grid control rendered from an HTML string and from a partial view.</h5>
+<br />
+
+<h5><strong>RowTemplate(string, string[])</strong></h5>
+<h5><strong>RowTemplate(MvcHtmlString, string[])</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>template</td>
+            <td>Sets the HTML template, which can be set as a string or rendered from a partial view.</td>
+        </tr>
+        <tr>
+            <td>templateBindings</td>
+            <td>Sets the list of template property names to bind from the data source.</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5><strong>ColumnTemplate(string)</strong></h5>
+<h5><strong>ColumnTemplate(MvcHtmlString)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>template</td>
+            <td>Sets the HTML template, which can be set as a string or rendered from a partial view.</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5><strong>ToolBarTemplate(string)</strong></h5>
+<h5><strong>ToolBarTemplate(MvcHtmlString)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>template</td>
+            <td>Sets the HTML template, which can be set as a string or rendered from a partial view.</td>
+        </tr>
+    </table>
+</div>
+
+<div class="infoTipContainer">
+    <span class="dot">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16" id="IconChangeColor"> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" id="mainIconPathAttribute" fill="black"></path> </svg>
+    </span>
+    <h5>To render values from the data source in the <strong>template </strong>requires the property name found in the data source to be wrapped in <strong>{##}</strong>, in this example <strong>{#Image#}</strong> the data source contains a property named Image the value will be bound at runtime by the binding mechanism.</h5>
+</div>
+
+<br />
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px;">
+    <div>
+        @(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .UniqueId(nameof(Product.Id))
+            .HtmlAttributes("id", "productGridDemo")
+            .Height(300)
+            .Columns(
+                    i => i.RowTemplate(@"<center><img src=""{#Image#}"" alt="""" style=""border-radius:50%;height:45px;width:45px;margin:2px""/></center>", nameof(Product.Image))
+                          .Width(35),
+                    i => i.BindTo(nameof(Product.GroupName)).Width(200)
+                          .ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                                                  .BindTo(Model.FilterGroups, "Product Type")
+                                                  .DataTextField(nameof(Product.Name))
+                                                  .DataValueField(nameof(Product.Id))
+                                                  .Multiselect(nameof(Product.Checked), true)
+                                                  .Event(EventDropDown.Selected, "selectProductGroup")
+                                                  .HtmlAttributes("style", "height:32px;")
+                                                  .Render()),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description"),
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox)
+                    )
+            .Pagination(() => new Pagination
+            {
+                PageIndex = 1,
+                PageItems = 5,
+                Total = Model.TotalNrElements,
+                Url = "/Grid/GridNavigateToPage"
+            })
+            .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, "CheckBoxStateChanged")
+            .GridEvent(GridEvents.DataBindSuccess, "GridDataBinded")
+            .ToolBarTemplate(Html.Partial("ToolBarContainer"))
+            .Render()
+ )
+    </div>
+    <br />    
+
+    @{
+        string basicCode = @"@(Html.Prowler().Grid()
+        .BindTo(Model.ProductDataSource)
+        .UniqueId(nameof(Product.Id))
+        .HtmlAttributes(""id"", ""productGridDemo"")
+        .Height(300)
+        .Columns(
+                i => i.RowTemplate(@""<center><img src=""""{#Image#}"""" alt="""""""" style=""""border-radius:50%;height:45px;width:45px;margin:2px""""/></center>"", nameof(Product.Image))
+                      .Width(35),
+                i => i.BindTo(nameof(Product.GroupName)).Width(200)
+                      .ColumnTemplate(Html.Prowler().DropDownList().Name(""filterGroups"")
+                                              .BindTo(Model.FilterGroups, ""Product Type"")
+                                              .DataTextField(nameof(Product.Name))
+                                              .DataValueField(nameof(Product.Id))
+                                              .Multiselect(nameof(Product.Checked), true)
+                                              .Event(EventDropDown.Selected, ""selectProductGroup"")
+                                              .HtmlAttributes(""style"", ""height:32px;"")
+                                              .Render()),
+                i => i.BindTo(nameof(Product.Name)).Title(""Name""),
+                i => i.BindTo(nameof(Product.Description)).Title(""Description""),
+                i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox)
+                )
+        .Pagination(() => new Pagination
+        {
+            PageIndex = 1,
+            PageItems = 5,
+            Total = Model.TotalNrElements,
+            Url = ""/Grid/GridNavigateToPage""
+        })
+        .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, ""CheckBoxStateChanged"")
+        .GridEvent(GridEvents.DataBindSuccess, ""GridDataBinded"")
+        .ToolBarTemplate(Html.Partial(""ToolBarContainer""))
+        .Render()
+ )";
+
+
+        string controllerCode = @"public ActionResult GridNavigateToPage(GridDataSourceRequest<Product> request, List<FilterGroup> filterGroups, bool? setFirstPage)
+{
+    try
+    {
+        var list = MockHelper.GetMockProducts.ProductDataSource.AsEnumerable();
+    
+        if (setFirstPage.HasValue && setFirstPage.Value)
+        {
+            request.PageInfo.PageIndex = 1;                    
+        }
+    
+        if (filterGroups != null)
+        {
+            list = MockHelper.FilterByGroup(list, filterGroups);
+        }
+    
+        var totalItems = list.Count();
+    
+    
+        var data = list.Skip(request.PageInfo.Skip)
+                  .Take(request.PageInfo.PageItems)
+                  .ToList();               
+    
+        var datasouce = new GridDataSourceResponse<Product>
+        {
+            DataSource = data,
+            TotalItems = totalItems,
+            PageIndex = request.PageInfo.PageIndex
+        };
+    
+        return Json(datasouce);
+    }
+    catch (Exception ex)
+    {
+        Response.StatusCode = (int)HttpStatusCode.BadRequest;
+        return Json(ex.Message);
+    }
+}";
+
+        string javascriptCode = @"<script>
+    function selectProductGroup() {
+        var data = {};
+        data[0] = { name: ""setFirstPage"", value: true };
+        prowlerGrid(""productGridDemo"").Refresh(""/Grid/GridNavigateToPage"", data);
+    }
+
+    function selectAll(sender) {
+        prowlerGrid(""productGridDemo"").SetCheckBoxContainersState(""Checked"", sender.checked);
+        $(""#selectAllPageCheckBox"").prop('checked', sender.checked);
+    }
+
+    function CheckBoxStateChanged(state, name) {
+
+        if (state == ""false"" && name == ""Checked"") {            
+            $(""#selectAllPageCheckBox"").prop('checked', false);
+        }
+        else {
+            $(""#selectAllPageCheckBox"").prop('checked', true);
+        }
+    }
+
+    function GridDataBinded() {
+        let value = prowlerGrid(""productGridDemo"").GetCheckBoxContainersState(""Checked"");
+        CheckBoxStateChanged(value, ""Checked"")
+    }   
+</script>";
+
+    }
+    <br />
+    <h4>VIEW CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+    <br />
+    <h4>JAVASCRIPT CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@javascriptCode</code>
+    </div>
+    <br />
+    <h4>CONTROLLER CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@controllerCode</code>
+    </div>
+    <br />
+</div>
+
+@Html.Partial("_GridRequestResponse")
+
+<script>
+    function selectProductGroup() {
+        var data = {};
+        data[0] = { name: "setFirstPage", value: true };
+        prowlerGrid("productGridDemo").Refresh("/Grid/GridNavigateToPage", data);
+    }
+
+    function selectAll(sender) {
+        prowlerGrid("productGridDemo").SetCheckBoxContainersState("Checked", sender.checked);
+        $("#selectAllPageCheckBox").prop('checked', sender.checked);
+    }
+
+    function CheckBoxStateChanged(state, name) {
+
+        if (state == "false" && name == "Checked") {            
+            $("#selectAllPageCheckBox").prop('checked', false);
+        }
+        else {
+            $("#selectAllPageCheckBox").prop('checked', true);
+        }
+    }
+
+    function GridDataBinded() {
+        let value = prowlerGrid("productGridDemo").GetCheckBoxContainersState("Checked");
+        CheckBoxStateChanged(value, "Checked")
+    }   
+</script>

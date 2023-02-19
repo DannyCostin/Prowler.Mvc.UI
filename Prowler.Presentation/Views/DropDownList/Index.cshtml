@@ -448,6 +448,7 @@ public JsonResult Search(string value, string customFilter)
           .DataValueField(nameof(Product.Id))
           .HtmlAttributes("style", "width:400px")
           .HtmlAttributes("id", "myProductDropDown")
+          .Multiselect(nameof(Product.Checked), true)
           .SelectedIndex(0)
           .Render()
     )
@@ -527,20 +528,20 @@ public JsonResult Search(string value, string customFilter)
     <script>
         function fnOpen() {
             var logElement = document.getElementById("eventConsole");
-            logElement.value += "event:Open \n";
+            logElement.value = "event:Open \n";
             logElement.scrollTop = logElement.scrollHeight;
         }
 
         function fnSelectedChanged(value, label) {
             var logElement = document.getElementById("eventConsole");
-            logElement.value += "event:Selected " + value + " " + label + " \n";
+            logElement.value = "event:Selected " + value + " " + label + " \n";
             logElement.scrollTop = logElement.scrollHeight;
         }
     </script>
 
     <br />
 
-    <textarea id="eventConsole" style="width:100%; height:100px;max-width:none"></textarea>
+    <textarea id="eventConsole" style="width:100%; height:100px;max-width:none;overflow:hidden"></textarea>
 
     @{
         string eventCode = @"@(Html.Prowler()
@@ -558,13 +559,13 @@ public JsonResult Search(string value, string customFilter)
 <script>
     function fnOpen() {
     var logElement = document.getElementById(""eventConsole"");
-    logElement.value += ""event:Open \n"";
+    logElement.value = ""event:Open \n"";
     logElement.scrollTop = logElement.scrollHeight;
 }
 
 function fnSelectedChanged(value, label) {
     var logElement = document.getElementById(""eventConsole"");
-    logElement.value += ""event:Selected "" + value + "" "" + label + "" \n"";
+    logElement.value = ""event:Selected "" + value + "" "" + label + "" \n"";
     logElement.scrollTop = logElement.scrollHeight;
 }
 </script> ";

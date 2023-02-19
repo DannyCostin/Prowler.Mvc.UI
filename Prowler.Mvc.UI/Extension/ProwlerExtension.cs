@@ -23,5 +23,13 @@ namespace Prowler.Mvc.UI
                 Prowler = prowler
             };
         }
+
+        public static Grid<TModel> Grid<TModel>(this Prowler<TModel> prowler)
+        {
+            return new Grid<TModel>()
+            {
+                Prowler = prowler
+            };
+        }
     }
 }

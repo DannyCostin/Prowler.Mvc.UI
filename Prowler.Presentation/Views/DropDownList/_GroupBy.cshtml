@@ -1,0 +1,60 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Grouping</h3>
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of rearranging the elements from the data source into groups, this action will render the drop-down items into groups at runtime.</h5>
+<br/>
+<h5><strong>GroupBy(string, string)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>bindingKey</td>
+            <td>Set the group key, the value will be used to rearranging the elements in the data source.</td>
+        </tr>
+        <tr>
+            <td>bindingLabel</td>
+            <td>Set the group label, the value will be used to display the group label in the drop-down item.</td>
+        </tr>
+    </table>
+</div>
+
+<br />
+
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+          .Render()
+    )
+
+    @{
+        string groupingCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.HtmlAttributes(""id"", ""ProductDropDown"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.GroupBy(nameof(Product.GroupId), nameof(Product.GroupName))
+.Render())";
+
+    }
+
+    <br />
+    <h4>VIEW CODE</h4>
+
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@groupingCode</code>
+    </div>
+</div>
+

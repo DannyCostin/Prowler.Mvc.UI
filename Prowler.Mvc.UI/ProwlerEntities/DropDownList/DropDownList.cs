@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Prowler.Mvc.UI
 {
-    public class DropDownList<TModel>
+    public class DropDownList<TModel> : IProwlerControl
     {
         internal Prowler<TModel> Prowler { get; set; }
         internal string Name { get; set; }
@@ -36,5 +36,22 @@ namespace Prowler.Mvc.UI
         internal string ServerFilteringUrl { get; set; }
         internal int ServerFilteringDelay { get; set; }
         internal string ServerFilteringSerializationName { get; set; }
+
+        public string GetName()
+        {
+            return Name;
+        }
+
+        public IHtmlString Render(string name)
+        {
+            Name = name;
+
+            return this.Render();
+        }
+
+        public IHtmlString Render()
+        {            
+            return ProwlerDropDownListExtension.Render(this);
+        }
     }
 }

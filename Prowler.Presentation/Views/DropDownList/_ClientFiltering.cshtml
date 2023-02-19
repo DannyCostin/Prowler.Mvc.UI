@@ -1,0 +1,63 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Client filtering</h3>
+
+<h5>The current demo of the UI for ASP.NET MVC DropDownList demonstrates an implementation of adding search capability on the client side.</h5>
+<br/>
+<h5><strong>ClientFiltering(string)</strong> parameters:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>binding</td>
+            <td>Sets the name of a property name that belongs to the data source, the search will be performed on the binding property value.</td>
+        </tr>
+    </table>
+</div>
+<div class="infoTipContainer">
+    <span class="dot">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16" id="IconChangeColor"> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" id="mainIconPathAttribute" fill="black"></path> </svg>
+    </span>
+    <h5>The parameter value can be bound to any property that belongs to the data source, the bound property value will be included in the HTML.</h5>
+</div>
+
+<br />
+
+
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px">
+    @(Html.Prowler().DropDownList()
+          .BindTo(Model.ProductDataSource)
+          .DataTextField(nameof(Product.Name))
+          .DataValueField(nameof(Product.Id))
+          .HtmlAttributes("style", "width:400px")
+          .SelectedIndex(0)
+          .ClientFiltering(nameof(Product.Name))
+          .Render()
+    )
+
+    @{
+        string clientFilteringCode = @"@(Html.Prowler()
+.DropDownList()
+.BindTo(Model.ProductDataSource)
+.HtmlAttributes(""id"", ""ProductDropDown"")
+.DataTextField(nameof(Product.Name))
+.DataValueField(nameof(Product.Id))
+.SelectedIndex(0)
+.ClientFiltering(nameof(Product.Name))
+.Render())";
+
+    }
+    <br />
+    <h4>VIEW CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@clientFilteringCode</code>
+    </div>
+</div>
+
+

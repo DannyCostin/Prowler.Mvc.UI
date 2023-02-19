@@ -8,30 +8,39 @@ namespace Prowler.Presentation.Helpers
 {
     public static class MockHelper
     {
-        public static MockProduct GetMockProducts()
+        public static List<string> GetGridPaginationViews { get; set; } = new List<string>
+        {
+            "_Pagination", "_Events", "_Api", "_Templates"
+        };
+
+        public static MockProduct GetMockProducts(bool attachPleaseSelectItem = true)
         {
             var mockProduct = new MockProduct()
             {
                 ProductDataSource = new List<Product>()
             };
-                      
-            mockProduct.ProductDataSource.Add( new Product
+
+            if (attachPleaseSelectItem)
             {
-                Id = -1,
-                Name = "Please select",
-                GroupId = -1,
-                Image = "/Content/Images/shop.jpg",
-                Description = "a product"
-            });
+                mockProduct.ProductDataSource.Add(new Product
+                {
+                    Id = -1,
+                    Name = "Please select",
+                    GroupId = -1,
+                    Image = "/Content/Images/shop.jpg",
+                    Description = "a product"
+                });
+            }
 
             mockProduct.ProductDataSource.Add(new Product
             {
                 Id = 1,
-                Name = "Shaorma",
+                Name = "Shawarma",
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/shaorma.jpg",
-                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",                
+                Description = "Lipie, Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",
+                Disable =true
             });
             mockProduct.ProductDataSource.Add( new Product
             {
@@ -40,7 +49,7 @@ namespace Prowler.Presentation.Helpers
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/kebab.jpg",
-                Description = "Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce"
+                Description = "Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",               
             });
             mockProduct.ProductDataSource.Add( new Product
             {
@@ -356,7 +365,153 @@ namespace Prowler.Presentation.Helpers
                 Description = "Pasta with bolognese sauce from beef and pork"
             });
 
+            mockProduct.FilterGroups = mockProduct.ProductDataSource
+                                                  .Select(i => new{ i.Checked, i.GroupId, i.GroupName })
+                                                  .Distinct()
+                                                  .ToList()
+                                                  .Select(i => new FilterGroup { Checked = i.Checked, Id = i.GroupId, Name = i.GroupName })
+                                                  .ToList();
+           
             return mockProduct;
+        }
+
+        public static IEnumerable<Product> SortByName(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if(sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Name);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Name);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> SortById(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Id);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Id);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> SortByType(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.GroupName);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.GroupName);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> SortByDescription(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Description);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Description);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> FilterByGroup(IEnumerable<Product> dataSource, List<FilterGroup> groups)
+        {
+            IEnumerable<Product> list;
+
+            if (groups != null)
+            {
+                var groupIds = groups.Select(i => i.Id).ToList();
+                list = dataSource.Where(i => groupIds.Contains(i.GroupId));
+            }
+            else
+            {
+                list = dataSource;
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> FilterByGroup(IEnumerable<Product> dataSource, FilterGroup group)
+        {
+            IEnumerable<Product> list;
+
+            if (group != null && group.Id > -1)
+            {
+                var groupIds = group.Id;                
+                list = dataSource.Where(i => groupIds == i.GroupId);
+            }
+            else
+            {
+                list = dataSource;
+            }
+
+            return list;
+        }        
+
+        public static IEnumerable<Product> GetMockProducts(string idOrderBy, string nameOrderBy, string descriptionOrderBy, string typeOrderBy)
+        {
+            var products = GetMockProducts(false).ProductDataSource.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(idOrderBy))
+            {
+                products = SortById(products, idOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(nameOrderBy))
+            {
+                products = SortByName(products, nameOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(descriptionOrderBy))
+            {
+                products = SortByDescription(products, descriptionOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(typeOrderBy))
+            {
+                products = SortByType(products, typeOrderBy);
+            }
+
+            return products;
+        }
+    }
+
+    public static class ExtensionHelper
+    {
+        public static void Add(this List<SideMenuItemModel> source, string title, string url)
+        {
+            if(source == null) { source = new List<SideMenuItemModel>(); }
+
+            source.Add(new SideMenuItemModel
+            {
+                Title = title,
+                View = url
+            });
         }
     }
 }

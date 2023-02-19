@@ -1,0 +1,75 @@
+﻿<h5><strong>GridDataSourceRequest&lt;T&gt;</strong> object properties:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>GridDataSourcePagination.PageInfo</td>
+            <td>Get the grid page info</td>
+        </tr>
+        <tr>
+            <td>DataSource</td>
+            <td>Get the data source</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5><strong>GridDataSourceRequest&lt;T&gt;</strong> the generic type is from the binded data source object item. The <strong>GridDataSourceRequest&lt;T&gt;</strong> object will receive the PageInfo and DataSource object.</h5>
+<h5><strong>DataSource</strong> object contains all the rows information that are in edit mode.</h5>
+<br />
+<h5><strong>GridDataSourcePagination</strong> object properties:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>PageIndex</td>
+            <td>Get the grid page number</td>
+        </tr>
+        <tr>
+            <td>PageItems</td>
+            <td>Get the grid page items set</td>
+        </tr>
+        <tr>
+            <td>Skip</td>
+            <td>Get the number of items to skip based on page number and page items</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5><strong>PageInfo</strong> object contains the grid navigation information.</h5>
+<br />
+<h5><strong>GridDataSourceResponse&lt;T&gt;</strong> object properties:</h5>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>PageIndex</td>
+            <td>Sets the grid page number</td>
+        </tr>
+        <tr>
+            <td>DataSource</td>
+            <td>Sets the grid data source</td>
+        </tr>
+        <tr>
+            <td>TotalItems</td>
+            <td>Sets the expected total number of elements in the data source</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h5>The return type must be Json of type <strong>GridDataSourceResponse&lt;T&gt;</strong> the generic type is from the bound data source object item. The <strong>GridDataSourceResponse&lt;T&gt;</strong> will contain the data source, the total number of expected items and page number.</h5>
+
+<div class="infoTipContainer">
+    <span class="dot">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16" id="IconChangeColor"> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" id="mainIconPathAttribute" fill="black"></path> </svg>
+    </span>
+    <h5>The <strong>DataSource</strong> must be the same object type defined in the VIEW on the <strong>BindTo</strong> method.</h5>
+</div>

@@ -1,0 +1,134 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>Pagination</h3>
+
+<h5>The current demo of the UI for ASP.NET MVC Grid demonstrates an implementation of displaying data in the grid control with pagination.</h5>
+<br />
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px;">
+    <div>
+        @(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .UniqueId(nameof(Product.Id))
+            .HtmlAttributes("id", "productGrid")
+            .Height(300)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Id)).Title("ID"),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Width(250),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description"),
+                    i => i.BindTo(nameof(Product.GroupName)).Title("Type")
+                    )
+            .Pagination(() => new Pagination
+            {
+                PageIndex = 1,
+                PageItems = 5,
+                Total = Model.TotalNrElements,
+                Url = "/Grid/GetPage"
+            })
+            .Render()
+ )
+    </div>
+
+    @{
+        string basicCode = @"@(Html.Prowler().Grid()
+.BindTo(Model.ProductDataSource)
+.UniqueId(nameof(Product.Id))
+.HtmlAttributes(""id"", ""productGrid"")
+.Height(300)
+.Columns(
+          i => i.BindTo(nameof(Product.Id)).Title(""ID""),
+          i => i.BindTo(nameof(Product.Name)).Title(""Name"").Width(250),
+          i => i.BindTo(nameof(Product.Description)).Title(""Description""),
+          i => i.BindTo(nameof(Product.GroupName)).Title(""Type"")
+        )
+.Pagination(() => new Pagination
+{
+    PageIndex = 1,
+    PageItems = 5,
+    Total = Model.TotalNrElements,
+    Url = ""/Grid/GetPage""
+})
+.Render()
+)";
+
+
+        string controllerCode = @"public ActionResult GetPage(GridDataSourceRequest<Product> request)
+{
+    var list = MockHelper.GetMockProducts().ProductDataSource.AsEnumerable();
+    
+    var totalItems = list.Count();
+    
+    var data = list.Skip(request.PageInfo.Skip)
+    .Take(request.PageInfo.PageItems)
+    .ToList();
+    
+    var datasouce = new GridDataSourceResponse<Product>
+    {
+    DataSource = data,
+    TotalItems = totalItems,
+    PageIndex = request.PageInfo.PageIndex
+    };
+    
+    return Json(datasouce);
+}";
+
+    }
+    <br />
+    <h4>VIEW CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+
+    <br />
+    <h5><strong>Pagination</strong> object properties:</h5>
+    <div style="padding:0px; margin-top:10px; border-radius:5px">
+        <table class="tableStyle" style="width:100%">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>PageIndex</td>
+                <td>Sets the grid page number</td>
+            </tr>
+            <tr>
+                <td>PageItems</td>
+                <td>Sets the number of items to display in the grid</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td>Sets the expected total number of items the data source has</td>
+            </tr>
+            <tr>
+                <td>Url</td>
+                <td>Sets the URL to POST</td>
+            </tr>
+            <tr>
+                <td>PaginationButtons</td>
+                <td>Sets the number of pagination buttons to display</td>
+            </tr>
+            <tr>
+                <td>PaginationRangeGow</td>
+                <td>Sets the pagination range from where to start growing based on the PaginationButtons</td>
+            </tr>
+        </table>
+    </div>
+    <br />
+    <h5>Grid navigation will POST to the value set in the Pagination.Url property. The post object is of type <strong>GridDataSourceRequest&lt;T&gt;.</strong></h5>
+    <div class="infoTipContainer">
+        <span class="dot">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-info" viewBox="0 0 16 16" id="IconChangeColor"> <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" id="mainIconPathAttribute" fill="black"></path> </svg>
+        </span>
+        <h5>Setting the <strong>PageItems</strong> property will not limit the number of items to display on the grid from the data source, the <strong>PageItems</strong> property is used to perform calculations for the page buttons.</h5>
+    </div>
+    <br />
+    <h4>CONTROLLER CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@controllerCode</code>
+    </div>
+    <br />
+</div>
+
+@Html.Partial("_GridRequestResponse")

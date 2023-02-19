@@ -1,0 +1,174 @@
+﻿@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+@{
+    ViewBag.Title = "Index";
+}
+
+<center><h2>Grid List</h2></center>
+
+<div id="customContainer">
+    <input type="text" name="ClientName" />
+    <input type="text" name="ClientId" />
+
+    @*@(Html.Prowler().DropDownList().Name("filterGroups")
+        .BindTo(Model.FilterGroups, "Product Group")
+        .DataTextField(nameof(Product.Name))
+        .DataValueField(nameof(Product.Id))
+        .Multiselect(nameof(Product.Checked), true)
+        .HtmlAttributes("style", "width:200px;height:32px;")
+        .Render())*@
+
+    @*<input type="hidden" name="productFilterList.Index" value="cold" />
+        <input type="text" name="productFilterList[cold].Name" value="Beer" />
+
+        <input type="hidden" name="productFilterList.Index" value="123" />
+        <input type="text" name="productFilterList[123].Name" value="Chips" />
+
+        <input type="hidden" name="productFilterList.Index" value="caliente" />
+        <input type="text" name="productFilterList[caliente].Name" value="Salsa" />*@
+    @*<form method="post" action="/Grid/Page">
+            <input type="checkbox" name="productFilterList" value="false"/>
+            <input type="submit" value="send" />
+        </form>*@
+
+
+</div>
+
+<div >
+    @(Html.Prowler().Grid()
+            .UniqueId(nameof(Product.Id))
+            .BindTo(Model.ProductDataSource)
+            .HtmlAttributes("id", "productgrid")
+            //.Width(1000)
+            //.Height(750)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Checked)).Width(50).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox(),
+                    i => i.BindTo(nameof(Product.Id)).Width(50).Title("ID").AsEditable(GridInputType.CheckBox),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort")
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort").Width(400),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //                    i => i.BindTo(nameof(Product.Name)).Title("Name").Sorting("SortColumnName").AsEditable(GridInputType.Text),
+                    //i => i.BindTo(nameof(Product.Description)).Title("Description").Sorting("DescriptionFiltersSort"),
+                    //i => i.BindTo(nameof(Product.GroupName)).Width(200)
+                    //.ColumnTemplate(Html.Prowler().DropDownList().Name("filterGroups")
+                    //                              .BindTo(Model.FilterGroups, "Product Group")
+                    //                              .DataTextField(nameof(Product.Name))
+                    //                              .DataValueField(nameof(Product.Id))
+                    //                              .Multiselect(nameof(Product.Checked), true)
+                    //                              .Event(EventDropDown.Selected, "itemSelectionTest")
+                    //                              .HtmlAttributes("style", "width:200px;height:32px;")
+                    //                              .Render()),
+                    // i => i.RowTemplate(@"<img src=""{#Image#}"" alt="""" style=""width:64px;height:64px;""/>", nameof(Product.Image)).Width(50).Title("Image")
+                    )
+        .Pagination(() => new Pagination().PageIndex(1)
+                                          .PageItems(5)
+                                          .Total(Model.TotalNrElements)
+                                          .PaginationButtons(6)
+                                          .Url("/Grid/Page"))
+        .ActionSort("/Grid/Page")
+        //.AutoSizeHeaders()
+        .AllowColumnResize()
+        .IncludeFilterContainer("customContainer")
+        .GridEvent(GridEvents.DataBindSuccess, "DataBindedEvent")
+        .GridEvent(GridEvents.DataBindError, "GridErrorParser")
+       // .GridEvent(GridEvents.CkeckBoxSelectAllStateChanged, "CheckBoxStateChanged")
+        //.ToolBarTemplate(Html.Partial("ToolBarContainer"))
+        .Render()
+ )
+</div>
+
+
+<input type="button" value="RefreshGrid" onclick="itemSelectionTest()" />
+
+<script>
+
+    var checkState = null;
+
+    function GridErrorParser(result) {        
+        alert(result.responseJSON);
+    }
+
+    function DataBindedEvent(result) {
+       // alert(JSON.stringify(result));
+       // alert(prowlerGrid("productgrid").GetCheckBoxContainersState("Checked"));
+    }
+
+    function ValidationNameField(value) {
+        if (value == "") {
+            return 'Name field is required!';
+        }
+
+        return '';
+    }
+
+    function itemSelectionTest(value, label) {
+        debugger;
+
+        var data = {};
+        data[0] = { name: "additionalClient", value: "clientF" };
+        data[1] = { name: "additionalFilter", value: "1" };
+
+        prowlerGrid("productgrid").Refresh("/Grid/Page", data);
+    }
+
+    function ValidationDescField(value) {
+        if (value == "") {
+            return 'Description field is required aaaaaaaaaaaaaaaaaaa aaaaaxxxxxxxxxxxxxxxxgdsdfsdf asdaszxc 435345!';
+        }
+
+        return '';
+    }
+
+    function moveOf(e) {
+        debugger;
+        var x = e.clientWidth;
+    }
+
+    function selectAll(sender) {
+        prowlerGrid("productgrid").SetCheckBoxContainersState("Checked", sender.checked);
+    }
+
+    function CheckBoxStateChanged(state, name) {
+       // alert(state + " " + name);
+        if (state == "false") {
+            $("#selectAllCheckBox").prop('checked', false);
+            $("#selectAllPageCheckBox").prop('checked', false);
+        }
+        else {
+            $("#selectAllPageCheckBox").prop('checked', true);
+        }
+    }
+</script>

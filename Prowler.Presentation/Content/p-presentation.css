@@ -5,11 +5,101 @@
 }
 
 .tableStyle td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid #a7a7a7;
     text-align: left;
     padding: 8px;
 }
 
 .tableStyle tr:nth-child(even) {
     background-color: #dddddd;
+}
+
+.menuBody {
+    position: fixed;
+    height: 100%;
+}
+
+.menuSite {
+    background-color: #f8f9f9;
+    position: absolute;
+    border-right: 1px solid #d6d9dc;
+    box-shadow: 1px 0 5px -2px #d6d9dc;
+    color: black;
+    overflow: auto;
+    width: 250px;
+    top: 0px;
+    bottom: 150px;
+    margin: auto;
+}
+
+    .menuSite ul {
+        text-transform: none;
+        letter-spacing: unset;
+        padding: 1px;
+        font-size: 1.6rem;
+        line-height: 2.2rem;
+        font-weight: 400;
+    }
+
+    .menuSite li {
+        text-transform: none;
+        letter-spacing: unset;
+        padding: 6px 12px 4px;
+        font-size: 1.6rem;
+        line-height: 2.2rem;
+        font-weight: 400;
+        text-decoration: none;
+        list-style: none;
+        cursor: pointer;
+        margin-bottom: 3px;
+    }
+
+        .menuSite li:hover {
+            background-color: #272727;
+            border-radius: 5px;
+            color: whitesmoke;
+        }
+
+.menuSiteSelected {
+    background-color: #272727;
+    border-radius: 5px;
+    color: whitesmoke;
+}
+
+.footerMenu {
+    position: fixed;
+    height: 100px;
+    width: 100%;
+    background-color: #f8f9f9;
+    bottom: 0px;
+    left: 0px;
+    border-top: 1px solid #d6d9dc;
+    box-shadow: 1px 0 5px -2px #d6d9dc;
+}
+
+.infoTipContainer {
+    background-color: #272727;
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 5px;
+    color: whitesmoke;
+    display:flex;
+}
+
+.dot {
+    height: 32px;
+    width: 32px;
+    background-color: whitesmoke;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right:8px;
+    margin-top:auto;
+    margin-bottom:auto;
+}
+
+code {
+    font-family: Consolas,"courier new";
+    color: crimson;
+    padding: 2px;
+    font-size: 105%;
 }
