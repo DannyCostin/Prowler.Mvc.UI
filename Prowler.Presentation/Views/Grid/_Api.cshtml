@@ -1,0 +1,169 @@
+﻿
+@using Prowler.Mvc.UI
+@using Prowler.Presentation.Models
+@model Prowler.Presentation.Models.MockProduct
+
+<h3>API</h3>
+
+<h5>The current demo of the UI for ASP.NET MVC Grid demonstrates an implementation of changing the grid control from Javascript.</h5>
+<h5>A series of API methods are available allowing control manipulation from java script, use the window function name prowlerGrid as a paramater specify the grid id attribute and call the appropriated method.</h5>
+<br />
+
+<h3>Methods</h3>
+<div style="padding:0px; margin-top:10px; border-radius:5px">
+    <table class="tableStyle" style="width:100%">
+        <tr>
+            <th>Method name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Refresh</td>
+            <td>Refresh the grid, the method takes two optional parameters, first parameter sets a new URL for POST the second parameter can attach new parameters to send on POST</td>
+        </tr>
+        <tr>
+            <td>SetCheckBoxContainersState</td>
+            <td>Sets the check box containers state, the method takes two optional parameters, first parameter sets the bound property name from the data source the second parameter sets the check state value TRUE or FALSE.</td>
+        </tr>
+        <tr>
+            <td>GetCheckBoxContainersState</td>
+            <td>Gets the check box containers state, the method takes one parameters use the bound property name from the data source, value returns TRUE if all check box containers are checked or FALSE</td>
+        </tr>
+    </table>
+</div>
+<br />
+<h4>DEMO EXAMPLE</h4>
+<div style="padding-top:10px;">
+    <div>
+        @(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .UniqueId(nameof(Product.Id))
+            .HtmlAttributes("id", "productGrid")
+            .Height(300)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox(),
+                    i => i.BindTo(nameof(Product.Id)).Title("ID"),
+                    i => i.BindTo(nameof(Product.Name)).Title("Name"),
+                    i => i.BindTo(nameof(Product.Description)).Title("Description")
+                    )
+            .Pagination(() => new Pagination
+            {
+                PageIndex = 1,
+                PageItems = 5,
+                Total = Model.TotalNrElements,
+                Url = "/Grid/GetPage"
+            })           
+            .Render()
+ )
+    </div>
+    <br />
+    
+    <input type="button" value="Refresh" onclick="refreshGrid()" />
+    <input type="button" value="Select All" onclick="selectAllFromGrid()" />
+    <input type="button" value="Check if all check boxes are selected" onclick="getCheckBoxContainersState()" />
+    <br />
+
+    @{
+        string basicCode = @"@(Html.Prowler().Grid()
+            .BindTo(Model.ProductDataSource)
+            .UniqueId(nameof(Product.Id))
+            .HtmlAttributes(""id"", ""productGrid"")
+            .Height(300)
+            .Columns(
+                    i => i.BindTo(nameof(Product.Checked)).AsEditable(GridInputType.CheckBox).HeaderAsCheckBox(),
+                    i => i.BindTo(nameof(Product.Id)).Title(""ID""),
+                    i => i.BindTo(nameof(Product.Name)).Title(""Name""),
+                    i => i.BindTo(nameof(Product.Description)).Title(""Description"")
+                    )
+            .Pagination(() => new Pagination
+            {
+                PageIndex = 1,
+                PageItems = 5,
+                Total = Model.TotalNrElements,
+                Url = ""/Grid/GetPage""
+            })           
+            .Render()
+ )
+<input type=""button"" value=""Refresh"" onclick=""refreshGrid()"" />
+<input type=""button"" value=""Select All"" onclick=""selectAllFromGrid()"" />
+<input type=""button"" value=""Check if all check boxes are selected"" onclick=""getCheckBoxContainersState()"" />";
+
+
+        string controllerCode = @"public ActionResult GridRefresh(GridDataSourceRequest<Product> request,
+            string searchValue, string productId)
+{
+
+    var list = MockHelper.GetMockProducts(false).ProductDataSource.AsEnumerable();
+
+    var totalItems = list.Count();
+
+    var data = list.Skip(request.PageInfo.Skip)
+                       .Take(request.PageInfo.PageItems)
+                       .ToList();
+
+    var datasouce = new GridDataSourceResponse<Product>
+    {
+        DataSource = data,
+        TotalItems = totalItems,
+        PageIndex = request.PageInfo.PageIndex
+    };
+
+    return Json(datasouce);
+}";
+
+        string javascriptCode = @"<script>
+    function refreshGrid() {
+        var data = {};
+        data[0] = { name: ""searchValue"", value: ""box"" };
+        data[1] = { name: ""productId"", value: ""1"" };
+
+        prowlerGrid(""productGrid"").Refresh(""/Grid/GridRefresh"", data);
+    }
+
+    function selectAllFromGrid() {
+        prowlerGrid(""productGrid"").SetCheckBoxContainersState(""Checked"", true);      
+    }
+
+    function getCheckBoxContainersState() {
+        alert(""All check boxes selected = "" + prowlerGrid(""productGrid"").GetCheckBoxContainersState(""Checked""));
+    }
+</script>";
+
+    }
+    <br />
+    <h4>VIEW CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
+    </div>
+    <br />
+    <h4>JAVASCRIPT CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@javascriptCode</code>
+    </div>
+    <br />
+    <h4>CONTROLLER CODE</h4>
+    <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
+        <code style="white-space:pre; display:block; margin:10px">@controllerCode</code>
+    </div>
+    <br />
+</div>
+
+@Html.Partial("_GridRequestResponse")
+
+<script>   
+    function refreshGrid() {
+        var data = {};
+        data[0] = { name: "searchValue", value: "box" };
+        data[1] = { name: "productId", value: "1" };
+
+        prowlerGrid("productGrid").Refresh("/Grid/GridRefresh", data);
+    }
+
+    function selectAllFromGrid() {
+        prowlerGrid("productGrid").SetCheckBoxContainersState("Checked", true);      
+    }
+
+    function getCheckBoxContainersState() {
+        alert("All check boxes selected = " + prowlerGrid("productGrid").GetCheckBoxContainersState("Checked"));
+    }
+
+</script>

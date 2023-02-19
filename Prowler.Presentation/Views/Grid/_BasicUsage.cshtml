@@ -4,10 +4,10 @@
 
 <h3>Basic usage</h3>
 
-<h5>This demo shows how to configure the ASP.NET MVC Data Grid to display data.</h5>
+<h5>The current demo of the UI for ASP.NET MVC Grid demonstrates an implementation of displaying data in the grid control.</h5>
 
 <br />
-<h5>DEMO EXAMPLE</h5>
+<h4>DEMO EXAMPLE</h4>
 <div style="padding-top:10px;">
     <div>
         @(Html.Prowler().Grid()
@@ -30,17 +30,17 @@
 .HtmlAttributes(""id"", ""productGrid"")
 .Height(450)
 .Columns(
-          i => i.BindTo(nameof(Product.Id)).Title(""ID""),
-          i => i.BindTo(nameof(Product.Name)).Title(""Name"").Width(250),
-          i => i.BindTo(nameof(Product.Description)).Title(""Description""),
-          i => i.BindTo(nameof(Product.GroupName)).Title(""Type"")
-        )
+      i => i.BindTo(nameof(Product.Id)).Title(""ID""),
+      i => i.BindTo(nameof(Product.Name)).Title(""Name"").Width(250),
+      i => i.BindTo(nameof(Product.Description)).Title(""Description""),
+      i => i.BindTo(nameof(Product.GroupName)).Title(""Type"")
+    )
 .Render()
 )";
 
     }
     <br />
-    <h5>VIEW CODE</h5>
+    <h4>VIEW CODE</h4>
     <div style="background-color:whitesmoke;padding:20px; margin-top:10px; border-radius:5px">
         <code style="white-space:pre; display:block; margin:10px">@basicCode</code>
     </div>
@@ -53,8 +53,10 @@
     </div>
     <br />
     <h5><strong>HtmlAttributes</strong> method takes 2 parameters, the first one sets the attribute name, and the second the attribute value. This method can be chained multiple times.</h5>
-    <h5><strong>BindTo</strong> method takes a data source, the data source parameter accepts an IEnumerable&lt;dynamic&gt;, and the object represents the drop-down item elements.</h5>
-    <h5><strong>Height</strong> sets the height of the grid, the grid will not grow beyond the set height, a scroll bar will appear in case the grid rows do not fit on the defined height.</h5>
+    <h5><strong>BindTo</strong> method takes a data source, the data source parameter accepts an IEnumerable&lt;dynamic&gt;, and the object represents the grid row elements.</h5>
+    <h5><strong>Height</strong> Height sets the height of the grid, the grid will not grow beyond the height defined, a scroll bar will appear in case the grid rows do not fit in the defined height.</h5>
     <h5><strong>Columns</strong> defines the columns and rows.</h5>
-    <h5><strong>Render</strong> method will generate the grid HTML code to be rendered on the view.</h5>
+    <h5><strong>Render</strong> method will generate the grid HTML code to be rendered in the view.</h5>
 </div>
+<br />
+@Html.Partial("_GridColumMethods")

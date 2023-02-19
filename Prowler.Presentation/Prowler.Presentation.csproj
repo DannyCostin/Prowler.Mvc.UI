@@ -150,6 +150,7 @@
     <Content Include="Content\Images\limonada.jpg" />
     <Content Include="Content\Images\micdejun.png" />
     <Content Include="Content\Images\paineou.jpg" />
+    <Content Include="Content\Images\paypal_logo.png" />
     <Content Include="Content\Images\pizza.png" />
     <Content Include="Content\Images\redbull.png" />
     <Content Include="Content\Images\sbolognesse.png" />
@@ -221,6 +222,14 @@
     <Content Include="Views\Grid\_BasicUsage.cshtml" />
     <Content Include="Views\Shared\_DropDownItem.cshtml" />
     <Content Include="Views\DropDownList\_Request.cshtml" />
+    <Content Include="Views\Grid\_EditRows.cshtml" />
+    <Content Include="Views\Grid\_Pagination.cshtml" />
+    <Content Include="Views\Grid\_Sorting.cshtml" />
+    <Content Include="Views\Grid\_GridColumMethods.cshtml" />
+    <Content Include="Views\Grid\_GridRequestResponse.cshtml" />
+    <Content Include="Views\Grid\_Events.cshtml" />
+    <Content Include="Views\Grid\_Api.cshtml" />
+    <Content Include="Views\Grid\_Templates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -8,6 +8,11 @@ namespace Prowler.Presentation.Helpers
 {
     public static class MockHelper
     {
+        public static List<string> GetGridPaginationViews { get; set; } = new List<string>
+        {
+            "_Pagination", "_Events", "_Api", "_Templates"
+        };
+
         public static MockProduct GetMockProducts(bool attachPleaseSelectItem = true)
         {
             var mockProduct = new MockProduct()
@@ -44,7 +49,7 @@ namespace Prowler.Presentation.Helpers
                 GroupId = 0,
                 GroupName = "Fast food",
                 Image = "/Content/Images/kebab.jpg",
-                Description = "Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce"
+                Description = "Meat, french fries, cabbage salad, garlic sauce, tzatziki sauce",               
             });
             mockProduct.ProductDataSource.Add( new Product
             {
@@ -386,6 +391,38 @@ namespace Prowler.Presentation.Helpers
             return list;
         }
 
+        public static IEnumerable<Product> SortById(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.Id);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.Id);
+            }
+
+            return list;
+        }
+
+        public static IEnumerable<Product> SortByType(IEnumerable<Product> dataSource, string sortType)
+        {
+            IEnumerable<Product> list;
+
+            if (sortType == "desc")
+            {
+                list = dataSource.OrderByDescending(i => i.GroupName);
+            }
+            else
+            {
+                list = dataSource.OrderBy(i => i.GroupName);
+            }
+
+            return list;
+        }
+
         public static IEnumerable<Product> SortByDescription(IEnumerable<Product> dataSource, string sortType)
         {
             IEnumerable<Product> list;
@@ -434,6 +471,33 @@ namespace Prowler.Presentation.Helpers
             }
 
             return list;
+        }        
+
+        public static IEnumerable<Product> GetMockProducts(string idOrderBy, string nameOrderBy, string descriptionOrderBy, string typeOrderBy)
+        {
+            var products = GetMockProducts(false).ProductDataSource.AsEnumerable();
+
+            if (!string.IsNullOrEmpty(idOrderBy))
+            {
+                products = SortById(products, idOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(nameOrderBy))
+            {
+                products = SortByName(products, nameOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(descriptionOrderBy))
+            {
+                products = SortByDescription(products, descriptionOrderBy);
+            }
+
+            if (!string.IsNullOrEmpty(typeOrderBy))
+            {
+                products = SortByType(products, typeOrderBy);
+            }
+
+            return products;
         }
     }
 

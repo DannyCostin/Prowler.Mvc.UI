@@ -6,8 +6,7 @@
 <h3>Description</h3>
 
 <h5>The ASP.NET MVC Grid lets the user choose options from a list of choices. It provides flexible data binding, api, events, appearance customization through templates, accessibility.</h5>
-<h5>The Grid is a component for displaying data in a tabular format and comes with a variety of features for data management, presentation, and customization.</h5>
-<h5>The Grid can be bound to various data sources and comes with built-in common features, such as filtering, paging, sorting.</h5>
+<h5>The Grid is a component for displaying data in a tabular format and comes with a variety of features, and customization.</h5>
 
 <h3>Dependencies</h3>
 
@@ -48,11 +47,11 @@
         </tr>
         <tr>
             <td>UniqueId(string)</td>
-            <td>Sets the Unique ID of the row the value must unique, used when the column is in edit mode.</td>
+            <td>Sets the Unique ID of the row the value must unique, used when the column is in edit mode</td>
         </tr>
         <tr>
             <td>AutoSizeHeaders()</td>
-            <td>Enable the auto size of headers, work only when a fixed width is set on the grid.</td>
+            <td>Enable the auto size of headers, work only when a fixed width is set on the grid</td>
         </tr>
         <tr>
             <td>Name(string)</td>
@@ -68,11 +67,11 @@
         </tr>
         <tr>
             <td>Height(int)</td>
-            <td>Sets the height of the control in pixe.</td>
+            <td>Sets the height of the control in pixels</td>
         </tr>
         <tr>
             <td>Width(int)</td>
-            <td>Sets the width of the control in pixel</td>
+            <td>Sets the width of the control in pixels</td>
         </tr>
         <tr>
             <td>HtmlAttributes(string, string)</td>
@@ -80,7 +79,7 @@
         </tr>
         <tr>
             <td>Columns(Prowler.Mvc.UI.Column)</td>
-            <td>Sets the colums in the control</td>
+            <td>Sets the columns in the control</td>
         </tr>
         <tr>
             <td>ErrorFunction(string)</td>
@@ -100,17 +99,19 @@
         </tr>
         <tr>
             <td>ToolBarTemplate(string)</td>
-            <td>ValueTemplate to be used to render the ToolBar</td>
+            <td>Value Template to be used to render the ToolBar</td>
         </tr>
         <tr>
             <td>ToolBarTemplate(MvcHtmlString)</td>
-            <td>ValueTemplate to be used to render the ToolBar</td>
-        </tr>       
+            <td>Value Template to be used to render the ToolBar</td>
+        </tr>
         <tr>
             <td>Render()</td>
             <td>Render the Grid control</td>
         </tr>
     </table>
 </div>
+<br />
+@Html.Partial("_GridColumMethods")
 
 

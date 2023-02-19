@@ -1377,12 +1377,12 @@
             prowlerGridHelper.prowlerPostGrid(paginationUrl, this, prowlerGridHelper.dataBind, containerHost, objectData);           
         }
 
-        function prowler_CheckBoxUpdate(binding, state) {
+        function prowler_CheckBoxUpdate(binding, state) {           
             var tableContainer = $(gridListId);
 
             if (tableContainer == null) { return; }
            
-            var elements = $(tableContainer).find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + binding + "']");
+            var elements = $(tableContainer).find(".pw-grid-table-container").find(".pw-grd-chk-name-inpt-s[pw-grd-chk-name-s='" + binding + "']");
 
             if (elements == null) { return; }
 
