@@ -36,6 +36,8 @@ namespace Prowler.Mvc.UI
         internal string ServerFilteringUrl { get; set; }
         internal int ServerFilteringDelay { get; set; }
         internal string ServerFilteringSerializationName { get; set; }
+        internal int ServerFilteringMinimumCharToSearch { get; set; }
+        internal bool ServerFilterningAllowEmptySearch { get; set; }
 
         public string GetName()
         {

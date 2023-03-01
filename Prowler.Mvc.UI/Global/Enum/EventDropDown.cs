@@ -10,6 +10,8 @@ namespace Prowler.Mvc.UI
     {
         Selected,
         SelectedChanged,
-        Open        
+        Open,
+        DataBindError,
+        DataBindSuccess
     }
 }

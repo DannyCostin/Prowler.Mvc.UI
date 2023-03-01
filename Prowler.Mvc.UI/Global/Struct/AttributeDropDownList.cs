@@ -20,11 +20,15 @@ namespace Prowler.Mvc.UI.Global.Struct
         public const string MultiselectEnable = "p-dropdown-ms-enable";
         public const string MultiselectCheckBoxRender = "p-dropdown-ms-chk-render";
         public const string FilterValue = "p-dropdown-filter-value";
-        public const string EventOpen = "p-dropdown-ev-open";        
+        public const string EventOpen = "p-dropdown-ev-open";
+        public const string EventDataBindError = "p-dropdown-ev-dberr";
+        public const string EventDataBindSuccess = "p-dropdown-ev-dbsuc";
         public const string EventSelected = "p-dropdown-ev-selected";
         public const string EventSelectedChanged = "p-dropdown-ev-selected-changed";
         public const string ServerFilterUrl = "p-dropdown-srv-filter-url";
         public const string ServerFilterDelay = "p-dropdown-srv-filter-delay";
+        public const string ServerFilterMinChar = "p-dropdown-srv-filter-min-char";
+        public const string ServerFilterAllowEmptySearch = "p-dropdown-srv-filter-allow-ept-search";
         public const string ServerFilterSerializationName = "p-dropdown-srv-filter-serialization-name";
         public const string ServerFilteringEnable = "p-dropdown-srv-filter-enable";
         public const string Bindings = "p-dropdown-binding";

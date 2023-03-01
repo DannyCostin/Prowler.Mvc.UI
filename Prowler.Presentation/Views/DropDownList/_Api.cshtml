@@ -65,13 +65,13 @@
     <input type="button" value="Set selected value" onclick="prowlerDropDown('myProductDropDown').setSelectedValue('3')" />
     <input type="button" value="Data bind" onclick="dataBind()" />
     <input type="button" value="Open/Close DropDown" onclick="prowlerDropDown('myProductDropDown').open()" />
-
-    <script>
-        function dataBind() {
+   
+    <script>function dataBind() {
             prowlerDropDown('myProductDropDown').open();
             var data = { value: 'k' };
             prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
-        }</script>
+        }
+    </script>
 
     @{
         string apiCode = @"@(Html.Prowler()
@@ -92,19 +92,19 @@
 
         string apiJS = @"<script>
 function dataBind() {
-    prowlerDropDown('myProductDropDown').open();
-    var data = { value: 'k' };
-    prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
+prowlerDropDown('myProductDropDown').open();
+var data = { value: 'k' };
+prowlerDropDown('myProductDropDown').databind('/DropDownList/Search', 'POST', data);
 }
 </script>";
 
         string apiCT = @"public JsonResult Search(string value)
 {
-    value = value?.ToLower() ?? string.Empty;
-    var model = MockHelper.GetMockProducts();
-    model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
+value = value?.ToLower() ?? string.Empty;
+var model = MockHelper.GetMockProducts();
+model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
 
-    return Json(model.ProductDataSource);
+return Json(model.ProductDataSource);
 }
 ";
     }

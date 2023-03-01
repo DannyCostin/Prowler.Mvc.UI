@@ -3,6 +3,7 @@ using Prowler.Presentation.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Web;
 using System.Web.Helpers;
@@ -56,11 +57,32 @@ namespace Prowler.Presentation.Controllers
 
         public JsonResult Search(string value, string customFilter)
         {
-            value = value?.ToLower() ?? string.Empty;
-            var model = MockHelper.GetMockProducts();
-            model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
+            try
+            {
+                value = value?.ToLower() ?? string.Empty;
+                var model = MockHelper.GetMockProducts();
+                model.ProductDataSource = model.ProductDataSource.Where(i => i.Name.ToLower().Contains(value)).ToList();
 
-            return Json(model.ProductDataSource);
+                return Json(model.ProductDataSource);
+            }
+            catch(Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
+        }
+
+        public JsonResult SearchErr(string value, string customFilter)
+        {
+            try
+            {
+                throw new InvalidOperationException("Custom error event message!");
+            }
+            catch (Exception ex)
+            {
+                Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                return Json(ex.Message);
+            }
         }
 
         public ActionResult GetSection(string view)

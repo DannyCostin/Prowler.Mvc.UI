@@ -36,8 +36,12 @@
             <td>Event raise on selecting an element in the drop-down</td>
         </tr>
         <tr>
-            <td>Prowler.Mvc.UI.EventDropDown.SelectedChanged</td>
-            <td>Event raise on selecting an element that is not already selected in the drop-down</td>
+            <td>Prowler.Mvc.UI.EventDropDown.DataBindSuccess</td>
+            <td>Event raise on data bind successfully</td>
+        </tr>
+        <tr>
+            <td>Prowler.Mvc.UI.EventDropDown.DataBindError</td>
+            <td>Event raise on data bind error</td>
         </tr>
     </table>
 </div>
@@ -52,11 +56,13 @@
           .SelectedIndex(0)
           .Event(EventDropDown.Open, "fnOpen")
           .Event(EventDropDown.SelectedChanged, "fnSelectedChanged")
+          .Event(EventDropDown.DataBindSuccess, "dataBindedEvent")
+          .Event(EventDropDown.DataBindError, "dataBindErrEvent")
+          .HtmlAttributes("id", "ProductDropDown")
           .Render()
     )
 
-    <script>
-        function fnOpen() {
+    <script>function fnOpen() {
             var logElement = document.getElementById("eventConsole");
             logElement.value = "event:Open \n";
             logElement.scrollTop = logElement.scrollHeight;
@@ -66,10 +72,32 @@
             var logElement = document.getElementById("eventConsole");
             logElement.value = "event:Selected " + value + " " + label + " \n";
             logElement.scrollTop = logElement.scrollHeight;
-        }</script>
+        }
+
+        function dataBindedEvent(result) {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value = "event:DataBindSuccess nr of elements binded " + result.length + " \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function dataBindErrEvent(result) {
+            var logElement = document.getElementById("eventConsole");
+            logElement.value = "event:DataBindError " + result.responseJSON + " \n";
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+        function dataBind() {
+            var data = { value: 'k' };
+            prowlerDropDown('ProductDropDown').databind('/DropDownList/Search', 'POST', data);
+        }
+        function dataBindErr() {
+            var data = { value: 'k' };
+            prowlerDropDown('ProductDropDown').databind('/DropDownList/SearchErr', 'POST', data);
+        }
+    </script>
 
     <br />
-
+    <input type="button" value="Data bind - Success Event" onclick="dataBind()" />
+    <input type="button" value="Data bind - Error Event" onclick="dataBindErr()" />
     <textarea id="eventConsole" style="width:100%; height:100px;max-width:none;overflow:hidden"></textarea>
 
     @{
@@ -88,15 +116,15 @@
 
         string eventJS = @"<script>
 function fnOpen() {
-    var logElement = document.getElementById(""eventConsole"");
-    logElement.value = ""event:Open \n"";
-    logElement.scrollTop = logElement.scrollHeight;
+var logElement = document.getElementById(""eventConsole"");
+logElement.value = ""event:Open \n"";
+logElement.scrollTop = logElement.scrollHeight;
 }
 
 function fnSelectedChanged(value, label) {
-    var logElement = document.getElementById(""eventConsole"");
-    logElement.value = ""event:Selected "" + value + "" "" + label + "" \n"";
-    logElement.scrollTop = logElement.scrollHeight;
+var logElement = document.getElementById(""eventConsole"");
+logElement.value = ""event:Selected "" + value + "" "" + label + "" \n"";
+logElement.scrollTop = logElement.scrollHeight;
 }
 </script>";
 

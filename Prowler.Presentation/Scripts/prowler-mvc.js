@@ -182,6 +182,9 @@
 
             var dropdownContainer = $(dropDownId).find('.p-dropdown-list');
 
+            let eventBinded = $(dropDownId).attr("p-dropdown-ev-dbsuc");
+            let eventBindErr = $(dropDownId).attr("p-dropdown-ev-dberr");
+
             $(dropdownContainer).find(".p-dropdown-group-container").remove();
             $(dropdownContainer).find(".p-dropdown-container-element").remove();
 
@@ -189,7 +192,7 @@
             prowlerHelper.GetLoader().appendTo(dropdownContainer);
 
             return prowlerHelper.DataBind(serverUrl, type,
-                properties, prowlerDropDownHelper.dataBindParser, $(dropDownId));
+                properties, prowlerDropDownHelper.dataBindParser, $(dropDownId), eventBindErr, eventBinded);
         }
 
         function OpenDropdown() {
@@ -653,31 +656,36 @@
 
             var searchValue = $(obj).val();
             var timeDelayValue = $(parentContainer).attr("p-dropdown-srv-filter-delay");
+            let minCharStartSearch = Number($(parentContainer).attr("p-dropdown-srv-filter-min-char"));
+            let allowEmptySearch = $(parentContainer).attr("p-dropdown-srv-filter-allow-ept-search");
+            
+            if (searchValue.length >= minCharStartSearch || (searchValue.length == 0 && allowEmptySearch.toLowerCase() == "true"))
+            {
+                var properties = {}, propName = $(parentContainer).attr("p-dropdown-srv-filter-serialization-name");
+                properties[propName] = searchValue;
 
-            var properties = {}, propName = $(parentContainer).attr("p-dropdown-srv-filter-serialization-name");
-            properties[propName] = searchValue;
+                var dropdownContainer = $(parentContainer).find('.p-dropdown-list');
+                var customParameters = $(parentContainer).attr("p-dropdown-srv-filter-params");
 
-            var dropdownContainer = $(parentContainer).find('.p-dropdown-list');
-            var customParameters = $(parentContainer).attr("p-dropdown-srv-filter-params");
+                if (customParameters != undefined) {
+                    jQuery.extend(properties, JSON.parse(customParameters))
+                }
 
-            if (customParameters != undefined) {
-                jQuery.extend(properties, JSON.parse(customParameters))
-            }
-
-            $(dropdownContainer).find(".p-dropdown-group-container").remove();
-            $(dropdownContainer).find(".p-dropdown-container-element").remove();
-            prowlerDropDownHelper.setDropDownCollision(parentContainer);
-
-            clearTimeout(searchFilterTimeDelay);
-
-            searchFilterTimeDelay = setTimeout(function () {
-
-                prowlerHelper.RemoveLoader(dropdownContainer);
-                prowlerHelper.GetLoader().appendTo(dropdownContainer);
+                $(dropdownContainer).find(".p-dropdown-group-container").remove();
+                $(dropdownContainer).find(".p-dropdown-container-element").remove();
                 prowlerDropDownHelper.setDropDownCollision(parentContainer);
-                prowlerHelper.DataBind($(parentContainer).attr("p-dropdown-srv-filter-url"), "POST",
-                    properties, prowler_dropDownDataBindingParser, parentContainer, prowler_dropDownDataBindingErrorParser);
-            }, timeDelayValue);
+
+                clearTimeout(searchFilterTimeDelay);
+
+                searchFilterTimeDelay = setTimeout(function () {
+
+                    prowlerHelper.RemoveLoader(dropdownContainer);
+                    prowlerHelper.GetLoader().appendTo(dropdownContainer);
+                    prowlerDropDownHelper.setDropDownCollision(parentContainer);
+                    prowlerHelper.DataBind($(parentContainer).attr("p-dropdown-srv-filter-url"), "POST",
+                        properties, prowler_dropDownDataBindingParser, parentContainer, prowler_dropDownDataBindingErrorParser);
+                }, timeDelayValue);
+            }
         }
 
         function prowler_dropDownDataBindingErrorParser(results, container) {

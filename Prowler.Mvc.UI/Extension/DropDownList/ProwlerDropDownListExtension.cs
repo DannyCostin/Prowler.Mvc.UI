@@ -130,7 +130,7 @@ namespace Prowler.Mvc.UI
             return entity;
         }
 
-        public static DropDownList<TModel> ServerFiltering<TModel>(this DropDownList<TModel> entity, string url, string parameterName, int delay = 500)
+        public static DropDownList<TModel> ServerFiltering<TModel>(this DropDownList<TModel> entity, string url, string parameterName, int delay = 500, int minCharToSearch = 0, bool allowEmptySearch = true)
         {
             if(url == null)
             {
@@ -142,6 +142,8 @@ namespace Prowler.Mvc.UI
             entity.ServerFilteringUrl = url;
             entity.ServerFilteringDelay = delay;
             entity.ServerFilteringSerializationName = parameterName;
+            entity.ServerFilteringMinimumCharToSearch = minCharToSearch;
+            entity.ServerFilterningAllowEmptySearch = allowEmptySearch;
 
             return entity;
         }
@@ -597,7 +599,9 @@ namespace Prowler.Mvc.UI
                 container.MergeAttribute(AttributeDropDownList.ServerFilterUrl, entity.ServerFilteringUrl);
                 container.MergeAttribute(AttributeDropDownList.ServerFilterDelay, entity.ServerFilteringDelay.ToString());
                 container.MergeAttribute(AttributeDropDownList.ServerFilterSerializationName, entity.ServerFilteringSerializationName);
-                container.MergeAttribute(AttributeDropDownList.ServerFilteringEnable, entity.ServerFilteringEnable.ToString());                
+                container.MergeAttribute(AttributeDropDownList.ServerFilteringEnable, entity.ServerFilteringEnable.ToString());
+                container.MergeAttribute(AttributeDropDownList.ServerFilterMinChar, entity.ServerFilteringMinimumCharToSearch.ToString());
+                container.MergeAttribute(AttributeDropDownList.ServerFilterAllowEmptySearch, entity.ServerFilterningAllowEmptySearch.ToString());
             }
 
             container.InnerHtml = String.Concat(container.InnerHtml, GetTemplate(entity));
@@ -875,6 +879,12 @@ namespace Prowler.Mvc.UI
                 case EventDropDown.Open:
                     eventType = AttributeDropDownList.EventOpen;
                     break;
+                case EventDropDown.DataBindError:
+                    eventType = AttributeDropDownList.EventDataBindError;
+                    break;
+                case EventDropDown.DataBindSuccess:
+                    eventType = AttributeDropDownList.EventDataBindSuccess;
+                    break; 
             }
 
             return eventType;
