@@ -22,3 +22,26 @@ select,
 textarea {
     max-width: 280px;
 }
+
+* {
+    box-sizing: border-box;
+}
+
+
+.bodyLayout {
+    position: absolute;
+    left: 300px;
+    right: 50px;
+    top: 50px;    
+}
+
+@media only screen and (max-width: 620px) {
+    /* For mobile phones: */
+
+    .bodyLayout {
+        right: 0px;
+        margin-left: 250px;
+        left: 0px;
+        width: 800px;       
+    }
+}

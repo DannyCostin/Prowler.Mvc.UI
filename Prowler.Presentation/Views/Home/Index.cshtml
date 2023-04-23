@@ -29,8 +29,8 @@
     <h4>DropDownList Control</h4>
     
 
-    <div style="display:flex;">
-        <div style="margin-right:25px">
+    <div style="display:inline-block;">
+        <div style="margin-right:25px;float:left;">
             <h5>Basic</h5>
             @(Html.Prowler().DropDownList()
           .HtmlAttributes("id","dropdownBasic")
@@ -43,7 +43,7 @@
         )
         </div>
 
-        <div>
+        <div style="float:left;">
             <h5>Template</h5>
 
             @(Html.Prowler().DropDownList()
