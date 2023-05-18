@@ -214,6 +214,19 @@
             }
         }
 
+        function clearSearchValue() {
+            $(dropDownId).find(".p-dropdown-filter-input").val("");
+        }
+
+        function clearSelectedItem() {
+            $(dropDownId).find(".p-dropdown-label-selected").html("");
+            $(dropDownId).find("#ps-s-value-selected").val("");
+        }
+
+        function clearDropDownList() {
+            $(dropDownId).find(".p-dropdown-list").find(".p-dropdown-container-element").remove();
+        }
+
         return {
             disable: DisableDropDown,
             enable: EnableDropDown,
@@ -221,7 +234,10 @@
             databind: DataBind,
             open: OpenDropdown,
             serverFilterParameterAdd: ServerFilterParameter,
-            setSelectedValue: SetSelectedValue
+            setSelectedValue: SetSelectedValue,
+            clearSearchValue: clearSearchValue,
+            clearSelectedItem: clearSelectedItem,
+            clearDropDownList: clearDropDownList
         }
     }
 
